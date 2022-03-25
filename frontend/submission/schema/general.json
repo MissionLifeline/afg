@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "format": "date"
+    },
+    "sex": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ]
+    },
+    "emailAddress": {
+      "type": "string"
+    },
+    "telephoneNumber": {
+      "type": "string",
+      "maxLength": 20
+    },
+    "placeOfResidenceList": {
+      "type": "string",
+      "enum": [
+        "AFGH",
+        "PAK",
+        "Iran",
+	"other"
+      ]
+    },
+    "placeOfResidenceOther": {
+      "type": "string"
+    },
+    "passportExisting": {
+      "type": "boolean"
+    },
+    "passportNumber": {
+      "type": "string"
+    },
+    "passportDateOfIssue": {
+      "type": "string",
+      "format": "date"
+    },
+    "passportDateOfExpiration": {
+      "type": "string",
+      "format": "date"
+    },
+    "tazkiraExisting": {
+      "type": "boolean"
+    },
+    "tazkiraType": {
+      "type": "string",
+      "enum": [
+        "electronic",
+        "paper"
+      ]
+    },
+    "visaOtherCountryExisting": {
+      "type": "boolean"
+    },
+    "visaOtherCountryWhich": {
+      "type": "string"
+    }
+  },
+  "required": [
+  ]
+}
