@@ -29,10 +29,10 @@
     "placeOfResidenceList": {
       "type": "string",
       "enum": [
-        "AFGH",
-        "PAK",
-        "Iran",
-	"other"
+        "afgh",
+        "pak",
+        "iran",
+        "other"
       ]
     },
     "placeOfResidenceOther": {
@@ -61,6 +61,9 @@
         "electronic",
         "paper"
       ]
+    },
+    "tazkiraNumber": {
+      "type": "string"
     },
     "visaOtherCountryExisting": {
       "type": "boolean"

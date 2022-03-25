@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "fellowApplicantFamilyMembers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "relation": {
+            "type": "string",
+            "enum": [
+              "parent",
+              "child",
+              "sibling",
+              "other"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female",
+              "other"
+            ]
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "telephoneNumber": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "placeOfResidenceList": {
+            "type": "string",
+            "enum": [
+              "afgh",
+              "pak",
+              "iran",
+              "other"
+            ]
+          },
+          "placeOfResidenceOther": {
+            "type": "string"
+          },
+          "passportExisting": {
+            "type": "boolean"
+          },
+          "passportNumber": {
+            "type": "string"
+          },
+          "passportDateOfIssue": {
+            "type": "string",
+            "format": "date"
+          },
+          "passportDateOfExpiration": {
+            "type": "string",
+            "format": "date"
+          },
+          "tazkiraExisting": {
+            "type": "boolean"
+          },
+          "tazkiraType": {
+            "type": "string",
+            "enum": [
+              "electronic",
+              "paper"
+            ]
+          },
+          "tazkiraNumber": {
+            "type": "string"
+          },
+          "visaOtherCountryExisting": {
+            "type": "boolean"
+          },
+          "visaOtherCountryWhich": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

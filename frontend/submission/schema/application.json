@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "hazzardApplicationFiled": {
+      "type": "boolean"
+    },
+    "hazzardApplicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "admissionApplicationFiled": {
+      "type": "boolean"
+    },
+    "admissionApplicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "admissionApprovalFiled": {
+      "type": "boolean"
+    },
+    "admissionApprovalDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "familyMembersInGermany": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "relation": {
+            "type": "string",
+            "enum": [
+              "parent",
+              "child",
+              "sibling",
+              "other"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "emailAddress": {
+            "type": "string"
+          },
+          "telephoneNumber": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "city": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+  ]
+}

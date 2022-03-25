@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "riskCategory": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ethnicalMinority",
+          "religiousMinority",
+          "LGBTQ",
+          "widow",
+          "feminist",
+          "humanRightsActivist",
+          "journalist",
+          "musician",
+          "sportsperson",
+          "afghaneGovernment",
+          "afghaneJudicature",
+          "afghaneSecurityForces",
+          "germanInstitution",
+          "familyOfGermanInstitution",
+          "subcontractorOfGermanInstitution",
+          "foreignInstitution",
+          "NATO"
+        ]
+      }
+    },
+    "risksCV": {
+      "type": "string"
+    },
+    "threatReport": {
+      "type": "string"
+    }
+  },
+  "required": [
+  ]
+}
