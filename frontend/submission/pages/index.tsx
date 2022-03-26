@@ -1,15 +1,23 @@
 import {Box} from '@mui/material'
+import log from 'loglevel'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import {useEffect} from 'react'
 
-import FormApplication from '../components/forms/FormApplication'
-import FormFellowApplicants from '../components/forms/FormFellowApplicants'
 import FormGeneral from '../components/forms/FormGeneral'
-import FormRisks from '../components/forms/FormRisks'
 import { CustomAppBar } from '../components/layout'
 import { LanguageSelection } from '../components/user'
+import {resources} from '../i18n'
 
 const Home: NextPage = () => {
+
+  useEffect(() => {
+    log.setLevel('debug')
+
+    log.debug({ translationResources: resources})
+  }, [])
+
+
   return (
     <div>
       <Head>
@@ -22,10 +30,10 @@ const Home: NextPage = () => {
 
       <main>
         <Box className={'form_container'}>
-          <FormGeneral/>
-          <FormRisks/>
+          <FormGeneral />
+          {/*<FormRisks/>
           <FormApplication/>
-          <FormFellowApplicants/>
+          <FormFellowApplicants/>*/}
         </Box>
       </main>
 

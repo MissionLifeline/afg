@@ -1,37 +1,21 @@
-//import uischema from '../uischema/todo'
-import {
-  materialCells,
-  materialRenderers,
-} from '@jsonforms/material-renderers'
-import { JsonForms } from '@jsonforms/react'
-import { useState } from 'react'
+import log from 'loglevel'
 
+import {generalUISchema} from '../../schema'
 import schema from '../../schema/general.json'
-//import {useTranslation} from "react-i18next"
+import LocalizedJsonForms from './LocalizedJsonForms'
 
-const initialData = {
-}
 
-const renderers = [
-  ...materialRenderers,
-  //register custom renderers
-]
+log.debug({generalUISchema})
+
+
 
 /** This is a first version of the `Part 1` of the questionnaire.
  *  See: `Online Tool Spezialfälle Vorschlag abzufragende Daten und Abfolge.docx`
  **/
 const FormGeneral = () => {
-  const [data, setData] = useState<any>(initialData)
-  //const { t } = useTranslation()
 
   return (
-    <JsonForms
-      schema={schema}
-      data={data}
-      renderers={renderers}
-      cells={materialCells}
-      onChange={({data}) => setData(data)}
-    />
+    <LocalizedJsonForms schema={schema} uischema={generalUISchema} name='general'  data={{}}/>
   )
 }
 
