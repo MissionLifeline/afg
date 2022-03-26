@@ -9,19 +9,19 @@ import {
 //import {useTranslation} from "react-i18next"
 
 const initialData = {
-};
+}
 
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-];
+]
 
 /** This is a first version of the `Part 4` of the questionnaire.
  *  See: `Online Tool Spezialfälle Vorschlag abzufragende Daten und Abfolge.docx`
  *  TODO: We should probably reuse the Form for each fellowApplicantFamilyMember from `schema/general.json`
  **/
 const FormFellowApplicants = () => {
-  const [data, setData] = useState<any>(initialData);
+  const [data, setData] = useState<any>(initialData)
   //const { t } = useTranslation()
 
   return (
@@ -30,7 +30,7 @@ const FormFellowApplicants = () => {
       data={data}
       renderers={renderers}
       cells={materialCells}
-      onChange={({errors, data}) => setData(data)}
+      onChange={({data}) => setData(data)}
     />
   )
 }
