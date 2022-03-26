@@ -240,28 +240,28 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@jsonforms/core@3.0.0-alpha.3":
-  version "3.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@jsonforms/core/-/core-3.0.0-alpha.3.tgz#2d74bc9afc1d92518107d39706862632cb2be916"
-  integrity sha512-zi9EgE3orCGt5xiRR/14weUo4MQfgC2oIydzOj6P6Zkpy+J7LVe/B9eAzLGvCNz6arssZSmSWqq1QmYuiB5NYw==
+"@jsonforms/core@3.0.0-beta.1":
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@jsonforms/core/-/core-3.0.0-beta.1.tgz#12df8e8b2ec3c50bdbd66c4fa167bf1d056e98e9"
+  integrity sha512-5whsfLdmZj79gVlavNDiX9cEhx10V481+H9TqsO/Qnp5wfzgFCZVZ06r+nGI1qiqzIZkQkuwBpimbOF2qmUofQ==
   dependencies:
     "@types/json-schema" "^7.0.3"
     ajv "^8.6.1"
     ajv-formats "^2.1.0"
     lodash "^4.17.15"
 
-"@jsonforms/material-renderers@3.0.0-alpha.3":
-  version "3.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@jsonforms/material-renderers/-/material-renderers-3.0.0-alpha.3.tgz#f9b316cfbbe3d8295605ee4675131c68d23995b9"
-  integrity sha512-XhytincmasDYpTO/9kQHicWsiql+E6iR1iGl6tjdvjVpbXeqDCVpIHgkIrQLadwUTTdMxCfLchie7ELAb5lf/g==
+"@jsonforms/material-renderers@3.0.0-beta.1":
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@jsonforms/material-renderers/-/material-renderers-3.0.0-beta.1.tgz#d4d21712272b59a963457f49ee6cf1b14283b670"
+  integrity sha512-MYtb2a25Yu/srmyMRBLGFaQJVi+Qc3u/Xp6i9vaKGmOTFjZLaV/Nj7OTnVLz3wwFyBKATliNOnZ2yC8HyXtRNQ==
   dependencies:
     "@date-io/dayjs" "1.3.13"
     dayjs "1.10.6"
 
-"@jsonforms/react@3.0.0-alpha.3":
-  version "3.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@jsonforms/react/-/react-3.0.0-alpha.3.tgz#b2a1910c61c699ad1016a22e0d1d1a2c7322e109"
-  integrity sha512-Z4TPTnMgNzn7cHmbWk6O1qxOG1vvIkcQBFKr+y00jHsbssqYwZJkp9nlbsj1jEktAvZgRAbc7nBASL9y6fFORg==
+"@jsonforms/react@3.0.0-beta.1":
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@jsonforms/react/-/react-3.0.0-beta.1.tgz#cbe6e9099d93d1f49959b6ab05622abb562d79b2"
+  integrity sha512-6ZPpHqAKmubhRaWsHw7ikIWt56pAaWg49OtdVibZpb8MK8vmf2uSI3HnmU0aZoXs5NTndiNVCT5o/5UtRCDCvQ==
   dependencies:
     lodash "^4.17.15"
 
