@@ -1,5 +1,6 @@
 {
   "extends": "next/core-web-vitals",
+  "plugins": ["simple-import-sort"],
   "rules": {
     "semi": [ "error", "never" ],
     "quotes": [ "error", "single" ],
@@ -8,6 +9,8 @@
     "no-var": "error",
     "prefer-rest-params": "off",
     "no-mixed-spaces-and-tabs": "off",
-    "no-async-promise-executor": "off"
+    "no-async-promise-executor": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   }
 }
