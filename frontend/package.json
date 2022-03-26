@@ -1,0 +1,6 @@
+{
+  "name": "afg-frontend",
+  "version": "0.1.0",
+  "description": "meta package with dev dependencies for all frontend projects of the afg project",
+  "private": true
+}
