@@ -9,18 +9,18 @@ import {
 //import {useTranslation} from "react-i18next"
 
 const initialData = {
-};
+}
 
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-];
+]
 
 /** This is a first version of the `Part 3` of the questionnaire.
  *  See: `Online Tool Spezialfälle Vorschlag abzufragende Daten und Abfolge.docx`
  **/
 const FormComplaint = () => {
-  const [data, setData] = useState<any>(initialData);
+  const [data, setData] = useState<any>(initialData)
   //const { t } = useTranslation()
 
   return (
@@ -29,7 +29,7 @@ const FormComplaint = () => {
       data={data}
       renderers={renderers}
       cells={materialCells}
-      onChange={({errors, data}) => setData(data)}
+      onChange={({data}) => setData(data)}
     />
   )
 }
