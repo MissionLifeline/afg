@@ -7,6 +7,7 @@
 # Architecture
 
 - [Overview](./architecture/overview/sequence.md)
+- [DB Records](./architecture/overview/records.md)
 
 # User manual (for editors)
 

@@ -10,12 +10,15 @@ sequenceDiagram
     #actor Authorities
     User-->>Editor: Requests help
     Editor->>Server: Create token
-    alt Direct mail
-        Server->>User: Invitation mail with token
-    else Token forwarded by Editor
+
+    %% We don't want to store unencrypted mail addresses at the server
+    #alt Direct mail
+    #    Server->>User: Invitation mail with token
+    #else Token forwarded by Editor
         Server->>Editor: Token
         Editor-->>User: Token
-    end
+    #end
+
     loop 
         User->>Server: Fill out form + encrypt + submit
     end
