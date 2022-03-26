@@ -28,9 +28,9 @@
       #sops-nix.nixosModules.sops
       #./deployment/modules/sops.nix
       ./deployment/modules/default.nix
-      #./deployment/modules/dns.nix
+      ./deployment/modules/dns.nix
       #./deployment/modules/monitoring/client.nix
-      #./deployment/modules/nginx/timmi.nix
+      ./deployment/modules/nginx/afg.nix
       #nix-deploy-git.nixosModule
       #./deployment/modules/nix-deploy-git.nix
     ];
@@ -44,8 +44,6 @@
           #./deployment/modules/binarycache/server.nix
           #./deployment/modules/monitoring/server.nix
           #./deployment/modules/jenkins.nix
-          #./deployment/modules/de4l/kibana.nix  ## not required at the moment -> save memory
-          #./deployment/modules/de4l/mqtt.nix  ## deprecated
         ];
       });
 

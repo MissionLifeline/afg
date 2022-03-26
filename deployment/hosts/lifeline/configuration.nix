@@ -19,20 +19,28 @@
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/nvme0n1"; # or "nodev" for efi only
 
-  networking.hostName = "lifeline"; # Define your hostname.
-  networking.hostId = "deadbeef";
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-  networking.usePredictableInterfaceNames = false;
-  networking.interfaces.eth0 = {
-    ipv4.addresses = [ {
-      address = "65.108.193.134";
-      prefixLength = 26;
-    } ];
+  networking = {
+    hostName = "lifeline";
+    hostId = "deadbeef";
+
+    usePredictableInterfaceNames = false;
+    interfaces.eth0 = {
+      ipv4.addresses = [ {
+        address = "65.108.193.134";
+        prefixLength = 26;
+      } ];
+      ipv6.addresses = [ {
+        address = "2a01:4f9:1a:95a9::1";
+        prefixLength = 64;
+      } ];
+    };
+    defaultGateway = "65.108.193.129";
+    defaultGateway6 = {
+      address = "fe80::1";
+      interface = "eth0";
+    };
+    nameservers = [ "9.9.9.9" "1.1.1.1" ];
   };
-  networking.defaultGateway = "65.108.193.129";
-  networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
 
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
