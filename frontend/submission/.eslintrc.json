@@ -1,3 +1,13 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "semi": [ "error", "never" ],
+    "quotes": [ "error", "single" ],
+    "sort-imports": "off",
+    "prefer-const": "error",
+    "no-var": "error",
+    "prefer-rest-params": "off",
+    "no-mixed-spaces-and-tabs": "off",
+    "no-async-promise-executor": "off"
+  }
 }
