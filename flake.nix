@@ -41,6 +41,7 @@
       lifeline = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [
           ./deployment/hosts/lifeline/configuration.nix
+          ./deployment/modules/afg.nix
           #./deployment/modules/binarycache/server.nix
           #./deployment/modules/monitoring/server.nix
           #./deployment/modules/jenkins.nix
