@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { JsonForms } from '@jsonforms/react'
-import schema from '../../schema/fellowApplicants.json'
 //import uischema from '../uischema/todo'
 import {
   materialCells,
   materialRenderers,
 } from '@jsonforms/material-renderers'
+import { JsonForms } from '@jsonforms/react'
+import { useState } from 'react'
+
+import schema from '../../schema/fellowApplicants.json'
 //import {useTranslation} from "react-i18next"
 
 const initialData = {
