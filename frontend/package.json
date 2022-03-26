@@ -2,5 +2,11 @@
   "name": "afg-frontend",
   "version": "0.1.0",
   "description": "meta package with dev dependencies for all frontend projects of the afg project",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "eslint": "8.11.0",
+    "eslint-config-next": "^12.1.1",
+    "next": "^12.1.1",
+    "typescript": "^4.6.3"
+  }
 }
