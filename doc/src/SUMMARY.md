@@ -13,4 +13,10 @@
 
 # Development notes
 
+- [Backend](./backend/README.md)
+  - [Grahql](./backend/graphql.md)
+    - [`get_keys`](./backend/graphql/get_keys.md)
+  - [Rest]()
+    - [`/api/upload-attachment`](./backend/rest/upload-attachment.md)
+
 # Administration notes

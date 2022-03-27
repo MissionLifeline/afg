@@ -1,0 +1,12 @@
+/target/
+/classes/
+pom.xml.asc
+*.jar
+*.class
+/.lein-*
+/.nrepl-port
+/.prepl-port
+**/.clj-kondo/.cache/
+*.lsp/
+
+data
