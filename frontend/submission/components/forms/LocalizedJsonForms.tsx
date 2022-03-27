@@ -2,6 +2,7 @@ import {JsonFormsRendererRegistryEntry, Translator} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react/lib/JsonForms'
+import {Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -96,6 +97,7 @@ const LocalizedJsonForms =
           onChange={({data}) => setData(data)}
           {...props}
         />
+        <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
         {<FormTranslationHelper
           name={name}
           language={language}
