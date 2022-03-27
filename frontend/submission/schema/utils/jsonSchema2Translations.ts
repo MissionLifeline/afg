@@ -7,10 +7,16 @@ export const jsonSchema2Translation: (jsonschema: JsonSchema, withEmptyDescripti
   = (jsonschema, withEmptyDescriptions = false, separator) =>
   Object.fromEntries(
     Object.entries(jsonschema.properties || {})
-      .map(([k, { description }]) =>
+      .map(([k, {description}]) =>
         [
-          [`${k}.label`, camelCase2Words(k, separator)],
-          [`${k}.description`,  description || '']
+          [k, {
+            ...{ label: camelCase2Words(k, separator) },
+          ...(  description
+            ? { description }
+            : withEmptyDescriptions
+              ? { description: '' }
+              : {})
+          }],
         ]
       ).flat()
   )
