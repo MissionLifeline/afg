@@ -40,13 +40,14 @@ const LocalizedJsonForms =
     const [data, setData] = useState<any>(initialData)
 
     const { formTranslation , setFormTranslationForLang } = useTranslationState()
+    const ns = formNamespace(name)
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
     const [translationsSchema] = useState(jsonSchema2TranslationJsonSchema(schema || {}))
     const {
       t,
       i18n: {language, exists, addResourceBundle, removeResourceBundle, reloadResources}
-    } = useTranslation(formNamespace(name))
+    } = useTranslation(ns)
     const translator = useCallback<Translator>((key, defaultMessage) => {
       const labelKey = `${key}`
       return (exists(labelKey) ? t(labelKey) : (defaultMessage && exists(defaultMessage) ? t(defaultMessage) : defaultMessage) || '')
@@ -77,13 +78,13 @@ const LocalizedJsonForms =
 
 
     useEffect(() => {
-      log.debug({currentLangData, language, ns: formNamespace(name)})
+      log.debug({currentLangData, language, ns})
       if (!currentLangData) return
-      removeResourceBundle(language, formNamespace(name))
-      addResourceBundle(language, formNamespace(name), currentLangData, undefined, true)
-      reloadResources(language, formNamespace(name))
+      removeResourceBundle(language, ns)
+      addResourceBundle(language, ns, currentLangData, undefined, true)
+      reloadResources(language, ns)
 
-    }, [currentLangData, language, name, addResourceBundle, removeResourceBundle,reloadResources])
+    }, [currentLangData, language, ns, addResourceBundle, removeResourceBundle,reloadResources])
 
 
     return (

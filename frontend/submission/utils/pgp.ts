@@ -1,25 +1,20 @@
 import * as openpgp from 'openpgp'
 import {Key} from 'openpgp'
 
-export class Encryption {
-  readonly pubkeysPromise: Promise<Awaited<Key>[]>
+export const withPubKeys: (pubKeys: string[]) => Promise<Key[]> = (pubKeys: string[]) =>
+  Promise
+    .all(pubKeys.map(pubkey => openpgp.readKey({armoredKey: pubkey})))
 
-  constructor(pubkeys: string[]) {
-    this.pubkeysPromise = Promise.all(
-      pubkeys.map(pubkey =>
-        openpgp.readKey({armoredKey: pubkey})
-      )
-    )
-  }
+export const encryptString = async (text: string, pubKeys: Key[]) =>
+  await openpgp.encrypt({
+    message: await openpgp.createMessage({text}),
+    encryptionKeys: pubKeys,
+    format: 'binary'
+  })
 
-  /// input: string or ReadableStream
-  async encrypt(input: string | ReadableStream) {
-    const pubkeys = await this.pubkeysPromise
-
-    return await openpgp.encrypt({
-      message: await openpgp.createMessage({text: input}),
-      encryptionKeys: pubkeys,
-      format: 'binary',
-    })
-  }
-}
+export const encryptBlob = async (blob: Blob, pubKeys: Key[]) =>
+  await openpgp.encrypt({
+    message: await openpgp.createMessage({binary: blob.stream()}),
+    encryptionKeys: pubKeys,
+    format: 'binary'
+  })

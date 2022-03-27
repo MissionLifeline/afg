@@ -45,16 +45,15 @@ export const fromTranslationStateToFormTranslation = (formTranslation: { [k: str
 
 
 
-
 export const resources: { [k in LanguageKeys]: any } = {
   en: {
-    translation: {
+    common: {
       ...en,
     },
     ...formTranslations.en
   },
   de: {
-    translation: {
+    common: {
       ...de,
     },
     ...formTranslations.de
@@ -62,6 +61,8 @@ export const resources: { [k in LanguageKeys]: any } = {
 }
 
 const availableLanguages = Object.keys(resources)
+
+const ns = [...Object.keys(formTranslations.en), 'common']
 
 export const getAvailableLanguages = () => availableLanguages
 
@@ -72,7 +73,8 @@ i18next
     resources,
 
     fallbackLng: 'en',
-    ns: ['form_general'],
+    ns ,
+    defaultNS: 'common',
 
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape
