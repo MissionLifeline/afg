@@ -3,6 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import {initReactI18next} from 'react-i18next'
 
 import {steps} from '../schema'
+import {WizardStep} from '../schema/types'
 import {jsonSchema2Translation} from '../schema/utils'
 import {LocalizedFormTranslation} from '../schema/utils/types'
 import {foldInner2Outer} from '../utils'
