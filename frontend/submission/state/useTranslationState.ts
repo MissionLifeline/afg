@@ -1,6 +1,6 @@
 import create from 'zustand'
 
-import {steps} from '../components/forms/steps'
+import {steps} from '../schema'
 import {FormTranslation, LocalizedFormTranslation} from '../schema/utils/types'
 import {filterUndefOrNull} from '../utils'
 

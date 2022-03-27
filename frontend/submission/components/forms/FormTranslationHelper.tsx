@@ -1,11 +1,14 @@
-import {JsonSchema} from '@jsonforms/core'
+import {JsonFormsCore, JsonSchema} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
-import {ToggleButton} from '@mui/material'
+import {Box, ToggleButton} from '@mui/material'
 import React, {useState} from 'react'
 
+import FormTranslationDownloader from './FormTranslationDownloader'
+
 type FormTranslationHelperProps = {
-  onTranslationChange: (translationData: any) => void
+  name: string,
+  onTranslationChange: (change: Pick<JsonFormsCore, 'data' | 'errors'>) => void
   translationData: any
   schema: JsonSchema
   language: string
@@ -24,8 +27,8 @@ const FormTranslationHelper =
      language
    }: FormTranslationHelperProps) => {
 
-    const [showForm, setShowForm] = useState(false)
 
+    const [showForm, setShowForm] = useState(false)
 
     return <>
       <ToggleButton
@@ -33,13 +36,18 @@ const FormTranslationHelper =
         selected={showForm}
         onChange={() => setShowForm(prevState => !prevState)}
       >help translating to {language}</ToggleButton>
-      {showForm && <JsonForms
-        schema={schema}
-        data={translationData}
-        renderers={defaultRenderers}
-        cells={materialCells}
-        onChange={({data}) => onTranslationChange(data)}
-      />}
+      {showForm && <>
+        <JsonForms
+          schema={schema}
+          data={translationData}
+          renderers={defaultRenderers}
+          cells={materialCells}
+          onChange={onTranslationChange}
+        />
+        <Box display='flex' flexDirection='column'>
+          <FormTranslationDownloader />
+        </Box>
+      </>}
     </>
   }
 
