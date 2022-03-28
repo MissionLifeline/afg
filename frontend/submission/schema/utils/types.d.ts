@@ -1,5 +1,5 @@
 
-export type SingleFormEntryTranslation = string
+export type SingleFormEntryTranslation = string | any
 
 export type FormTranslation =  { [k: string]: SingleFormEntryTranslation }
 
