@@ -1,4 +1,5 @@
 import applicationSchema from './application.json'
+import {applicationUISchema} from './applicationUISchema'
 import fellowApplicants from './fellowApplicants.json'
 import generalSchema from './general.json'
 import {generalTranslation} from './generalTranslation'
@@ -25,6 +26,7 @@ export const steps: WizardStep[] = [
   {
     name: 'application',
     stepLabel: 'formal application',
+    uiSchema: applicationUISchema,
     jsonschema: applicationSchema
   },
   {
