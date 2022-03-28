@@ -8,6 +8,7 @@ sequenceDiagram
     #actor Editor
     #actor OtherNgos
     #actor Authorities
+
     User-->>Editor: Requests help
     Editor->>Server: Create token
 

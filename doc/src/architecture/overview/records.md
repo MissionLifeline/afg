@@ -4,19 +4,20 @@
 classDiagram
      class AdmissionApplicationTable:::editorOnly
      class ApplicationDataset:::editorOnly
-     class ApplicationRecordEdited:::editorOnly
+     class ApplicationEditedRecord:::editorOnly
 
-     class ApplicationRecordState {
+     class ApplicationStateRecord {
          state: Enum<new|editing|partiallySubmitted|finallySubmitted>
+	 userId: KeyId  // ensure:token.used.only.by.one.user
          tmpFormData: EncryptedFormData  // allow:user.to.resume.editing
      }
-     class ApplicationAttachment {
+     class ApplicationAttachmentRecord {
          token
 	 id: Nonce  // provided.by:frontend
 	 filename
 	 uploadDate
      }
-     class ApplicationFormData {
+     class ApplicationFormDataRecord {
          token
 	 formName
 	 filename
@@ -53,19 +54,19 @@ classDiagram
      }
 
      AdmissionApplicationTable o-- "1..*" ApplicationDataset
-     ApplicationDataset o-- "0..*" ApplicationAttachment
-     ApplicationDataset o-- "1" ApplicationRecordEdited
+     ApplicationDataset o-- "0..*" ApplicationAttachmentRecord
+     ApplicationDataset o-- "1" ApplicationEditedRecord
 
-     ApplicationRecordEdited "1" <-- "1..*" ApplicationRecordState : created from
-     ApplicationRecordState "1" <-- "0..*" ApplicationAttachment
-     ApplicationRecordState "1" <-- "1..*" ApplicationFormData
-     ApplicationAttachment "1" *-- "1" ApplicationAttachmentFile : encrypted
-     ApplicationFormData "1" *-- "1" ApplicationFormDataFile : encrypted
+     ApplicationEditedRecord "1" <-- "1..*" ApplicationStateRecord : created from
+     ApplicationStateRecord "1" <-- "0..*" ApplicationAttachmentRecord
+     ApplicationStateRecord "1" <-- "1..*" ApplicationFormDataRecord
+     ApplicationAttachmentRecord "1" *-- "1" ApplicationAttachmentFile : encrypted
+     ApplicationFormDataRecord "1" *-- "1" ApplicationFormDataFile : encrypted
      ApplicationFormDataFile "0..*" o-- "1..*" ApplicationAttachmentFileMeta
      ApplicationAttachmentFile "1" --* "1" ApplicationAttachmentFileMeta
 
 
-     ApplicationRecordState "1" <-- "1" Token
+     ApplicationStateRecord "1" <-- "1" Token
      Token "1" *-- "1" TokenMetadata : encrypted
      Token "0..*" <-- "1..*" Editor
      Editors "1" *-- "1..*" Editor
