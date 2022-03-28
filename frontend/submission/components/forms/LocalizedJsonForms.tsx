@@ -1,4 +1,9 @@
-import {JsonFormsRendererRegistryEntry, Translator} from '@jsonforms/core'
+import {
+  createAjv,
+  defaultErrorTranslator, ErrorTranslator, JsonFormsI18nState,
+  JsonFormsRendererRegistryEntry,
+  Translator
+} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react/lib/JsonForms'
@@ -47,29 +52,36 @@ const LocalizedJsonForms =
       t,
       i18n: {language, exists: _exists, addResourceBundle, removeResourceBundle, reloadResources}
     } = useTranslation(ns)
-    const exists = useCallback((key: string) => _exists(key, {ns}), [ns, _exists])
+    const exists = useCallback((key: string) => _exists(key, {ns}), [_exists, ns])
 
-    const translator = useCallback<Translator>((key, defaultMessage) => {
-      const labelKey = `${key}`
-      return (exists(labelKey) ? t(labelKey) : (defaultMessage && exists(defaultMessage) ? t(defaultMessage) : defaultMessage) || '')
-    }, [t, exists])
-    const [jsonFormsI18nState, setJsonFormsI18nState] = useState({
+    // @ts-ignore
+    const translator = useCallback<Translator>((keyLabel) => exists(keyLabel) ? t(keyLabel) : undefined, [t, exists])
+    const errorTranslator = useCallback<ErrorTranslator>((error, _1,  uischema) =>
+      defaultErrorTranslator(error, (k) => t(k, t(`common:error.${error.keyword}`, error.message)), uischema), [t])
+    const [jsonFormsI18nState, setJsonFormsI18nState] = useState<JsonFormsI18nState>({
       locale: language,
-      translate: translator
+      translate: translator,
+      translateError: errorTranslator
     })
+    const [ajv] = useState(createAjv({
+      allErrors: true,
+      verbose: true,
+    }))
 
     useEffect(() => {
       setJsonFormsI18nState({
         locale: '',
-        translate: translator
+        translate: translator,
+        translateError: errorTranslator
       })
       const timeout = setTimeout(() =>
         setJsonFormsI18nState({
           locale: language,
-          translate: translator
+          translate: translator,
+          translateError: errorTranslator
         }), 100)
       return () => clearTimeout(timeout)
-    }, [language, currentLangData, translator, setJsonFormsI18nState])
+    }, [language, currentLangData, translator, errorTranslator, setJsonFormsI18nState])
 
 
     useEffect(() => {
@@ -95,6 +107,7 @@ const LocalizedJsonForms =
           renderers={renderers}
           cells={materialCells}
           onChange={({data}) => setData(data)}
+          ajv={ajv}
           {...props}
         />
         <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
