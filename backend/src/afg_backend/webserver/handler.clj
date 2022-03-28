@@ -26,6 +26,11 @@
       wrap-graphql
       wrap-graphiql)
 
+  (-> (POST "/api/upload-form" req
+            (response "TODO: Needs to be implemented"))
+      wrap-multipart-params
+      wrap-rest)
+
   (-> (POST "/api/upload-attachment" req
             (response "TODO: Needs to be implemented"))
       wrap-multipart-params
