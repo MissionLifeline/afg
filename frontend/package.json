@@ -3,10 +3,19 @@
   "version": "0.1.0",
   "description": "meta package with dev dependencies for all frontend projects of the afg project",
   "private": true,
+  "scripts": {
+    "generate": "cd codegen && graphql-codegen generate"
+  },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-operations": "^2.3.5",
+    "@graphql-codegen/typescript-react-query": "^3.5.9",
     "eslint": "8.11.0",
     "eslint-config-next": "^12.1.1",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "graphql": "^16.3.0",
+    "graphql-request": "^4.2.0",
     "next": "^12.1.1",
     "typescript": "^4.6.3"
   }
