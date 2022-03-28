@@ -22,8 +22,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     if(!data) return
     const { get_keys: fetchedPubKeys } =  data
     log.debug({fetchedPubKeys})
-    //FIXME endless loop when calling this:
-    //setSerializedPubKeys(fetchedPubKeys)
+    setSerializedPubKeys(fetchedPubKeys)
   }, [data, setSerializedPubKeys])
 
 
