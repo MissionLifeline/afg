@@ -94,13 +94,13 @@ export const MaterialListWithDetailRenderer =
       [setSelectedIndex]
     )
     const handleCreateDefaultValue = useCallback(
-      () => createDefaultValue(schema),
+      () => schema && createDefaultValue(schema),
       [schema]
     )
     const foundUISchema = useMemo(
       () =>
-        uischemas && findUISchema(
-          uischemas,
+         findUISchema(
+          uischemas || [],
           schema,
           uischema.scope,
           path,
