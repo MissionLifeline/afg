@@ -3,7 +3,6 @@ import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react/lib/JsonForms'
 import {Divider} from '@mui/material'
-import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
@@ -46,8 +45,10 @@ const LocalizedJsonForms =
     const [translationsSchema] = useState(jsonSchema2TranslationJsonSchema(schema || {}))
     const {
       t,
-      i18n: {language, exists, addResourceBundle, removeResourceBundle, reloadResources}
+      i18n: {language, exists: _exists, addResourceBundle, removeResourceBundle, reloadResources}
     } = useTranslation(ns)
+    const exists = useCallback((key: string) => _exists(key, {ns}), [ns, _exists])
+
     const translator = useCallback<Translator>((key, defaultMessage) => {
       const labelKey = `${key}`
       return (exists(labelKey) ? t(labelKey) : (defaultMessage && exists(defaultMessage) ? t(defaultMessage) : defaultMessage) || '')
@@ -58,7 +59,6 @@ const LocalizedJsonForms =
     })
 
     useEffect(() => {
-      log.debug({i18N: true, currentLangData, language})
       setJsonFormsI18nState({
         locale: '',
         translate: translator
@@ -78,7 +78,6 @@ const LocalizedJsonForms =
 
 
     useEffect(() => {
-      log.debug({currentLangData, language, ns})
       if (!currentLangData) return
       removeResourceBundle(language, ns)
       addResourceBundle(language, ns, currentLangData, undefined, true)
