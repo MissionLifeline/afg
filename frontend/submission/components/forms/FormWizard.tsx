@@ -8,6 +8,8 @@ import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
 import LocalizedJsonForms from './LocalizedJsonForms'
 import SubmitFormButton from './SubmitFormButton'
+import AddAttachmentButton from './AddAttachmentButton'
+import AttachmentsList from './AttachmentsList'
 
 type FormWizardProps = Record<string, never>
 
@@ -61,6 +63,8 @@ export const FormWizard = ({}: FormWizardProps) => {
           data={allFormsState[name] || {}}
           validationMode={'ValidateAndShow'}
         />))}
+    <AddAttachmentButton/>
+    <AttachmentsList/>
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
       <SubmitFormButton />
