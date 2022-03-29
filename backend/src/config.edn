@@ -19,5 +19,8 @@
  :admin-passphrase nil
  :admin-gpg-id "9EA68B7F21204979645182E4287B083353C3241C"
 
+ :upload-dir "./data/upload/"
+ :upload-limit-mb 50
+
  :test-pubkey-file nil
 }

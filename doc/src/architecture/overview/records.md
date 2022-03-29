@@ -19,7 +19,6 @@ classDiagram
      }
      class ApplicationFormDataRecord {
          token
-	 formName
 	 filename
 	 uploadDate
      }
@@ -30,7 +29,7 @@ classDiagram
      }
      class ApplicationFormDataFile:::encrypted {
          +path: Token
-	 +name: Date+FormName
+	 +name: Date
          -data: <JsonFormSchema>
      }
      class ApplicationAttachmentFileMeta:::encrypted {

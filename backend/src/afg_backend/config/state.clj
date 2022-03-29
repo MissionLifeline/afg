@@ -23,6 +23,9 @@
 (s/def ::admin-passphrase (s/nilable string?))  ;; allows setting up ngo logins and encrypted downloads of db exports
 (s/def ::admin-gpg-id string?)
 
+(s/def ::upload-dir string?)
+(s/def ::upload-limit-mb number?)
+
 (s/def ::test-pubkey-file (s/nilable string?))
 
 (s/def ::env (s/keys :req-un [::frontend-base-url
@@ -36,6 +39,8 @@
                               ::db-validate
                               ::admin-passphrase
                               ::admin-gpg-id
+                              ::upload-dir
+                              ::upload-limit-mb
                               ::test-pubkey-file
                              ]))
 

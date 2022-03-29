@@ -5,6 +5,7 @@
             [afg-backend.webserver.middleware.nextjs :refer [wrap-nextjs-frontend wrap-frontend-config]]
             [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [afg-backend.resolver.core :refer [graphql]]
+            [afg-backend.webserver.upload :refer [upload-formData]]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]))
@@ -27,7 +28,11 @@
       wrap-graphiql)
 
   (-> (POST "/api/upload-form" req
-            (response "TODO: Needs to be implemented"))
+            (let [params (:params req)
+                  token (get params "token")
+                  userId (get params "userId")
+                  formData (get params "formData")]
+                 (upload-formData token userId formData)))
       wrap-multipart-params
       wrap-rest)
 
