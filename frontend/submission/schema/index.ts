@@ -1,4 +1,5 @@
 export * from './applicationUISchema'
+export * from './fellowApplicantsUISchema'
 export * from './generalTranslation'
 export * from './generalUISchema'
 export * from './risksTranslation'

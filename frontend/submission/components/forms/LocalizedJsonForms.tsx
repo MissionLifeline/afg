@@ -1,7 +1,7 @@
 import {
   createAjv,
   defaultErrorTranslator, ErrorTranslator, JsonFormsI18nState,
-  JsonFormsRendererRegistryEntry,
+  JsonFormsRendererRegistryEntry, or, rankWith, scopeEndIs,
   Translator
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
@@ -15,6 +15,7 @@ import {formNamespace} from '../../i18n'
 import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTranslationState} from '../../state'
+import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
 
 type LocalizedJsonFormsProps = {
@@ -23,9 +24,13 @@ type LocalizedJsonFormsProps = {
   renderers?: JsonFormsRendererRegistryEntry[];
 } & Omit<JsonFormsInitStateProps & JsonFormsReactProps, 'renderers'>
 
+const scopesEndIs = (scopes: string[]) => or(...scopes.map(s => scopeEndIs(s)))
+
 const defaultRenderers = [
-  ...materialRenderers,
-  //register custom renderers
+  ...materialRenderers, {
+    tester: rankWith(4, scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany'])),
+    renderer: MaterialListWithDetailRenderer
+  }
 ]
 
 
@@ -43,7 +48,7 @@ const LocalizedJsonForms =
    }: LocalizedJsonFormsProps) => {
     const [data, setData] = useState<any>(initialData)
 
-    const { formTranslation , setFormTranslationForLang } = useTranslationState()
+    const {formTranslation, setFormTranslationForLang} = useTranslationState()
     const ns = formNamespace(name)
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
@@ -55,8 +60,9 @@ const LocalizedJsonForms =
     const exists = useCallback((key: string) => _exists(key, {ns}), [_exists, ns])
 
     // @ts-ignore
-    const translator = useCallback<Translator>((keyLabel) => exists(keyLabel) ? t(keyLabel) : undefined, [t, exists])
-    const errorTranslator = useCallback<ErrorTranslator>((error, _1,  uischema) =>
+    const translator = useCallback<Translator>((keyLabel, defaultMessage) =>
+      exists(keyLabel) ? t(keyLabel) : (keyLabel.endsWith('error.custom') ? undefined  : (defaultMessage ||  '')), [t, exists])
+    const errorTranslator = useCallback<ErrorTranslator>((error, _1, uischema) =>
       defaultErrorTranslator(error, (k) => t(k, t(`common:error.${error.keyword}`, error.message)), uischema), [t])
     const [jsonFormsI18nState, setJsonFormsI18nState] = useState<JsonFormsI18nState>({
       locale: language,
@@ -95,7 +101,7 @@ const LocalizedJsonForms =
       addResourceBundle(language, ns, currentLangData, undefined, true)
       reloadResources(language, ns)
 
-    }, [currentLangData, language, ns, addResourceBundle, removeResourceBundle,reloadResources])
+    }, [currentLangData, language, ns, addResourceBundle, removeResourceBundle, reloadResources])
 
 
     return (

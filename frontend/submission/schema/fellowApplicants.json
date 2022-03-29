@@ -34,7 +34,8 @@
             ]
           },
           "emailAddress": {
-            "type": "string"
+            "type": "string",
+            "format": "email"
           },
           "telephoneNumber": {
             "type": "string",
