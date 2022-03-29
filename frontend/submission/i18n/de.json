@@ -1,3 +1,7 @@
 {
-  "language": "Deutsch"
+  "language": "Deutsch",
+  "error": {
+    "format": "Falsches Format angeggeben",
+    "required": "Diese Angabe ist notwenig"
+  }
 }
