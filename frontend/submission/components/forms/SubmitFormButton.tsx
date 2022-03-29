@@ -23,6 +23,8 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     () => {
       const formData = new FormData()
       // @ts-ignore
+      formData.append('token', "TODOMyToken")
+      formData.append('userId', "TODOmock")
       formData.append('formData', new Blob([encryptedFormData]))
       return formData
     },
