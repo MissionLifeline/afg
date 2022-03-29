@@ -64,8 +64,7 @@ export const MaterialListWithDetailRenderer =
      data,
      renderers,
      cells,
-     config,
-     arrayData
+     config
    }: CustomArrayLayoutProps) => {
     const [selectedIndex, setSelectedIndex] = useState<number | undefined>(undefined)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -144,8 +143,6 @@ export const MaterialListWithDetailRenderer =
     )
 
 
-    console.log({arrayData, selectedIndex})
-
     return (
       <Hidden xsUp={!visible}>
         <DeleteDialog
@@ -188,7 +185,7 @@ export const MaterialListWithDetailRenderer =
               </List>)
               : (<Grid container direction={'row'}>
                   <Select
-                    style={{flex: '1'}}
+                    style={{flex: '1', maxWidth: 'calc(100vw - 5em)'}}
                     value={selectedIndex === undefined ? '' : selectedIndex.toString()}
                     onChange={({target: {value}}) => {
                       setSelectedIndex(typeof value === 'string' ? parseInt(value) : value)

@@ -40,7 +40,7 @@ const SelectListWithDetailMasterItem = ({ index, childLabel }: StatePropsOfMaste
             <ListItemAvatar>
                 <Avatar aria-label='Index'>{index + 1}</Avatar>
             </ListItemAvatar>
-            <ListItemText primary={childLabel} />
+            <ListItemText primary={childLabel} style={{overflow: 'hidden'}} />
         </ListItem>)
 }
 

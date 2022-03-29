@@ -61,7 +61,7 @@ const ListWithDetailMasterItem = ({ index, childLabel, selected, handleSelect, r
             <ListItemAvatar>
                 <Avatar aria-label='Index'>{index + 1}</Avatar>
             </ListItemAvatar>
-            <ListItemText primary={childLabel} />
+            <ListItemText primary={childLabel} style={{overflow: 'hidden', textOverflow: 'ellipsis'}} />
             <ListItemSecondaryAction>
                 <IconButton aria-label='Delete' onClick={removeItem(path, index)} size='large'>
                     <DeleteIcon />
