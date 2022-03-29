@@ -1,7 +1,11 @@
 # /api/upload-form
 
+This endpoint is used to submit the complete `formData` of **all subforms** (wizard steps).
+
 > should be as close as possible to [/api/upload-attachment](./upload-attachment)
 
-An alternative endpoint provided, to allow different behaviour in future
+Required Params:
+* `token`
+* `userId`
 
-Probably we this endpoint doesn't expect the random `id` but an `form` variable, describing which of the subforms (steps) was submitted
+In comparison to `upload-attachment`, this endpoint doesn't expect the `fileId`.

@@ -31,8 +31,9 @@ sequenceDiagram
         Server-->>-User: 200
 
         Note over User: Choose file to be uploaded
-        User->>+Server: /api/upload-attachment
-        User->>Server: (/api/upload-form)
+        User->>+Server: /api/upload-form
+        Server-->>User: 200
+        User->>Server: /api/upload-attachment
         Server-->>-User: 200
 
         Note over User: Click „Submit (continue later)“
