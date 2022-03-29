@@ -1,7 +1,7 @@
 import * as openpgp from 'openpgp'
 import {Key} from 'openpgp'
 
-export const withPubKeys: (pubKeys: string[]) => Promise<Key[]> = (pubKeys: string[]) =>
+export const readPubKeys: (pubKeys: string[]) => Promise<Key[]> = (pubKeys: string[]) =>
   Promise
     .all(pubKeys.map(pubkey => openpgp.readKey({armoredKey: pubkey})))
 
