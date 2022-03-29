@@ -4,10 +4,11 @@ export const jsonSchema2TranslationJsonSchema: (jsonschema: JsonSchema) => JsonS
   = (jsonschema) => ({
   type: 'object',
   properties: Object.fromEntries(
-    Object.keys(jsonschema.properties || {})
-      .map(k =>
+    Object.entries(jsonschema.properties || {})
+      .map(([k ,v]) =>
         [
           [`${k}.label`, {type: 'string'}],
-          [`${k}.description`, {type: 'string'}]
+          [`${k}.description`, {type: 'string'}],
+          ...(!v.items?.properties ? [] : [[k, jsonSchema2TranslationJsonSchema(v.items)]])
         ]
       ).flat())})
