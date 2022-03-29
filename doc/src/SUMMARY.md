@@ -9,8 +9,8 @@
 - [Overview sequence](./architecture/overview/sequence.md)
 - [DB Records](./architecture/overview/records.md)
 - [User sessions](./architecture/user-session/summary.md)
-  - [sequence](./architecture/user-session/sequence.md)
   - [state](./architecture/user-session/state.md)
+  - [sequence](./architecture/user-session/sequence.md)
 
 # User manual (for editors)
 
