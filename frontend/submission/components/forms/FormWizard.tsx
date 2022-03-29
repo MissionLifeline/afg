@@ -1,6 +1,6 @@
 import {JsonFormsCore} from '@jsonforms/core'
-import {LockOpen} from '@mui/icons-material'
-import {Button, Divider} from '@mui/material'
+import {Check,Lock, LockOpen} from '@mui/icons-material'
+import {Box, Button, Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 
@@ -8,6 +8,7 @@ import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
 import LocalizedJsonForms from './LocalizedJsonForms'
+import SubmitFormButton from './SubmitFormButton'
 
 type FormWizardProps = Record<string, never>
 
@@ -15,6 +16,7 @@ export const FormWizard = ({}: FormWizardProps) => {
   const {currentStep} = useWizardState()
   const {setSerializedPubKeys, pubKeys, encryptedFormData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
+  const [encrypted, setEncrypted] = useState(false)
 
   const {data} = useGet_KeysQuery({token: 'exampleToken'})
 
@@ -46,8 +48,14 @@ export const FormWizard = ({}: FormWizardProps) => {
     () => {
       if (pubKeys.length <= 0) return
       setFormData(allFormsState)
+      setEncrypted(true)
     },
     [pubKeys, allFormsState, setFormData])
+
+  useEffect(() => {
+    setEncrypted(false)
+  }, [allFormsState, setEncrypted])
+
 
   return <>
     {[steps[currentStep]]
@@ -62,7 +70,10 @@ export const FormWizard = ({}: FormWizardProps) => {
           validationMode={'ValidateAndShow'}
         />))}
     <Divider style={{margin: '1em'}}/>
-    <Button startIcon={<LockOpen/>} variant={'contained'} onClick={handleEncryptAndSend}>encrypt & send</Button>
+    <Box display='flex' flexDirection='row'>
+      <Button startIcon={encrypted ? <Lock /> :  <LockOpen/>} endIcon={encrypted ? <Check /> : undefined} variant={'contained'} onClick={handleEncryptAndSend}>encrypt</Button>
+      <SubmitFormButton />
+    </Box>
   </>
 }
 

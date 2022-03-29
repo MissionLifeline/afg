@@ -1,5 +1,7 @@
 {
   "language": "Deutsch",
+  "submit": "abschicken",
+  "submitted": "abgeschickt",
   "error": {
     "format": "Falsches Format angeggeben",
     "required": "Diese Angabe ist notwenig"
