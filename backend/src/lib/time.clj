@@ -8,10 +8,10 @@
   (.format (SimpleDateFormat. "yyyy-MM-dd'T'HH:mm:ssZ")
            (.getTime (Calendar/getInstance))))
 
-(defn current-data-for-filename
+(defn current-date-for-filename
   "Returns current date in a format that is allowed by windows filenames."
   []
   (.format (SimpleDateFormat. "yyyy-MM-dd_HH_mm_ss")
            (.getTime (Calendar/getInstance))))
 
-(comment (current-data-for-filename))
+(comment (current-date-for-filename))

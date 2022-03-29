@@ -1,11 +1,10 @@
 (ns afg-backend.webserver.handler
   (:require [afg-backend.config.state :refer [env]]
             [afg-backend.webserver.middleware :refer [wrap-defaults]]
-            [afg-backend.webserver.middleware.graphql :refer [wrap-graphql wrap-graphiql wrap-rest]]
+            [afg-backend.webserver.middleware.graphql :refer [wrap-graphql wrap-graphiql]]
             [afg-backend.webserver.middleware.nextjs :refer [wrap-nextjs-frontend wrap-frontend-config]]
-            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [afg-backend.resolver.core :refer [graphql]]
-            [afg-backend.webserver.upload :refer [upload-formData]]
+            [afg-backend.webserver.upload :refer [POST-multipart upload-formData]]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]))
@@ -27,19 +26,14 @@
       wrap-graphql
       wrap-graphiql)
 
-  (-> (POST "/api/upload-form" req
-            (let [params (:params req)
-                  token (get params "token")
-                  userId (get params "userId")
-                  formData (get params "formData")]
-                 (upload-formData token userId formData)))
-      wrap-multipart-params
-      wrap-rest)
+  (POST-multipart "/api/upload-form"
+    (fn [req]
+        (let [{:keys [token userId formData]} (:params req)]
+             (upload-formData token userId formData))))
 
-  (-> (POST "/api/upload-attachment" req
-            (response "TODO: Needs to be implemented"))
-      wrap-multipart-params
-      wrap-rest)
+  (POST-multipart "/api/upload-attachment"
+    (fn [_req]
+        (response "TODO: Needs to be implemented")))
 
   (route/not-found "Not Found"))
 

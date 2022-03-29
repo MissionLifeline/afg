@@ -1,11 +1,22 @@
 (ns afg-backend.webserver.upload
   (:import [java.io File])
   (:require [afg-backend.config.state :refer [env]]
-            [clojure.java.io :as io]
             [afg-backend.security.auth.token.core :refer [token-valid?]]
+            [afg-backend.webserver.middleware.graphql :refer [wrap-rest]]
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [ring.util.response :refer [response]]
+            [compojure.core :refer [POST]]
+            [clojure.java.io :as io]
+            [clojure.walk :refer [keywordize-keys]]
             [clojure.string :refer [join includes?]]
-            [lib.time :refer [current-data-for-filename]]))
+            [lib.time :refer [current-date-for-filename]]))
+
+(defn POST-multipart [path body-fn]
+  (-> (POST path req
+            (body-fn (update req :params keywordize-keys)))
+      wrap-multipart-params
+      wrap-rest))
+
 
 (defn valid-path? [path regex]
   (and (not (includes? path ".."))
@@ -29,12 +40,13 @@
                (io/copy (io/file source) (io/file dest))
                true))))
 
+
 (defn upload-formData
   [token userId formData]
   (let [source (:tempfile formData)
         upload-limit-mb (:upload-limit-mb env)
         path token
-        date (current-data-for-filename)
+        date (current-date-for-filename)
         filename (str "formData" "_" date ".json.pgp")]
 
        (cond
