@@ -4,10 +4,18 @@ import schema from './fellowApplicants.json'
 import {jsonSchema2UISchemaElements, overrideScopes} from './utils'
 
 const overrides: (UISchemaElement & Scopable)[] = [{
-  type: 'Control',
+  type: 'ListWithDetail',
   scope: '#/properties/fellowApplicantFamilyMembers',
   options: {
-    elementLabelProp: ['firstName', 'lastName']
+    elementLabelProp: ['firstName', 'lastName'],
+    detail: {
+      type: 'VerticalLayout',
+      elements: overrideScopes([
+
+        ],
+        jsonSchema2UISchemaElements(schema.properties.fellowApplicantFamilyMembers.items)
+        )
+    }
   }
 }]
 

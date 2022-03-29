@@ -2,7 +2,7 @@ import {
   createAjv,
   defaultErrorTranslator, ErrorTranslator, JsonFormsI18nState,
   JsonFormsRendererRegistryEntry, or, rankWith, scopeEndIs,
-  Translator
+  Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
@@ -28,7 +28,9 @@ const scopesEndIs = (scopes: string[]) => or(...scopes.map(s => scopeEndIs(s)))
 
 const defaultRenderers = [
   ...materialRenderers, {
-    tester: rankWith(4, scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany'])),
+    tester: rankWith(5, or(
+      scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany']),
+      uiTypeIs('ListWithDetail'))),
     renderer: MaterialListWithDetailRenderer
   }
 ]
@@ -61,7 +63,7 @@ const LocalizedJsonForms =
 
     // @ts-ignore
     const translator = useCallback<Translator>((keyLabel, defaultMessage) =>
-      exists(keyLabel) ? t(keyLabel) : (keyLabel.endsWith('error.custom') ? undefined  : (defaultMessage ||  '')), [t, exists])
+      exists(keyLabel) ? t(keyLabel) : (keyLabel.endsWith('error.custom') ? undefined : (defaultMessage || '')), [t, exists])
     const errorTranslator = useCallback<ErrorTranslator>((error, _1, uischema) =>
       defaultErrorTranslator(error, (k) => t(k, t(`common:error.${error.keyword}`, error.message)), uischema), [t])
     const [jsonFormsI18nState, setJsonFormsI18nState] = useState<JsonFormsI18nState>({
