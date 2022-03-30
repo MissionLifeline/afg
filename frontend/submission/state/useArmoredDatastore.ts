@@ -38,7 +38,11 @@ type ArmoredDatastoreState = {
 
   attachments: AttachmentState[]
   addAttachment: (blob: File) => ID
+  updateAttachment: (fileId: ID, f: (attachment: AttachmentState) => AttachmentState) => void
   removeAttachment: (fileId: ID) => void
+
+  startWorker: () => void
+  setWorkerStopped: () => void
   uploadIsRunning: boolean
 }
 
@@ -93,56 +97,73 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
       }
     ]})
     // start uploading if not already doing so
-    uploadWorker(set, get)
+    get().startWorker()
 
     return id
   },
 
-  removeAttachment: fileId => {
+  updateAttachment: (fileId: ID, f: (attachment: AttachmentState) => AttachmentState) => {
+    set({ attachments: get().attachments.map(attachment =>
+      attachment.id === fileId ? f(attachment) : attachment
+    )})
+  },
+
+  removeAttachment: (fileId: ID) => {
     set(({attachments}) => ({
       attachments: attachments.filter(({id}) => fileId === id)
     }))
   },
 
   uploadIsRunning: false,
+
+  startWorker: () => {
+    const { uploadIsRunning } = get()
+    if (uploadIsRunning) {
+      // no concurrent uploads
+      return
+    }
+
+    // find next attachment to upload
+    let id: ID | undefined = undefined
+    let attachment: AttachmentState | undefined = undefined
+    for(const attachment_ of get().attachments) {
+      if (attachment_.status != AttachmentStatus.DONE) {
+        id = attachment_.id
+        attachment = attachment_
+        break
+      }
+    }
+    if (!id || !attachment?.blob) {
+      return
+    }
+
+    set({ uploadIsRunning: true })
+    uploadWorker(get, attachment)
+  },
+
+  setWorkerStopped: () => {
+    set({ uploadIsRunning: false })
+  }
 }))
 
-const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
-  if (get().uploadIsRunning) {
-    return
-  }
+const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: AttachmentState) => {
+  const fileId = attachment.id
+  const blob = attachment.blob
+  const { token, pubKeys, updateAttachment, setWorkerStopped } = get()
 
-  let id: ID | undefined = undefined
-  let attachment: AttachmentState | undefined = undefined
-  for(const attachment_ of get().attachments) {
-    if (attachment_.status != AttachmentStatus.DONE) {
-      id = attachment_.id
-      attachment = attachment_
-      break
-    }
-  }
-  if (!id || !attachment?.blob) {
-    return
-  }
-  const updateAttachment = (f: (attachment: AttachmentState) => AttachmentState) =>
-    set({ attachments: get().attachments.map(attachment =>
-      attachment.id === id ? f(attachment) : attachment
-    )})
-
-  set({ uploadIsRunning: true })
   try {
-    updateAttachment(attachment => ({
+    updateAttachment(fileId, attachment => ({
       ...attachment,
       status: AttachmentStatus.UPLOADING,
     }))
-    const { token, pubKeys } = get()
     const encryptedChunks: Uint8Array[] = await new Promise(async (resolve, reject) => {
       if (!attachment?.blob) {
         throw new Error("Blob vanished")
       }
-      const encryptedStream = await encryptBlob(attachment.blob as Blob, pubKeys) as WebStream<Uint8Array>
+      const encryptedStream = await encryptBlob(blob as Blob, pubKeys) as WebStream<Uint8Array>
       // consume the encryptedStream into encryptedChunks until finished
       let chunks: Uint8Array[] = []
+      // @ts-ignore
       encryptedStream.pipeTo(new WritableStream({
         write(chunk) {
           chunks.push(chunk)
@@ -157,7 +178,7 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
     body.append('token', token)
     body.append('userId', 'TODOmock')
     body.append('fileId', fileId)
-    body.append('fileType', attachment.blob.type)
+    body.append('fileType', blob.type)
     body.append('attachment', new Blob(encryptedChunks, { type: 'application/pgp-encrypted' }))
     const res = await fetch(`${config.backend_base_url}/api/upload-attachment`, {
       method: 'POST',
@@ -168,11 +189,11 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
       // TODO: retry with a timeout except for HTTP 4xx
     }
 
-    updateAttachment(attachment => ({
+    updateAttachment(fileId, attachment => ({
       ...attachment,
       status: AttachmentStatus.DONE,
     }))
   } finally {
-    set({ uploadIsRunning: false })
+    setWorkerStopped()
   }
 }
