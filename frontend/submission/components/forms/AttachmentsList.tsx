@@ -1,4 +1,6 @@
 import ArticleIcon from '@mui/icons-material/Article'
+import ErrorIcon from '@mui/icons-material/Error'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 import Avatar from '@mui/material/Avatar'
 import LinearProgress from '@mui/material/LinearProgress'
 import List from '@mui/material/List'
@@ -11,11 +13,26 @@ import {AttachmentStatus,useArmoredDatastore} from '../../state'
 const statusToProgress = (status: AttachmentStatus) => {
   switch(status) {
     case AttachmentStatus.NEW:
-      return 0
+      return <LinearProgress variant="determinate" value={0}/>
     case AttachmentStatus.UPLOADING:
-      return 50
+      return <LinearProgress variant="determinate" value={50}/>
     case AttachmentStatus.DONE:
-      return 100
+      return <LinearProgress variant="determinate" value={100}/>
+    case AttachmentStatus.ERROR:
+      return 'Error'
+  }
+}
+
+const statusToIcon = (status: AttachmentStatus) => {
+  switch(status) {
+    case AttachmentStatus.NEW:
+      return <ArticleIcon/>
+    case AttachmentStatus.UPLOADING:
+      return <UploadFileIcon/>
+    case AttachmentStatus.DONE:
+      return <ArticleIcon/>
+    case AttachmentStatus.ERROR:
+      return <ErrorIcon/>
   }
 }
 
@@ -27,12 +44,10 @@ const AttachmentsList = ({}) => {
       <ListItem key={id}>
         <ListItemAvatar>
           <Avatar>
-            <ArticleIcon/>
+            {statusToIcon(status)}
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={blob.name} secondary={
-          <LinearProgress variant="determinate" value={statusToProgress(status)}/>
-        }/>
+        <ListItemText primary={blob.name} secondary={statusToProgress(status)}/>
       </ListItem>
     ))
   }</List>
