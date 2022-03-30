@@ -5,12 +5,13 @@ import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
 import {config} from '../../config'
-import {useArmoredDatastore} from '../../state'
+import {useArmoredDatastore,useTokenStore} from '../../state'
 
 type SubmitFormButtonProps = Record<string, never>
 
 const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
+  const {token} = useTokenStore()
   const { formData, sendFormData } = useArmoredDatastore()
   const [submitted, setSubmitted] = useState(false)
 
@@ -18,7 +19,11 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     setSubmitted(false)
   }, [formData, setSubmitted])
 
-  const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', sendFormData)
+  const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', async () => {
+    if (token) {
+      return await sendFormData(token)
+    }
+  })
 
   useEffect(() => {
     setSubmitted(!!isSuccess)
