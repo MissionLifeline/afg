@@ -17,7 +17,7 @@ export enum AttachmentStatus {
 
 type AttachmentState = {
   id: ID
-  blob: Blob,
+  blob: File,
   status: AttachmentStatus,
 }
 
@@ -33,10 +33,10 @@ type ArmoredDatastoreState = {
   formData: any
   setFormData: (formData: any) => void
 
-  sendFormData: () => void
+  sendFormData: () => Promise<Awaited<void>>
 
   attachments: AttachmentState[]
-  addAttachment: (blob: Blob) => ID
+  addAttachment: (blob: File) => ID
   removeAttachment: (fileId: ID) => void
   uploadIsRunning: boolean
 }
@@ -135,7 +135,8 @@ const uploadWorker = async (set, get) => {
     body.append('userId', "TODOmock")
     body.append('fileId', id)
     // TODO: does this work?
-    body.append('attachment', encryptedStream)
+    const encryptedData = await stream.readToEnd(encryptedStream)
+    body.append('attachment', new Blob([encryptedData]))
     const res = await fetch(`${config.backend_base_url}/api/upload-attachment`, {
       method: 'POST',
       body,

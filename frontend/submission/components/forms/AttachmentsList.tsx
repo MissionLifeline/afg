@@ -8,7 +8,7 @@ import ArticleIcon from '@mui/icons-material/Article'
 
 import {useArmoredDatastore, AttachmentStatus} from '../../state'
 
-const statusToProgress = status => {
+const statusToProgress = (status: AttachmentStatus) => {
   switch(status) {
     case AttachmentStatus.NEW:
       return 0
@@ -30,7 +30,9 @@ const AttachmentsList = ({}) => {
             <ArticleIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={blob.name} secondary={<LinearProgress value={statusToProgress(status)}/>}/>
+        <ListItemText primary={blob.name} secondary={
+          <LinearProgress variant="determinate" value={statusToProgress(status)}/>
+        }/>
       </ListItem>
     ))
   }</List>

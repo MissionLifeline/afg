@@ -33,7 +33,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     color={ !isError ?  'success' : 'error'}
     variant={'contained'}
     disabled={isLoading}
-    onClick={() => {mutate({variables: {formData}})}}
+    onClick={() => {mutate(/*TODO: still working w/o variables?*/)}}
   >{
     submitted ? t('submitted') : t('submit')
   }</Button>
