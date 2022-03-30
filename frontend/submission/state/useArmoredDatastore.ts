@@ -79,7 +79,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   attachments: [],
 
-  addAttachment: (fileBlob: File) => {
+  addAttachment: (fileBlob: File): ID => {
     const id = uuid()
     // TODO: what if pubKeys promise is still pending in case of a
     // very flakey network connection?
@@ -156,7 +156,7 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
     const body = new FormData()
     body.append('token', token)
     body.append('userId', 'TODOmock')
-    body.append('fileId', id.toString())
+    body.append('fileId', fileId)
     body.append('fileType', attachment.blob.type)
     body.append('attachment', new Blob(encryptedChunks, { type: 'application/pgp-encrypted' }))
     const res = await fetch(`${config.backend_base_url}/api/upload-attachment`, {
