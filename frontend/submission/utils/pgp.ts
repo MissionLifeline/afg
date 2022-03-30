@@ -14,6 +14,7 @@ export const encryptString = async (text: string, pubKeys: Key[]) =>
 
 export const encryptBlob = async (blob: Blob, pubKeys: Key[]) =>
   await openpgp.encrypt({
+    // @ts-ignore
     message: await openpgp.createMessage({binary: blob.stream()}),
     encryptionKeys: pubKeys,
     format: 'binary'

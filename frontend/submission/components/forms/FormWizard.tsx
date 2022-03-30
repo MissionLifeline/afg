@@ -6,10 +6,10 @@ import React, {useCallback, useEffect, useState} from 'react'
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
-import LocalizedJsonForms from './LocalizedJsonForms'
-import SubmitFormButton from './SubmitFormButton'
 import AddAttachmentButton from './AddAttachmentButton'
 import AttachmentsList from './AttachmentsList'
+import LocalizedJsonForms from './LocalizedJsonForms'
+import SubmitFormButton from './SubmitFormButton'
 
 type FormWizardProps = Record<string, never>
 
