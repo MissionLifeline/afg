@@ -156,6 +156,7 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
     body.append('token', token)
     body.append('userId', 'TODOmock')
     body.append('fileId', id.toString())
+    body.append('fileType', attachment.blob.type)
     body.append('attachment', new Blob(encryptedChunks, { type: 'application/pgp-encrypted' }))
     const res = await fetch(`${config.backend_base_url}/api/upload-attachment`, {
       method: 'POST',
