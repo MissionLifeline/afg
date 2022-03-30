@@ -3,10 +3,13 @@
             [mount.core :as mount :refer [defstate]]
             [afg-backend.config.state :refer [env]]
             [afg-backend.resolver.user.get-keys :refer [get_keys]]
+            [afg-backend.resolver.translator.get-translations :refer [get_translations]]
+            [afg-backend.resolver.translator.write-translations :refer [write_translations]]
             [afg-backend.db.state :refer [->db_ctx db_ctx]]))
 
-(def graphql* (executor {:query {:get_keys #'get_keys}
-                         :mutation {}}))
+(def graphql* (executor {:query {:get_keys #'get_keys
+                                 :get_translations #'get_translations}
+                         :mutation {:write_translations #'write_translations}}))
 
 (defn ->graphql
   "Create a wrapped graphql-executor, that merges context into the request.
