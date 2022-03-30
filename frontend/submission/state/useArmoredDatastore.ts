@@ -42,6 +42,8 @@ type ArmoredDatastoreState = {
 }
 
 export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => ({
+  // TODO: use token from router like at https://github.com/MissionLifeline/afg/pull/5
+  token: 'exampleToken',
   // TODO: unused
   setToken: token => set(() => ({ token })),
 

@@ -4,7 +4,6 @@
             [afg-backend.db.state :refer [db_ctx]]
             [afg-backend.security.auth.token.core :refer [token-valid?]]
             [afg-backend.webserver.middleware.graphql :refer [wrap-rest]]
-            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [ring.util.response :refer [response]]
             [compojure.core :refer [POST]]
             [clojure.java.io :as io]
@@ -12,10 +11,9 @@
             [clojure.string :refer [join includes?]]
             [lib.time :refer [current-date-for-filename]]))
 
-(defn POST-multipart [path body-fn]
+(defn POST* [path body-fn]
   (-> (POST path req
             (body-fn (update req :params keywordize-keys)))
-      wrap-multipart-params
       wrap-rest))
 
 
@@ -65,5 +63,36 @@
          :else
            (if (store-upload source (:upload-dir env) path filename)
                (response "formData has been stored")
+               {:status 500
+                :body "store-upload failed. Please ensure path and filename are valid"}))))
+
+(defn upload-attachment
+  [token userId fileId attachment]
+  (let [source (:tempfile attachment)
+        upload-limit-mb (:upload-limit-mb env)
+        path token
+        date (current-date-for-filename)
+        filename (str "attachment" "_" fileId "_" date ".json.pgp")]
+
+       (cond
+         (not source)  ;; TODO this is the current state
+           (do (prn token userId fileId attachment)
+               (prn attachment)
+               {:status 200  ;; actually it would be a 400
+                :body "WIP: attachment couldn't be parsed."})
+         (not (and token userId fileId attachment source))
+           {:status 400
+            :body "Request misses a required param"}
+         (not (token-valid? db_ctx token userId))
+           {:status 403
+            :body "A valid combination of token and userId is required"}
+         (> (.length (io/file source))
+            (* 1024 1024 upload-limit-mb))
+           {:status 413
+            :body (str "Upload exceeds maximum size of " upload-limit-mb "MB")}
+         ;; TODO: check the number of files already uploaded by this token
+         :else
+           (if (store-upload source (:upload-dir env) path filename)
+               (response (str "attachment " fileId " has been stored"))
                {:status 500
                 :body "store-upload failed. Please ensure path and filename are valid"}))))
