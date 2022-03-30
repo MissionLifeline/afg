@@ -8,14 +8,12 @@ import {FormWizard} from '../components/forms/FormWizard'
 import {WizardStepper} from '../components/forms/WizardStepper'
 import { CustomAppBar } from '../components/layout'
 import { LanguageSelection } from '../components/user'
-import {resources} from '../i18n'
+import {isDevelopment} from '../utils'
 
 const Home: NextPage = () => {
 
   useEffect(() => {
-    log.setLevel('debug')
-
-    log.debug({ translationResources: resources})
+    isDevelopment() && log.setLevel('debug')
   }, [])
 
 
