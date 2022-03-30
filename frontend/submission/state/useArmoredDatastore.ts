@@ -112,15 +112,15 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
   }
 
   let id: ID | undefined = undefined
-  let blob: File | undefined = undefined
-  for(const attachment of get().attachments) {
-    if (attachment.status != AttachmentStatus.DONE) {
-      id = attachment.id
-      blob = attachment.blob
+  let attachment: AttachmentState | undefined = undefined
+  for(const attachment_ of get().attachments) {
+    if (attachment_.status != AttachmentStatus.DONE) {
+      id = attachment_.id
+      attachment = attachment_
       break
     }
   }
-  if (!id || !blob) {
+  if (!id || !attachment?.blob) {
     return
   }
   const updateAttachment = (f: (attachment: AttachmentState) => AttachmentState) =>
@@ -135,10 +135,13 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
       status: AttachmentStatus.UPLOADING,
     }))
     const { token, pubKeys } = get()
-    const encryptedChunks = await new Promise(async (resolve, reject) => {
-      const encryptedStream = await encryptBlob(blob, pubKeys)
+    const encryptedChunks: Uint8Array[] = await new Promise(async (resolve, reject) => {
+      if (!attachment?.blob) {
+        throw new Error("Blob vanished")
+      }
+      const encryptedStream = await encryptBlob(attachment.blob as Blob, pubKeys) as WebStream<Uint8Array>
       // consume the encryptedStream into encryptedChunks until finished
-      let chunks = []
+      let chunks: Uint8Array[] = []
       encryptedStream.pipeTo(new WritableStream({
         write(chunk) {
           chunks.push(chunk)
@@ -160,6 +163,7 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
     })
     if (!res.ok) {
       throw new Error(`upload-form: HTTP ${res.status}`)
+      // TODO: retry with a timeout except for HTTP 4xx
     }
 
     updateAttachment(attachment => ({
