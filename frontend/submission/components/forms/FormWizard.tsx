@@ -14,7 +14,7 @@ import SubmitFormButton from './SubmitFormButton'
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
-  const {currentStep, nextStep} = useWizardState()
+  const {currentStep, nextStep, prevStep} = useWizardState()
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
@@ -51,14 +51,11 @@ export const FormWizard = ({}: FormWizardProps) => {
     },
     [pubKeys, allFormsState, setFormData])
 
-  const handleNextStep = useCallback(
-    () => {
-      nextStep()
-    },
-    []
-  )
-
   return <>
+    { currentStep > 0 ?
+      <Button variant='contained' color='secondary' onClick={prevStep}>Back</Button> :
+      ''
+    }
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema}) => (
         <LocalizedJsonForms
@@ -75,7 +72,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
       { currentStep < 3 ?
-        <Button variant='contained' color='primary' onClick={handleNextStep}>Next</Button> :
+        <Button variant='contained' color='primary' onClick={nextStep}>Next</Button> :
         <SubmitFormButton />
       }
     </Box>
