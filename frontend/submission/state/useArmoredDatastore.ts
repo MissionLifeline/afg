@@ -1,7 +1,7 @@
 import {Key, WebStream} from 'openpgp'
 import zustand from 'zustand'
-import {config} from '../config'
 
+import {config} from '../config'
 import {encryptBlob, encryptString, readPubKeys} from '../utils'
 
 type ID = number
@@ -33,7 +33,7 @@ type ArmoredDatastoreState = {
   formData: any
   setFormData: (formData: any) => void
 
-  sendFormData: () => Promise<Awaited<void>>
+  sendFormData: () => Promise<void>
 
   attachments: AttachmentState[]
   addAttachment: (blob: File) => ID
@@ -64,7 +64,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
     const body = new FormData()
     body.append('token', token)
-    body.append('userId', "TODOmock")
+    body.append('userId', 'TODOmock')
     body.append('formData', new Blob([encryptedFormData]))
 
     const res = await fetch(`${config.backend_base_url}/api/upload-form`, {
@@ -135,10 +135,10 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
       status: AttachmentStatus.UPLOADING,
     }))
     const { token, pubKeys } = get()
-    let encryptedStream = await encryptBlob(blob, pubKeys)
+    const encryptedStream = await encryptBlob(blob, pubKeys)
     const body = new FormData()
     body.append('token', token)
-    body.append('userId', "TODOmock")
+    body.append('userId', 'TODOmock')
     body.append('fileId', id.toString())
     // TODO: does this work?
     const encryptedData = await stream.readToEnd(encryptedStream)

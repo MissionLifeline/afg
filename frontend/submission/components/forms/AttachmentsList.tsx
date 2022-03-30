@@ -1,12 +1,12 @@
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ArticleIcon from '@mui/icons-material/Article'
 import Avatar from '@mui/material/Avatar'
 import LinearProgress from '@mui/material/LinearProgress'
-import ArticleIcon from '@mui/icons-material/Article'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemText from '@mui/material/ListItemText'
 
-import {useArmoredDatastore, AttachmentStatus} from '../../state'
+import {AttachmentStatus,useArmoredDatastore} from '../../state'
 
 const statusToProgress = (status: AttachmentStatus) => {
   switch(status) {

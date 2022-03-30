@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
 import {Button} from '@mui/material'
+import React, { useRef } from 'react'
+
 import {useArmoredDatastore} from '../../state'
 
 const AddAttachmentButton = ({}) => {
@@ -12,7 +13,6 @@ const AddAttachmentButton = ({}) => {
       return
     }
 
-    console.log("files", files)
     for(let i = 0; i < files.length; i++) {
       addAttachment(files[i])
     }
@@ -20,7 +20,7 @@ const AddAttachmentButton = ({}) => {
 
   return ( <>
     <Button onClick={() => inputEl.current?.click()}>Attach a document</Button>
-    <input type="file" multiple ref={inputEl} style={{ display: "none" }}
+    <input type="file" multiple ref={inputEl} style={{ display: 'none' }}
        onChange={onInputChange}
     />
   </> )
