@@ -4,7 +4,7 @@ import {config} from '../config'
 
 import {encryptBlob, encryptString, readPubKeys} from '../utils'
 
-type ID = string
+type ID = number
 
 export enum AttachmentStatus {
   /// to be processed by uploadWorker
@@ -78,11 +78,11 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   attachments: [],
 
-  addAttachment: (fileBlob) => {
+  addAttachment: (fileBlob: File) => {
     // TODO: what if pubKeys promise is still pending in case of a
     // very flakey network connection?
     const {attachments, pubKeys} = get()
-    const id = Math.max(get().attachments.map(({ id }) => id).concat(0)) + 1
+    const id = Math.max(...get().attachments.map(({ id }) => id).concat(0)) + 1
     set({ attachments: [
       ...attachments,
       {
@@ -98,18 +98,21 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   },
 
   removeAttachment: fileId => {
-    set(({encryptedFileAttachments}) => ({
-      encryptedFileAttachments: encryptedFileAttachments.filter(({id}) => fileId === id)
+    set(({attachments}) => ({
+      attachments: attachments.filter(({id}) => fileId === id)
     }))
-  }
+  },
+
+  uploadIsRunning: false,
 }))
 
-const uploadWorker = async (set, get) => {
+const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
   if (get().uploadIsRunning) {
     return
   }
 
-  let id, blob
+  let id: ID | undefined = undefined
+  let blob: File | undefined = undefined
   for(const attachment of get().attachments) {
     if (attachment.status != AttachmentStatus.DONE) {
       id = attachment.id
@@ -117,7 +120,10 @@ const uploadWorker = async (set, get) => {
       break
     }
   }
-  const updateAttachment = f =>
+  if (!id || !blob) {
+    return
+  }
+  const updateAttachment = (f: (attachment: AttachmentState) => AttachmentState) =>
     set({ attachments: get().attachments.map(attachment =>
       attachment.id === id ? f(attachment) : attachment
     )})
@@ -133,7 +139,7 @@ const uploadWorker = async (set, get) => {
     const body = new FormData()
     body.append('token', token)
     body.append('userId', "TODOmock")
-    body.append('fileId', id)
+    body.append('fileId', id.toString())
     // TODO: does this work?
     const encryptedData = await stream.readToEnd(encryptedStream)
     body.append('attachment', new Blob([encryptedData]))
