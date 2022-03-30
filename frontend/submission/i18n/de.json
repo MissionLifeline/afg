@@ -1,9 +1,15 @@
 {
   "language": "Deutsch",
+  "prevStep": "Zurück zum vorhergehenden Schritt",
+  "nextStep": "Fortfahren mit dem nächsten Schritt",
   "submit": "abschicken",
   "submitted": "abgeschickt",
   "error": {
-    "format": "Falsches Format angeggeben",
-    "required": "Diese Angabe ist notwenig"
+    "format": "Falsches Format angegeben",
+    "required": "Diese Angabe ist notwenig",
+    "transfer": "Datenübertragungsfehler"
+  },
+  "attachment": {
+    "add": "Dokument hinzufügen"
   }
 }

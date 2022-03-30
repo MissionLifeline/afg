@@ -7,10 +7,11 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
+import {useTranslation} from 'react-i18next'
 
-import {AttachmentStatus,useArmoredDatastore} from '../../state'
+import {AttachmentState, AttachmentStatus, useArmoredDatastore} from '../../state'
 
-const statusToProgress = (status: AttachmentStatus) => {
+const statusToProgress = (t: (s: string) => string, status: AttachmentStatus) => {
   switch(status) {
     case AttachmentStatus.NEW:
       return <LinearProgress variant="determinate" value={0}/>
@@ -19,7 +20,7 @@ const statusToProgress = (status: AttachmentStatus) => {
     case AttachmentStatus.DONE:
       return <LinearProgress variant="determinate" value={100}/>
     case AttachmentStatus.ERROR:
-      return 'Error'
+      return t('error.transfer')
   }
 }
 
@@ -36,21 +37,26 @@ const statusToIcon = (status: AttachmentStatus) => {
   }
 }
 
+const AttachmentEntry = ({ id, blob, status }: AttachmentState) => {
+  const {t} = useTranslation()
+  return <ListItem>
+    <ListItemAvatar>
+      <Avatar>
+        {statusToIcon(status)}
+      </Avatar>
+    </ListItemAvatar>
+    <ListItemText primary={blob.name} secondary={statusToProgress(t, status)}/>
+  </ListItem>
+}
+
 const AttachmentsList = ({}) => {
   const { attachments } = useArmoredDatastore()
 
-  return <List>{
-    attachments.map(({ id, blob, status }) => (
-      <ListItem key={id}>
-        <ListItemAvatar>
-          <Avatar>
-            {statusToIcon(status)}
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={blob.name} secondary={statusToProgress(status)}/>
-      </ListItem>
-    ))
-  }</List>
+  return <List>
+    {attachments.map(({ id, blob, status }) =>
+      <AttachmentEntry key={id} id={id} blob={blob} status={status}/>
+    )}
+  </List>
 }
 
 export default AttachmentsList

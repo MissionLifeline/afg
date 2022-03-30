@@ -2,6 +2,7 @@ import {JsonFormsCore} from '@jsonforms/core'
 import {Box, Button, Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
@@ -14,6 +15,7 @@ import SubmitFormButton from './SubmitFormButton'
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
+  const {t} = useTranslation()
   const {currentStep, nextStep, prevStep} = useWizardState()
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
@@ -53,7 +55,7 @@ export const FormWizard = ({}: FormWizardProps) => {
 
   return <>
     { currentStep > 0 ?
-      <Button variant='contained' color='secondary' onClick={prevStep}>Back</Button> :
+      <Button variant='contained' color='secondary' onClick={prevStep}>{t('prevStep')}</Button> :
       ''
     }
     {[steps[currentStep]]
@@ -72,7 +74,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
       { currentStep < 3 ?
-        <Button variant='contained' color='primary' onClick={nextStep}>Next</Button> :
+        <Button variant='contained' color='primary' onClick={nextStep}>{t('nextStep')}</Button> :
         <SubmitFormButton />
       }
     </Box>
