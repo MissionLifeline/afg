@@ -3,6 +3,8 @@ import log from 'loglevel'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import {useEffect} from 'react'
+import {useRouter} from 'next/router'
+import {useTokenStore} from '../state/useTokenStore'
 
 import {FormWizard} from '../components/forms/FormWizard'
 import {WizardStepper} from '../components/forms/WizardStepper'
@@ -11,6 +13,13 @@ import { LanguageSelection } from '../components/user'
 import {resources} from '../i18n'
 
 const Home: NextPage = () => {
+  const {query, isReady} = useRouter()
+  const {token} = query
+  const {setToken} = useTokenStore()
+
+  useEffect(() => {
+    isReady && typeof(token) === 'string' && setToken(token)
+  }, [token, isReady])
 
   useEffect(() => {
     log.setLevel('debug')

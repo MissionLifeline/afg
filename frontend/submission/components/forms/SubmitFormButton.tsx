@@ -1,6 +1,7 @@
 import {Send} from '@mui/icons-material'
 import {Button} from '@mui/material'
 import React, {useCallback, useEffect, useState} from 'react'
+import {useTokenStore} from '../../state/useTokenStore'
 import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
@@ -11,6 +12,7 @@ type SubmitFormButtonProps = Record<string, never>
 
 const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
+  const {token} = useTokenStore()
   const { encryptedFormData } = useArmoredDatastore()
   const [submitted, setSubmitted] = useState(false)
 
@@ -18,21 +20,22 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     setSubmitted(false)
   }, [encryptedFormData, setSubmitted])
 
-
   const prepareBody = useCallback(
     () => {
-      const formData = new FormData()
-      // @ts-ignore
-      formData.append('token', "TODOMyToken")
-      formData.append('userId', "TODOmock")
-      formData.append('formData', new Blob([encryptedFormData]))
-      return formData
+      if(token) {
+        const formData = new FormData()
+        formData.append('token', token)
+        formData.append('userId', "TODOmock")
+        // @ts-ignore
+        formData.append('formData', new Blob([encryptedFormData]))
+        return formData
+      }
     },
-    [encryptedFormData])
+    [token, encryptedFormData])
 
 
   const { mutate, data, isSuccess  } = useMutation('upload-form', async () =>
-    fetch(`${config.backend_base_url}/api/upload-form`, {
+    token && fetch(`${config.backend_base_url}/api/upload-form`, {
       method: 'POST',
       body: prepareBody()
     }))
