@@ -14,7 +14,7 @@ import SubmitFormButton from './SubmitFormButton'
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
-  const {currentStep} = useWizardState()
+  const {currentStep, nextStep} = useWizardState()
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
@@ -51,6 +51,13 @@ export const FormWizard = ({}: FormWizardProps) => {
     },
     [pubKeys, allFormsState, setFormData])
 
+  const handleNextStep = useCallback(
+    () => {
+      nextStep()
+    },
+    []
+  )
+
   return <>
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema}) => (
@@ -67,7 +74,10 @@ export const FormWizard = ({}: FormWizardProps) => {
     <AttachmentsList/>
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
-      <SubmitFormButton />
+      { currentStep < 3 ?
+        <Button variant='contained' color='primary' onClick={handleNextStep}>Next</Button> :
+        <SubmitFormButton />
+      }
     </Box>
   </>
 }
