@@ -5,12 +5,15 @@ export const readPubKeys: (pubKeys: string[]) => Promise<Key[]> = (pubKeys: stri
   Promise
     .all(pubKeys.map(pubkey => openpgp.readKey({armoredKey: pubkey})))
 
-export const encryptString = async (text: string, pubKeys: Key[]) =>
-  await openpgp.encrypt({
-    message: await openpgp.createMessage({text}),
-    encryptionKeys: pubKeys,
-    format: 'binary'
-  })
+export const encryptString = (text: string, pubKeys: Key[]): Promise<Uint8Array> =>
+  openpgp.createMessage({text})
+    .then(message =>
+      openpgp.encrypt({
+        message,
+        encryptionKeys: pubKeys,
+        format: 'binary'
+      }) as Promise<Uint8Array>
+    )
 
 export const encryptBlob = async (blob: Blob, pubKeys: Key[]) =>
   await openpgp.encrypt({
