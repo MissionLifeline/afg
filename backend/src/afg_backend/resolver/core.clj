@@ -3,7 +3,7 @@
             [mount.core :as mount :refer [defstate]]
             [afg-backend.config.state :refer [env]]
             [afg-backend.resolver.user.get-keys :refer [get_keys]]
-            #_[afg-backend.db.state :refer [->db_ctx db_ctx]]))
+            [afg-backend.db.state :refer [->db_ctx db_ctx]]))
 
 (def graphql* (executor {:query {:get_keys #'get_keys}
                          :mutation {}}))
@@ -19,14 +19,14 @@
    The easiest way of having several instances without worrying about locks is using the config option {:db-inmemory true}."
 
   [& {:keys [singleton?] :or {singleton? false}}]
-  (let [db_ctx nil #_(if singleton? db_ctx (->db_ctx))]
+  (let [db_ctx (if singleton? db_ctx (->db_ctx))]
        (fn [query]
            (graphql* (-> query
                          (assoc-in [:context :db_ctx]
                                    db_ctx)
                          (assoc-in [:context :validate-output?]
                                    (or (get-in query [:context :validate-output?])
-                                       (:validate-output env))))))))
+                                       (:graphql-validate-output env))))))))
 
 (defstate graphql
   :start (afg-backend.resolver.core/->graphql :singleton? true))

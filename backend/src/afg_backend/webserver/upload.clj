@@ -1,6 +1,7 @@
 (ns afg-backend.webserver.upload
   (:import [java.io File])
   (:require [afg-backend.config.state :refer [env]]
+            [afg-backend.db.state :refer [db_ctx]]
             [afg-backend.security.auth.token.core :refer [token-valid?]]
             [afg-backend.webserver.middleware.graphql :refer [wrap-rest]]
             [ring.middleware.multipart-params :refer [wrap-multipart-params]]
@@ -18,15 +19,15 @@
       wrap-rest))
 
 
-(defn valid-path? [path regex]
+(defn- valid-path? [path regex]
   (and (not (includes? path ".."))
        (re-matches regex path)))
 
-(defn valid-filename? [filename regex]
+(defn- valid-filename? [filename regex]
   (and (not (includes? filename File/separator))
        (re-matches regex filename)))
 
-(defn store-upload
+(defn- store-upload
   "copy after path validation"
   ([source root path filename] (store-upload source root path filename {}))
   ([source root path filename {:keys [pathRegex filenameRegex]
@@ -53,7 +54,7 @@
          (not (and token userId formData source))
            {:status 400
             :body "Request misses a required param"}
-         (not (token-valid? token userId))
+         (not (token-valid? db_ctx token userId))
            {:status 403
             :body "A valid combination of token and userId is required"}
          (> (.length (io/file source))

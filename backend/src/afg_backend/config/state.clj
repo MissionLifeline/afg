@@ -12,7 +12,7 @@
 
 (s/def ::verbose boolean?)
 
-(s/def ::validate-output boolean?)  ;; should specialist ensure type correctness
+(s/def ::graphql-validate-output boolean?)  ;; should specialist ensure type correctness
 
 (s/def ::db-inmemory boolean?)  ;; we run unit tests in an in-memory instance, otherwise the default db would be looked
 (s/def ::db-dir string?)  ;; ignored when ::db-inmemory
@@ -33,7 +33,7 @@
                               ::port
                               ::jwt-secret
                               ::verbose
-                              ::validate-output
+                              ::graphql-validate-output
                               ::db-inmemory ::db-dir
                               ::db-seed ::db-export-prefix
                               ::db-validate

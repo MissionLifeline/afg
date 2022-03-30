@@ -8,11 +8,11 @@
 
  :verbose false
 
- :validate-output true
+ :graphql-validate-output true
 
  :db-inmemory false
  :db-dir "./data/xtdb/rocksdb"
- :db-seed nil #_"./src/beherbergung/db/seed/test.edn"
+ :db-seed "./data/seed/test.edn"
  :db-export-prefix "./data/export/"
  :db-validate true
 

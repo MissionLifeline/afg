@@ -1,9 +1,22 @@
-(ns afg-backend.security.auth.token.core)
+(ns afg-backend.security.auth.token.core
+  (:require [afg-backend.model.token :as token]))
 
-(defn token-valid?
-  "TODO:
-    * check: token existing in db
-    * check: expectedUserId(token) == userId (or :notYetSet)
-  "
-  [_token _userId]
-  true)
+(defn- ->token [db_ctx token]
+  (let [{:keys [q_id_unary]} db_ctx]
+       (q_id_unary '{:find [(pull ?e [*])]
+                     :in [token]
+                     :where [[?e :xt/spec ::token/record]
+                             [?e :token token]]}
+                   token)))
+
+(defn- token-assoc-userId! [db_ctx tokenData userId]
+  (assert (not (:userId tokenData)))
+  (let [{:keys [tx]} db_ctx]
+       (tx [[:xtdb.api/put (assoc tokenData :userId userId)]])))
+
+(defn token-valid? [db_ctx token userId]
+  (let [tokenData (->token db_ctx token)]
+       (when tokenData
+             (if (:userId tokenData)
+                 (= userId (:userId tokenData))
+                 (token-assoc-userId! db_ctx tokenData userId)))))

@@ -8,6 +8,9 @@
                  [yogthos/config "1.2.0"]
                  [mount "0.1.16"]
                  [spootnik/signal "0.2.4"]
+                 ;; db
+                 [com.xtdb/xtdb-core "1.20.0"]
+                 [com.xtdb/xtdb-rocksdb "1.20.0"]
                  ;; http + graphql
                  [org.clojars.johannesloetzsch/specialist-server "0.7.0" :exclusions [com.ibm.icu/icu4j]]
                  [compojure "1.6.2"]
@@ -20,6 +23,6 @@
                  [ring-json-response "0.2.0"]
                  [co.deps/ring-etag-middleware "0.2.1"]
                 ]
-  ;:repl-options {:init-ns afg-backend.core}
   :main afg-backend.core
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}
+             :test {:jvm-opts ["-Ddb-inmemory=true"]}})

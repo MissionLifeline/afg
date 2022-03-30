@@ -1,0 +1,6 @@
+[
+ {:xt/id :exampleToken
+  :xt/spec :afg-backend.model.token/record
+  :token "exampleToken"
+  :assignedEditor :exampleEditor}
+]
