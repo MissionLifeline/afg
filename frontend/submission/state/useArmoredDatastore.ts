@@ -18,7 +18,7 @@ export enum AttachmentStatus {
   ERROR,
 }
 
-type AttachmentState = {
+export type AttachmentState = {
   id: ID
   blob: File,
   status: AttachmentStatus,

@@ -31,7 +31,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   // @ts-ignore
   return <Button startIcon={startIcon}
     color={ isIdle ? 'primary' : !isError ?  'success' : 'error'}
-    variant={'contained'}
+    variant='contained'
     disabled={isLoading}
     onClick={() => {mutate()}}
   >{
