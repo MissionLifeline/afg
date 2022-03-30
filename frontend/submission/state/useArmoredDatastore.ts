@@ -14,6 +14,8 @@ export enum AttachmentStatus {
   UPLOADING,
   /// uploaded
   DONE,
+  /// HTTP error 4xx
+  ERROR,
 }
 
 type AttachmentState = {
@@ -127,7 +129,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     let id: ID | undefined = undefined
     let attachment: AttachmentState | undefined = undefined
     for(const attachment_ of get().attachments) {
-      if (attachment_.status != AttachmentStatus.DONE) {
+      if (attachment_.status != AttachmentStatus.DONE && attachment_.status != AttachmentStatus.ERROR) {
         id = attachment_.id
         attachment = attachment_
         break
@@ -143,6 +145,9 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   setWorkerStopped: () => {
     set({ uploadIsRunning: false })
+
+    // restart for next attachment
+    get().startWorker()
   }
 }))
 
@@ -184,15 +189,29 @@ const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: Attach
       method: 'POST',
       body,
     })
-    if (!res.ok) {
+    if (res.status >= 400 && res.status < 500) {
+      // do not retry
+      updateAttachment(fileId, attachment => ({
+        ...attachment,
+        status: AttachmentStatus.ERROR,
+      }))
+    } else if (res.ok) {
+      // done
+      updateAttachment(fileId, attachment => ({
+        ...attachment,
+        status: AttachmentStatus.DONE,
+      }))
+    } else {
       throw new Error(`upload-form: HTTP ${res.status}`)
-      // TODO: retry with a timeout except for HTTP 4xx
     }
-
+  } catch (e) {
+    // retry on error
     updateAttachment(fileId, attachment => ({
       ...attachment,
-      status: AttachmentStatus.DONE,
+      status: AttachmentStatus.NEW,
     }))
+
+    throw e;
   } finally {
     setWorkerStopped()
   }
