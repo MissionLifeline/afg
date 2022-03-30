@@ -25,9 +25,6 @@ export type AttachmentState = {
 }
 
 type ArmoredDatastoreState = {
-  token: string
-  setToken: (token: string) => void
-
   /// set keys in ascii-armored serialization
   setSerializedPubKeys: (serializedPubKeys: string[]) => void
   /// deserialized keys
@@ -36,25 +33,20 @@ type ArmoredDatastoreState = {
   formData: any
   setFormData: (formData: any) => void
 
-  sendFormData: () => Promise<void>
+  sendFormData: (token: string) => Promise<void>
 
   attachments: AttachmentState[]
-  addAttachment: (blob: File) => ID
-  addOrReplaceAttachment: (id: ID, blob: File) => ID
+  addAttachment: (token: string, blob: File) => ID
+  addOrReplaceAttachment: (token: string, id: ID, blob: File) => ID
   updateAttachment: (fileId: ID, f: (attachment: AttachmentState) => AttachmentState) => void
   removeAttachment: (fileId: ID) => void
 
-  startWorker: () => void
-  setWorkerStopped: () => void
+  startWorker: (token: string) => void
+  setWorkerStopped: (token: string) => void
   uploadIsRunning: boolean
 }
 
 export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => ({
-  // TODO: use token from router like at https://github.com/MissionLifeline/afg/pull/5
-  token: 'exampleToken',
-  // TODO: unused
-  setToken: token => set(() => ({ token })),
-
   setSerializedPubKeys: serializedPubKeys => {
     readPubKeys(serializedPubKeys).then(pubKeys =>
       set(() =>
@@ -65,8 +57,8 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   formData: {},
   setFormData: (formData: any) => set({ formData }),
 
-  sendFormData: async () => {
-    const { formData, pubKeys, token } = get()
+  sendFormData: async (token: string) => {
+    const { formData, pubKeys } = get()
     const dataString = JSON.stringify(formData)
     const encryptedFormData = await encryptString(dataString, pubKeys)
 
@@ -86,7 +78,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   attachments: [],
 
-  addAttachment: (fileBlob: File): ID => {
+  addAttachment: (token: string, fileBlob: File): ID => {
     const id = uuid()
     // TODO: what if pubKeys promise is still pending in case of a
     // very flakey network connection?
@@ -100,14 +92,13 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
       }
     ]})
     // start uploading if not already doing so
-    get().startWorker()
+    get().startWorker(token)
 
     return id
   },
-  addOrReplaceAttachment: (id, fileBlob: File): ID => {
+  addOrReplaceAttachment: (token, id, fileBlob: File): ID => {
     // TODO: what if pubKeys promise is still pending in case of a
     // very flakey network connection?
-    console.log('replace')
     const newAttachment = {
       id,
       status: AttachmentStatus.NEW,
@@ -118,7 +109,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
           ? attachments.map(attachment => attachment.id === id ? newAttachment : attachment)
           : [...attachments, newAttachment]}))
     // start uploading if not already doing so
-    get().startWorker()
+    get().startWorker(token)
 
     return id
   },
@@ -137,7 +128,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   uploadIsRunning: false,
 
-  startWorker: () => {
+  startWorker: (token: string) => {
     const { uploadIsRunning } = get()
     if (uploadIsRunning) {
       // no concurrent uploads
@@ -159,21 +150,21 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     }
 
     set({ uploadIsRunning: true })
-    uploadWorker(get, attachment)
+    uploadWorker(token, get, attachment)
   },
 
-  setWorkerStopped: () => {
+  setWorkerStopped: (token: string) => {
     set({ uploadIsRunning: false })
 
     // restart for next attachment
-    get().startWorker()
+    get().startWorker(token)
   }
 }))
 
-const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: AttachmentState) => {
+const uploadWorker = async (token: string, get: () => ArmoredDatastoreState, attachment: AttachmentState) => {
   const fileId = attachment.id
   const blob = attachment.blob
-  const { token, pubKeys, updateAttachment, setWorkerStopped } = get()
+  const { pubKeys, updateAttachment, setWorkerStopped } = get()
 
   try {
     updateAttachment(fileId, attachment => ({
@@ -232,6 +223,6 @@ const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: Attach
 
     throw e
   } finally {
-    setWorkerStopped()
+    setWorkerStopped(token)
   }
 }
