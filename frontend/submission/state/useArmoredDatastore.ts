@@ -135,14 +135,25 @@ const uploadWorker = async (set: any, get: () => ArmoredDatastoreState) => {
       status: AttachmentStatus.UPLOADING,
     }))
     const { token, pubKeys } = get()
-    const encryptedStream = await encryptBlob(blob, pubKeys)
+    const encryptedChunks = await new Promise(async (resolve, reject) => {
+      const encryptedStream = await encryptBlob(blob, pubKeys)
+      // consume the encryptedStream into encryptedChunks until finished
+      let chunks = []
+      encryptedStream.pipeTo(new WritableStream({
+        write(chunk) {
+          chunks.push(chunk)
+        },
+        close() {
+          resolve(chunks)
+        },
+        abort: reject,
+      }))
+    })
     const body = new FormData()
     body.append('token', token)
     body.append('userId', 'TODOmock')
     body.append('fileId', id.toString())
-    // TODO: does this work?
-    const encryptedData = await stream.readToEnd(encryptedStream)
-    body.append('attachment', new Blob([encryptedData]))
+    body.append('attachment', new Blob(encryptedChunks, { type: 'application/pgp-encrypted' }))
     const res = await fetch(`${config.backend_base_url}/api/upload-attachment`, {
       method: 'POST',
       body,
