@@ -1,10 +1,11 @@
 import {Key, WebStream} from 'openpgp'
+import { v4 as uuid } from 'uuid'
 import zustand from 'zustand'
 
 import {config} from '../config'
 import {encryptBlob, encryptString, readPubKeys} from '../utils'
 
-type ID = number
+type ID = string
 
 export enum AttachmentStatus {
   /// to be processed by uploadWorker
@@ -79,10 +80,10 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   attachments: [],
 
   addAttachment: (fileBlob: File) => {
+    const id = uuid()
     // TODO: what if pubKeys promise is still pending in case of a
     // very flakey network connection?
     const {attachments, pubKeys} = get()
-    const id = Math.max(...get().attachments.map(({ id }) => id).concat(0)) + 1
     set({ attachments: [
       ...attachments,
       {
