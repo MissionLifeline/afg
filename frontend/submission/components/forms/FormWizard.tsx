@@ -19,7 +19,7 @@ type FormWizardProps = Record<string, never>
 export const FormWizard = ({}: FormWizardProps) => {
   const {t} = useTranslation()
   const {currentStep, nextStep, prevStep} = useWizardState()
-  const {attachments, setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
+  const {attachments, setSerializedPubKeys, pubKeys, formData, removeAttachment} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
   const {data} = useGet_KeysQuery({token: 'exampleToken'})
@@ -68,7 +68,7 @@ export const FormWizard = ({}: FormWizardProps) => {
           validationMode={'ValidateAndShow'}
         />))}
     <AddAttachmentButton/>
-    <AttachmentsList attachmentStates={attachments} />
+    <AttachmentsList attachmentStates={attachments} onDeleteItem={removeAttachment} />
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
       { currentStep > 0 &&

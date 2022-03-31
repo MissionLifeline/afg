@@ -6,6 +6,7 @@
   "nextStep_title": "proceed to next step",
   "submit": "submit",
   "submitted": "submitted",
+  "delete": "delete",
   "error": {
     "format": "Wrong format given",
     "required": "Required form field",

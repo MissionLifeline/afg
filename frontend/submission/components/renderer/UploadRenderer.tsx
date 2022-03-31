@@ -41,9 +41,16 @@ const UploadRenderer = ({data, handleChange, path, label, schema}: UploadRendere
       setUploadIDs([...uploadIDs, ...ids])
     }, [uploadIDs, setUploadIDs])
 
+  const handleDelete = useCallback(
+    (id: ID) => {
+      setUploadIDs( uploadIDs.filter((_id) => _id === id) )
+    },
+    [uploadIDs, setUploadIDs])
+
+
   return <Box>
     <AddAttachmentButton ids={uploadIDs} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
-    <AttachmentsList attachmentStates={ownAttachmentStates} />
+    <AttachmentsList attachmentStates={ownAttachmentStates} onDeleteItem={handleDelete} />
   </Box>
 }
 

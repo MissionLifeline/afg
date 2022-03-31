@@ -6,6 +6,7 @@
   "nextStep_title": "Fortfahren mit dem nächsten Schritt",
   "submit": "Absenden",
   "submitted": "Übermittelt",
+  "delete": "löschen",
   "error": {
     "format": "Falsches Format angegeben",
     "required": "Diese Angabe ist notwenig",
