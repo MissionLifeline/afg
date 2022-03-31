@@ -1,11 +1,11 @@
 import {Check,Pending,Send} from '@mui/icons-material'
 import * as Icons from '@mui/icons-material'
 import {Button} from '@mui/material'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
-import {useArmoredDatastore,useTokenStore} from '../../state'
+import {useArmoredDatastore, useSubmittedStore, useTokenStore} from '../../state'
 
 type SubmitFormButtonProps = Record<string, never>
 
@@ -13,7 +13,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
   const {token, userId} = useTokenStore()
   const {formData, sendFormData} = useArmoredDatastore()
-  const [submitted, setSubmitted] = useState(false)
+  const {submitted, setSubmitted} = useSubmittedStore()
 
   useEffect(() => {
     setSubmitted(false)
