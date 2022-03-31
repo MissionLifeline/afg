@@ -46,7 +46,7 @@
         upload-limit-mb (:upload-limit-mb env)
         path token
         date (current-date-for-filename)
-        filename (str "formData" "_" date ".json.pgp")]
+        filename (str "formData" "_" date ".json.gpg")]
 
        (cond
          (not (and token userId formData source))
@@ -76,7 +76,7 @@
         path token
         date (current-date-for-filename)
         extension (mime->extension fileType)
-        filename (str "attachment" "_" fileId "_" date extension ".pgp")]
+        filename (str "attachment" "_" fileId "_" date extension ".gpg")]
 
        (cond
          (not (and token userId fileId attachment source))
