@@ -70,7 +70,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     <AddAttachmentButton/>
     <AttachmentsList/>
     <Divider style={{margin: '1em'}}/>
-    <Box display='flex' flexDirection='row'>
+    <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
       { currentStep > 0 &&
         <Button variant='contained' color='secondary'
           onClick={prevStep}
