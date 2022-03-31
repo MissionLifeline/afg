@@ -9,8 +9,6 @@ import {useTranslation} from 'react-i18next'
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
-import AddAttachmentButton from './AddAttachmentButton'
-import AttachmentsList from './AttachmentsList'
 import LocalizedJsonForms from './LocalizedJsonForms'
 import SubmitFormButton from './SubmitFormButton'
 
@@ -19,7 +17,7 @@ type FormWizardProps = Record<string, never>
 export const FormWizard = ({}: FormWizardProps) => {
   const {t} = useTranslation()
   const {currentStep, nextStep, prevStep} = useWizardState()
-  const {attachments, setSerializedPubKeys, pubKeys, formData, removeAttachment} = useArmoredDatastore()
+  const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
   const {data} = useGet_KeysQuery({token: 'exampleToken'})
@@ -61,8 +59,6 @@ export const FormWizard = ({}: FormWizardProps) => {
           data={allFormsState[name] || {}}
           validationMode={'ValidateAndShow'}
         />))}
-    <AddAttachmentButton/>
-    <AttachmentsList attachmentStates={attachments} onDeleteItem={removeAttachment} />
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
       { currentStep > 0 &&
