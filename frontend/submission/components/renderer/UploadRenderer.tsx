@@ -7,6 +7,11 @@ import {ID, useArmoredDatastore} from '../../state'
 import AddAttachmentButton from '../forms/AddAttachmentButton'
 import AttachmentsList from '../forms/AttachmentsList'
 
+type Upload = {
+  id: ID,
+  description: string,
+}
+
 type UploadRendererProps = {
   data: any;
   handleChange(path: string, value: any): void;
@@ -18,42 +23,54 @@ type UploadRendererProps = {
 
 const UploadRenderer = ({data, handleChange, path, label, schema, visible}: UploadRendererProps) => {
   const isArray = useMemo(() => schema.type === 'array', [schema])
-  const uploadIDs = useMemo(() =>
-    isArray && data
-      ? data.filter((d: any) => typeof d === 'string') as string[]
-      : typeof data === 'string'
-        ? data.split(',')
-        : [], [data, isArray])
+  const uploads = useMemo(() =>
+    data
+      ? ((isArray ? data : [data]) as Upload[])
+      : []
+  , [data, isArray])
 
-  const setUploadIDs = useCallback(
-    (ids: string[]) => {
+  const setUploads = useCallback(
+    (uploads: Upload[]) => {
       isArray
-        ? handleChange(path, ids)
-        : handleChange(path, ids[0])
+        ? handleChange( path, uploads)
+        : handleChange( path, uploads[0])
     },
     [path, handleChange, isArray])
 
-  const {attachments} = useArmoredDatastore()
-  const ownAttachmentStates = useMemo(() => attachments.filter(({id}) => uploadIDs.includes(id)), [attachments, uploadIDs])
+  const { attachments } = useArmoredDatastore()
+  const ownAttachmentStates = useMemo(() => attachments.filter(({id}) => uploads.some(upload => upload.id === id)), [attachments, uploads])
 
 
   const handleAddUploadIDs = useCallback(
     (ids: ID[]) => {
-      setUploadIDs([...uploadIDs, ...ids])
-    }, [uploadIDs, setUploadIDs])
+      setUploads([...uploads, ...ids.map(id => ({ id, description: '' }))])
+    }, [uploads, setUploads])
 
   const handleDelete = useCallback(
-    (id: ID) => {
-      setUploadIDs(uploadIDs.filter((_id) => _id !== id))
+    (_id: ID) => {
+      setUploads( uploads.filter(({ id }) => _id !== id) )
     },
-    [uploadIDs, setUploadIDs])
+    [uploads, setUploads])
 
+  const handleChangeDescription = useCallback(
+    (id: ID, description: string) => {
+      setUploads( uploads.map(upload =>
+        upload.id === id
+          ? { ...upload, description }
+          : upload
+      ) )
+    },
+    [ uploads, setUploads ])
 
   return <Hidden xsUp={!visible}>
     <Box style={{marginTop: '1em'}}>
-      <AddAttachmentButton ids={uploadIDs} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label}
-                           uploadCount={ownAttachmentStates.length}/>
-      <AttachmentsList attachmentStates={ownAttachmentStates} onDeleteItem={handleDelete}/>
+      <AddAttachmentButton ids={uploads.map(({ id }) => id)} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
+      <AttachmentsList
+        attachmentStates={ownAttachmentStates}
+        descriptions={uploads}
+        onChangeDescription={handleChangeDescription}
+        onDeleteItem={handleDelete}
+      />
     </Box>
   </Hidden>
 }

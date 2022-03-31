@@ -34,9 +34,6 @@ const FinalControlStep = () => {
         <Box textAlign='center' sx={{padding: '1em'}}>
           <SubmitFormButton/>
         </Box>
-
-        <AttachmentsList attachmentStates={attachments} onDeleteItem={removeAttachment}/>
-
       </Paper>
 
     </Box>
