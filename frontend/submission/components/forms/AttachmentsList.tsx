@@ -9,6 +9,7 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
+import TextField from '@mui/material/TextField'
 import {useTranslation} from 'react-i18next'
 
 import {AttachmentState, AttachmentStatus, ID} from '../../state'
@@ -40,10 +41,12 @@ const statusToIcon = (status: AttachmentStatus) => {
 }
 
 type AttachmentEntryProps = {
+  description: string
+  onChangeDescription: (description: string) => void
   onDeleteItem: (id: ID) => void
 }
 
-const AttachmentEntry = ({id,  blob, status, onDeleteItem }:  AttachmentEntryProps & AttachmentState) => {
+const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, onDeleteItem }:  AttachmentEntryProps & AttachmentState) => {
   const {t} = useTranslation()
   return <ListItem secondaryAction={
     <IconButton edge="end" aria-label={t('delete')} onClick={() => onDeleteItem(id)}>
@@ -55,19 +58,40 @@ const AttachmentEntry = ({id,  blob, status, onDeleteItem }:  AttachmentEntryPro
         {statusToIcon(status)}
       </Avatar>
     </ListItemAvatar>
-    <ListItemText primary={blob.name} secondary={statusToProgress(t, status)}/>
+    <ListItemText
+      primary={<TextField
+        label={t('attachment.description')}
+        variant='outlined'
+        placeholder={`Describe ${blob.name} if necessary`}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          onChangeDescription(event.target.value)
+        }}
+        value={description}
+      />}
+      secondary={statusToProgress(t, status)}
+    />
   </ListItem>
 }
 
 type AttachementListProps = {
   attachmentStates: AttachmentState[]
-} & AttachmentEntryProps
+  descriptions: { id: ID, description: string }[]
+  onChangeDescription: (id: ID, description: string) => void
+  onDeleteItem: (id: ID) => void
+}
 
-const AttachmentsList = ({attachmentStates, ...entryProps}: AttachementListProps) =>
-  <List>
+const AttachmentsList = ({attachmentStates, descriptions, onChangeDescription, onDeleteItem}: AttachementListProps) => {
+  const getDescription = (id: ID) =>
+    descriptions.filter(description => description.id === id)[0]?.description
+  return <List>
     {attachmentStates.map(({id, blob, status}) =>
-      <AttachmentEntry key={id} id={id} blob={blob} status={status} {...entryProps}/>
+      <AttachmentEntry key={id} id={id} blob={blob} status={status}
+        description={getDescription(id)}
+        onChangeDescription={description => onChangeDescription(id, description)}
+        onDeleteItem={onDeleteItem}
+      />
     )}
   </List>
+}
 
 export default AttachmentsList
