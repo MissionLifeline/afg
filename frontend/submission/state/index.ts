@@ -1,4 +1,5 @@
 export * from './useArmoredDatastore'
+export * from './useSubmittedStore'
 export * from './useTokenStore'
 export * from './useTranslationState'
 export * from './useWizardState'
