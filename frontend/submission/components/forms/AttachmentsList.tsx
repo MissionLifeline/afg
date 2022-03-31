@@ -9,7 +9,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import {useTranslation} from 'react-i18next'
 
-import {AttachmentState, AttachmentStatus, useArmoredDatastore} from '../../state'
+import {AttachmentState, AttachmentStatus} from '../../state'
 
 const statusToProgress = (t: (s: string) => string, status: AttachmentStatus) => {
   switch(status) {
@@ -37,7 +37,7 @@ const statusToIcon = (status: AttachmentStatus) => {
   }
 }
 
-const AttachmentEntry = ({ id, blob, status }: AttachmentState) => {
+const AttachmentEntry = ({ blob, status }: AttachmentState) => {
   const {t} = useTranslation()
   return <ListItem>
     <ListItemAvatar>
@@ -49,14 +49,15 @@ const AttachmentEntry = ({ id, blob, status }: AttachmentState) => {
   </ListItem>
 }
 
-const AttachmentsList = ({}) => {
-  const { attachments } = useArmoredDatastore()
+type AttachementListProps = {
+  attachmentStates: AttachmentState[]
+}
 
-  return <List>
-    {attachments.map(({ id, blob, status }) =>
+const AttachmentsList = ({attachmentStates}: AttachementListProps) =>
+  <List>
+    {attachmentStates.map(({id, blob, status}) =>
       <AttachmentEntry key={id} id={id} blob={blob} status={status}/>
     )}
   </List>
-}
 
 export default AttachmentsList

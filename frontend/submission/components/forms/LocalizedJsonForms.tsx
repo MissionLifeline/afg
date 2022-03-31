@@ -1,6 +1,6 @@
 import {
   createAjv,
-  defaultErrorTranslator, ErrorTranslator, JsonFormsI18nState,
+  defaultErrorTranslator, ErrorTranslator, formatIs, JsonFormsI18nState,
   JsonFormsRendererRegistryEntry, or, rankWith, scopeEndIs,
   Translator, uiTypeIs
 } from '@jsonforms/core'
@@ -16,6 +16,7 @@ import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTranslationState} from '../../state'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
+import UploadRenderer from '../renderer/UploadRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
 
 type LocalizedJsonFormsProps = {
@@ -27,11 +28,15 @@ type LocalizedJsonFormsProps = {
 const scopesEndIs = (scopes: string[]) => or(...scopes.map(s => scopeEndIs(s)))
 
 const defaultRenderers = [
-  ...materialRenderers, {
+  ...materialRenderers,
+  {
     tester: rankWith(5, or(
       scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany']),
       uiTypeIs('ListWithDetail'))),
     renderer: MaterialListWithDetailRenderer
+  }, {
+    tester: rankWith(5, formatIs('upload')),
+    renderer: UploadRenderer
   }
 ]
 

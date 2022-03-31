@@ -5,7 +5,7 @@ import zustand from 'zustand'
 import {config} from '../config'
 import {encryptBlob, encryptString, readPubKeys} from '../utils'
 
-type ID = string
+export type ID = string
 
 export enum AttachmentStatus {
   /// to be processed by uploadWorker

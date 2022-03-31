@@ -45,6 +45,10 @@
     "passportNumber": {
       "type": "string"
     },
+    "passportScan": {
+      "type": "string",
+      "format": "upload"
+    },
     "passportDateOfIssue": {
       "type": "string",
       "format": "date"
