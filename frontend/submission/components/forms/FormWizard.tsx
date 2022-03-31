@@ -70,9 +70,9 @@ export const FormWizard = ({}: FormWizardProps) => {
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
       { currentStep > 0 &&
-        <Button variant='contained' color='secondary' onClick={prevStep}>{t('prevStep')}</Button> }
+        <Button variant='contained' color='secondary' onClick={prevStep} title={t('prevStep_title')}>{t('prevStep')}</Button> }
       { currentStep < 3 ?
-        <Button variant='contained' color='primary' onClick={nextStep}>{t('nextStep')}</Button> :
+        <Button variant='contained' color='primary' onClick={nextStep} title={t('nextStep_title')}>{t('nextStep')}</Button> :
         <SubmitFormButton />
       }
     </Box>
