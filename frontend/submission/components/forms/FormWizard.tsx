@@ -1,7 +1,7 @@
 import {JsonFormsCore} from '@jsonforms/core'
-import {Box, Button, Divider} from '@mui/material'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import {Box, Button, Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'

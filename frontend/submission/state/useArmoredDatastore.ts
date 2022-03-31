@@ -163,11 +163,11 @@ const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: Attach
     }))
     const encryptedChunks: Uint8Array[] = await new Promise(async (resolve, reject) => {
       if (!attachment?.blob) {
-        throw new Error("Blob vanished")
+        throw new Error('Blob vanished')
       }
       const encryptedStream = await encryptBlob(blob as Blob, pubKeys) as WebStream<Uint8Array>
       // consume the encryptedStream into encryptedChunks until finished
-      let chunks: Uint8Array[] = []
+      const chunks: Uint8Array[] = []
       // @ts-ignore
       encryptedStream.pipeTo(new WritableStream({
         write(chunk) {
@@ -211,7 +211,7 @@ const uploadWorker = async (get: () => ArmoredDatastoreState, attachment: Attach
       status: AttachmentStatus.NEW,
     }))
 
-    throw e;
+    throw e
   } finally {
     setWorkerStopped()
   }
