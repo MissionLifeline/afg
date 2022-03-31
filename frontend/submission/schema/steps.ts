@@ -1,4 +1,3 @@
-import FinalControlStep from '../components/forms/FinalControlStep'
 import {filterUndefOrNull} from '../utils'
 import applicationSchema from './application.json'
 import {applicationUISchema} from './applicationUISchema'
@@ -41,7 +40,8 @@ export const steps: WizardStep[] = [
   {
     name: 'submit',
     stepLabel: 'submit the application',
-    stepElement: FinalControlStep
+    jsonschema: {},
+    finalStep: true
   }
 
 ]
