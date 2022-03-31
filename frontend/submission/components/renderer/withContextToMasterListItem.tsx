@@ -3,7 +3,7 @@ import {
   JsonFormsState,
   Resolve,
 } from '@jsonforms/core'
-import {JsonFormsStateContext} from '@jsonforms/react/src/JsonFormsContext'
+import {JsonFormsStateContext} from '@jsonforms/react'
 import find from 'lodash/find'
 import React, {ComponentType} from 'react'
 

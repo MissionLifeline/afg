@@ -4,7 +4,8 @@
             [afg-backend.webserver.middleware.graphql :refer [wrap-graphql wrap-graphiql]]
             [afg-backend.webserver.middleware.nextjs :refer [wrap-nextjs-frontend wrap-frontend-config]]
             [afg-backend.resolver.core :refer [graphql]]
-            [afg-backend.webserver.upload :refer [POST-multipart upload-formData]]
+            [afg-backend.webserver.upload :refer [POST* upload-formData upload-attachment]]
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [compojure.core :refer [defroutes GET POST]]
             [compojure.route :as route]
             [ring.util.response :refer [response]]))
@@ -26,19 +27,21 @@
       wrap-graphql
       wrap-graphiql)
 
-  (POST-multipart "/api/upload-form"
+  (POST* "/api/upload-form"
     (fn [req]
         (let [{:keys [token userId formData]} (:params req)]
              (upload-formData token userId formData))))
 
-  (POST-multipart "/api/upload-attachment"
-    (fn [_req]
-        (response "TODO: Needs to be implemented")))
+  (POST* "/api/upload-attachment"
+    (fn [req]
+        (let [{:keys [token userId fileId fileType attachment]} (:params req)]
+             (upload-attachment token userId fileId fileType attachment))))
 
   (route/not-found "Not Found"))
 
 (def app
   (-> app-routes
+      (wrap-multipart-params)  ;; when receiving streams, we can't call it multiple times on the same body
 
       (wrap-nextjs-frontend)
       (wrap-frontend-config)

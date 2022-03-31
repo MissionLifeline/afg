@@ -1,22 +1,26 @@
 import {JsonFormsCore} from '@jsonforms/core'
-import {Check,Lock, LockOpen} from '@mui/icons-material'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import {Box, Button, Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
+import AddAttachmentButton from './AddAttachmentButton'
+import AttachmentsList from './AttachmentsList'
 import LocalizedJsonForms from './LocalizedJsonForms'
 import SubmitFormButton from './SubmitFormButton'
 
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
-  const {currentStep} = useWizardState()
-  const {setSerializedPubKeys, pubKeys, encryptedFormData} = useArmoredDatastore()
+  const {t} = useTranslation()
+  const {currentStep, nextStep, prevStep} = useWizardState()
+  const {attachments, setSerializedPubKeys, pubKeys, formData, removeAttachment} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
-  const [encrypted, setEncrypted] = useState(false)
 
   const {data} = useGet_KeysQuery({token: 'exampleToken'})
 
@@ -32,8 +36,8 @@ export const FormWizard = ({}: FormWizardProps) => {
   const {setFormData} = useArmoredDatastore()
 
   useEffect(() => {
-    log.debug({encryptedFormData})
-  }, [encryptedFormData])
+    log.debug({formData})
+  }, [formData])
 
 
   const handleFormChange = useCallback(
@@ -48,14 +52,8 @@ export const FormWizard = ({}: FormWizardProps) => {
     () => {
       if (pubKeys.length <= 0) return
       setFormData(allFormsState)
-      setEncrypted(true)
     },
     [pubKeys, allFormsState, setFormData])
-
-  useEffect(() => {
-    setEncrypted(false)
-  }, [allFormsState, setEncrypted])
-
 
   return <>
     {[steps[currentStep]]
@@ -69,10 +67,24 @@ export const FormWizard = ({}: FormWizardProps) => {
           data={allFormsState[name] || {}}
           validationMode={'ValidateAndShow'}
         />))}
+    <AddAttachmentButton/>
+    <AttachmentsList attachmentStates={attachments} onDeleteItem={removeAttachment} />
     <Divider style={{margin: '1em'}}/>
-    <Box display='flex' flexDirection='row'>
-      <Button startIcon={encrypted ? <Lock /> :  <LockOpen/>} endIcon={encrypted ? <Check /> : undefined} variant={'contained'} onClick={handleEncryptAndSend}>encrypt</Button>
-      <SubmitFormButton />
+    <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
+      { currentStep > 0 &&
+        <Button variant='contained' color='secondary'
+          onClick={prevStep}
+          title={t('prevStep_title')}
+          startIcon={<NavigateBeforeIcon/>}
+        >{t('prevStep')}</Button> }
+      { currentStep < 3 ?
+        <Button variant='contained' color='primary'
+          onClick={nextStep}
+          title={t('nextStep_title')}
+          endIcon={<NavigateNextIcon/>}
+        >{t('nextStep')}</Button> :
+        <SubmitFormButton />
+      }
     </Box>
   </>
 }

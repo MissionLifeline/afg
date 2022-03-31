@@ -1,4 +1,4 @@
-import {Send} from '@mui/icons-material'
+import {Check,Error,Lock,Pending,Send} from '@mui/icons-material'
 import {Button} from '@mui/material'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTokenStore} from '../../state/useTokenStore'
@@ -13,40 +13,29 @@ type SubmitFormButtonProps = Record<string, never>
 const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
   const {token} = useTokenStore()
-  const { encryptedFormData } = useArmoredDatastore()
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
     setSubmitted(false)
-  }, [encryptedFormData, setSubmitted])
+  }, [formData, setSubmitted])
 
-  const prepareBody = useCallback(
-    () => {
-      if(token) {
-        const formData = new FormData()
-        formData.append('token', token)
-        formData.append('userId', "TODOmock")
-        // @ts-ignore
-        formData.append('formData', new Blob([encryptedFormData]))
-        return formData
-      }
-    },
-    [token, encryptedFormData])
-
-
-  const { mutate, data, isSuccess  } = useMutation('upload-form', async () =>
-    token && fetch(`${config.backend_base_url}/api/upload-form`, {
-      method: 'POST',
-      body: prepareBody()
-    }))
+  const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', sendFormData)
 
   useEffect(() => {
-    setSubmitted(!!(isSuccess && data))
-  }, [isSuccess, data])
+    setSubmitted(!!isSuccess)
+  }, [isSuccess])
 
-
+  const endIcon = isLoading ? <Pending/> :
+    isSuccess ? <Check/> :
+    isError ? <Error/> :
+    <Send/>
   // @ts-ignore
-  return <Button color={ submitted  ?  'success' : 'error'} variant={'outlined'} startIcon={<Send />} onClick={() => {mutate({variables: {formData: encryptedFormData}})}} >{
+  return <Button endIcon={endIcon}
+    color={ isIdle ? 'primary' : !isError ?  'success' : 'error'}
+    variant='contained'
+    disabled={isLoading}
+    onClick={() => {mutate()}}
+  >{
     submitted ? t('submitted') : t('submit')
   }</Button>
 }

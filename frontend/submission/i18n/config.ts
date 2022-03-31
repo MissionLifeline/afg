@@ -1,12 +1,13 @@
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
+import log from 'loglevel'
 import {initReactI18next} from 'react-i18next'
 
 import {steps} from '../schema'
 import {WizardStep} from '../schema/types'
 import {jsonSchema2Translation} from '../schema/utils'
 import {LocalizedFormTranslation} from '../schema/utils/types'
-import {foldInner2Outer} from '../utils'
+import {foldInner2Outer, isDevelopment} from '../utils'
 import de from './de.json'
 import en from './en.json'
 import {formNamespace} from './formNamespace'
@@ -75,6 +76,9 @@ i18next
     fallbackLng: 'en',
     ns ,
     defaultNS: 'common',
+
+    missingKeyHandler: (lngs, ns1, key) => log.debug('missing translation', {key, lngs, ns}),
+    saveMissing: isDevelopment(),
 
     interpolation: {
       escapeValue: false, // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape

@@ -1,9 +1,20 @@
 {
   "language": "Deutsch",
-  "submit": "abschicken",
-  "submitted": "abgeschickt",
+  "prevStep": "Zurück",
+  "prevStep_title": "Zurück zum vorhergehenden Schritt",
+  "nextStep": "Fortfahren",
+  "nextStep_title": "Fortfahren mit dem nächsten Schritt",
+  "submit": "Absenden",
+  "submitted": "Übermittelt",
+  "delete": "löschen",
   "error": {
-    "format": "Falsches Format angeggeben",
-    "required": "Diese Angabe ist notwenig"
+    "format": "Falsches Format angegeben",
+    "required": "Diese Angabe ist notwenig",
+    "transfer": "Datenübertragungsfehler"
+  },
+  "attachment": {
+    "add_document": "Dokument hinzufügen",
+    "add": "{{label}} hinzufügen",
+    "replace": "{{label}} ersetzen"
   }
 }
