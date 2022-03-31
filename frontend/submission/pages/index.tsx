@@ -8,8 +8,9 @@ import {useEffect} from 'react'
 import {FormWizard} from '../components/forms/FormWizard'
 import {WizardStepper} from '../components/forms/WizardStepper'
 import { CustomAppBar } from '../components/layout'
+import PageFooter from '../components/layout/PageFooter'
 import { LanguageSelection } from '../components/user'
-import {useTokenStore} from '../state/useTokenStore'
+import {useTokenStore} from '../state'
 import {isDevelopment} from '../utils'
 
 const Home: NextPage = () => {
@@ -27,7 +28,7 @@ const Home: NextPage = () => {
 
 
   return (
-    <div>
+    <div className={'wrapper'}>
       <Head>
         <title>Afg Escape</title>
       </Head>
@@ -42,6 +43,10 @@ const Home: NextPage = () => {
           <FormWizard />
         </Box>
       </main>
+
+      <div className={'footer'}>
+        <PageFooter />
+      </div>
 
     </div>
   )

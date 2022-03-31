@@ -1,7 +1,4 @@
 import {JsonFormsCore} from '@jsonforms/core'
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import {Box, Button, Divider} from '@mui/material'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -10,13 +7,11 @@ import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useArmoredDatastore, useWizardState} from '../../state'
 import LocalizedJsonForms from './LocalizedJsonForms'
-import SubmitFormButton from './SubmitFormButton'
 
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
-  const {t} = useTranslation()
-  const {currentStep, nextStep, prevStep} = useWizardState()
+  const { currentStep } = useWizardState()
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
@@ -61,23 +56,6 @@ export const FormWizard = ({}: FormWizardProps) => {
         />}
         {stepElement && stepElement()}
       </>)}
-    <Divider style={{margin: '1em'}}/>
-    <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
-      { currentStep > 0 &&
-        <Button variant='contained' color='secondary'
-          onClick={prevStep}
-          title={t('prevStep_title')}
-          startIcon={<NavigateBeforeIcon/>}
-        >{t('prevStep')}</Button> }
-      { currentStep < steps.length - 1  ?
-        <Button variant='contained' color='primary'
-          onClick={nextStep}
-          title={t('nextStep_title')}
-          endIcon={<NavigateNextIcon/>}
-        >{t('nextStep')}</Button> :
-        <SubmitFormButton />
-      }
-    </Box>
   </>
 }
 
