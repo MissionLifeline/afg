@@ -24,12 +24,12 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     setSubmitted(!!isSuccess)
   }, [isSuccess])
 
-  const startIcon = isLoading ? <Pending/> :
+  const endIcon = isLoading ? <Pending/> :
     isSuccess ? <Check/> :
     isError ? <Error/> :
     <Send/>
   // @ts-ignore
-  return <Button startIcon={startIcon}
+  return <Button endIcon={endIcon}
     color={ isIdle ? 'primary' : !isError ?  'success' : 'error'}
     variant='contained'
     disabled={isLoading}

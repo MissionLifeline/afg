@@ -1,5 +1,7 @@
 import {JsonFormsCore} from '@jsonforms/core'
 import {Box, Button, Divider} from '@mui/material'
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -70,9 +72,17 @@ export const FormWizard = ({}: FormWizardProps) => {
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
       { currentStep > 0 &&
-        <Button variant='contained' color='secondary' onClick={prevStep} title={t('prevStep_title')}>{t('prevStep')}</Button> }
+        <Button variant='contained' color='secondary'
+          onClick={prevStep}
+          title={t('prevStep_title')}
+          startIcon={<NavigateBeforeIcon/>}
+        >{t('prevStep')}</Button> }
       { currentStep < 3 ?
-        <Button variant='contained' color='primary' onClick={nextStep} title={t('nextStep_title')}>{t('nextStep')}</Button> :
+        <Button variant='contained' color='primary'
+          onClick={nextStep}
+          title={t('nextStep_title')}
+          endIcon={<NavigateNextIcon/>}
+        >{t('nextStep')}</Button> :
         <SubmitFormButton />
       }
     </Box>
