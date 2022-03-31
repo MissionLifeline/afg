@@ -54,10 +54,6 @@ export const FormWizard = ({}: FormWizardProps) => {
     [pubKeys, allFormsState, setFormData])
 
   return <>
-    { currentStep > 0 ?
-      <Button variant='contained' color='secondary' onClick={prevStep}>{t('prevStep')}</Button> :
-      ''
-    }
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema}) => (
         <LocalizedJsonForms
@@ -73,6 +69,8 @@ export const FormWizard = ({}: FormWizardProps) => {
     <AttachmentsList/>
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row'>
+      { currentStep > 0 &&
+        <Button variant='contained' color='secondary' onClick={prevStep}>{t('prevStep')}</Button> }
       { currentStep < 3 ?
         <Button variant='contained' color='primary' onClick={nextStep}>{t('nextStep')}</Button> :
         <SubmitFormButton />
