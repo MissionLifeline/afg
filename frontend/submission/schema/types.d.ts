@@ -5,7 +5,8 @@ import {LocalizedFormTranslation} from './utils/types'
 export type WizardStep = {
   name: string
   stepLabel: string
-  jsonschema: JsonSchema
+  jsonschema?: JsonSchema
   uiSchema?: UISchemaElement
   translation?: LocalizedFormTranslation
+  stepElement?: () => JSX.Element
 }

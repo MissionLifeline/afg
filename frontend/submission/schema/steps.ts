@@ -1,3 +1,4 @@
+import FinalControlStep from '../components/forms/FinalControlStep'
 import applicationSchema from './application.json'
 import {applicationUISchema} from './applicationUISchema'
 import fellowApplicants from './fellowApplicants.json'
@@ -35,6 +36,11 @@ export const steps: WizardStep[] = [
     stepLabel: 'fellow applicants',
     jsonschema: fellowApplicants,
     uiSchema: fellowApplicantsUISchema
+  },
+  {
+    name: 'submit',
+    stepLabel: 'submit the application',
+    stepElement: FinalControlStep
   }
 
 ]

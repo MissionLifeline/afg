@@ -49,8 +49,8 @@ export const FormWizard = ({}: FormWizardProps) => {
 
   return <>
     {[steps[currentStep]]
-      .map(({name, jsonschema, uiSchema}) => (
-        <LocalizedJsonForms
+      .map(({name, jsonschema, uiSchema, stepElement}) =>  <>
+        {jsonschema && <LocalizedJsonForms
           key={name}
           name={name}
           schema={jsonschema}
@@ -58,7 +58,9 @@ export const FormWizard = ({}: FormWizardProps) => {
           onChange={(state) => handleFormChange(name, state)}
           data={allFormsState[name] || {}}
           validationMode={'ValidateAndShow'}
-        />))}
+        />}
+        {stepElement && stepElement()}
+      </>)}
     <Divider style={{margin: '1em'}}/>
     <Box display='flex' flexDirection='row' sx={{ 'justify-content': 'space-around' }}>
       { currentStep > 0 &&
@@ -67,7 +69,7 @@ export const FormWizard = ({}: FormWizardProps) => {
           title={t('prevStep_title')}
           startIcon={<NavigateBeforeIcon/>}
         >{t('prevStep')}</Button> }
-      { currentStep < 3 ?
+      { currentStep < steps.length - 1  ?
         <Button variant='contained' color='primary'
           onClick={nextStep}
           title={t('nextStep_title')}

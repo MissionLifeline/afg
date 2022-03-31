@@ -26,9 +26,10 @@ const formTranslationFactory: (callback: FormTranslationFactoryCallback) => { de
         [lang]: {
           ...(prev[lang] || {}),
           ...Object.fromEntries(
-            steps.map((step) =>
-              [formNamespace(step.name),
-                callback(step, lang)]))
+            steps.filter(({jsonschema}) => !!jsonschema)
+              .map((step) =>
+                [formNamespace(step.name),
+                  callback(step, lang)]))
         }
       }),
       {de: {}, en: {}})
@@ -43,7 +44,6 @@ export const generatedDefaultFormTranslations = formTranslationFactory(
 
 export const fromTranslationStateToFormTranslation = (formTranslation: { [k: string]: LocalizedFormTranslation }) =>
   foldInner2Outer(formTranslation)
-
 
 
 export const resources: { [k in LanguageKeys]: any } = {
@@ -74,7 +74,7 @@ i18next
     resources,
 
     fallbackLng: 'en',
-    ns ,
+    ns,
     defaultNS: 'common',
 
     missingKeyHandler: (lngs, ns1, key) => log.debug('missing translation', {key, lngs, ns}),
