@@ -49,7 +49,7 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(allFormsState)
     }, [setAllFormsState, pubKeys, allFormsState, setFormData])
 
-  return !data?.get_keys.tokenValid ? 'TODO: show nice component when combination of token+userId is invalid' : <>
+  return !data?.get_keys.tokenValid ? <>TODO: show nice component when combination of token+userId is invalid</> : <>
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema, finalStep}) => <>
         {!finalStep
