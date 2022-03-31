@@ -34,8 +34,8 @@
 
   (POST* "/api/upload-attachment"
     (fn [req]
-        (let [{:keys [token userId fileId attachment]} (:params req)]
-             (upload-attachment token userId fileId attachment))))
+        (let [{:keys [token userId fileId fileType attachment]} (:params req)]
+             (upload-attachment token userId fileId fileType attachment))))
 
   (route/not-found "Not Found"))
 

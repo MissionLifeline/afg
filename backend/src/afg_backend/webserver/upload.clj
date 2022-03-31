@@ -66,20 +66,19 @@
                {:status 500
                 :body "store-upload failed. Please ensure path and filename are valid"}))))
 
+(def mime->extension {"application/pdf" ".pdf"
+                      "image/jpeg" ".jpeg"})
+
 (defn upload-attachment
-  [token userId fileId attachment]
+  [token userId fileId fileType attachment]
   (let [source (:tempfile attachment)
         upload-limit-mb (:upload-limit-mb env)
         path token
         date (current-date-for-filename)
-        filename (str "attachment" "_" fileId "_" date ".json.pgp")]
+        extension (mime->extension fileType)
+        filename (str "attachment" "_" fileId "_" date extension ".pgp")]
 
        (cond
-         (not source)  ;; TODO this is the current state
-           (do (prn token userId fileId attachment)
-               (prn attachment)
-               {:status 200  ;; actually it would be a 400
-                :body "WIP: attachment couldn't be parsed."})
          (not (and token userId fileId attachment source))
            {:status 400
             :body "Request misses a required param"}
