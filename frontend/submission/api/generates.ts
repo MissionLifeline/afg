@@ -14,34 +14,66 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Anything not yet specified */
+  Json: any;
+  /** Anything not yet specified */
+  JsonInput: any;
   /** The 'Long' scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^64) and 2^64 - 1. */
   Long: any;
+};
+
+/** If this server supports mutation, the type that mutation operations will be rooted at. */
+export type MutationType = {
+  __typename?: 'MutationType';
+  write_translations: Scalars['Boolean'];
+};
+
+
+/** If this server supports mutation, the type that mutation operations will be rooted at. */
+export type MutationTypeWrite_TranslationsArgs = {
+  translationsInput: Scalars['JsonInput'];
 };
 
 /** The type that query operations will be rooted at. */
 export type QueryType = {
   __typename?: 'QueryType';
   /** PGP public keys of the editors that are allowed to read the data submitted with this token */
-  get_keys: Array<Scalars['String']>;
+  get_keys: Get_Keys;
+  get_translations: Scalars['Json'];
 };
 
 
 /** The type that query operations will be rooted at. */
 export type QueryTypeGet_KeysArgs = {
   token: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+/** PGP public keys of the editors that are allowed to read the data submitted with this token */
+export type Get_Keys = {
+  __typename?: 'get_keys';
+  errors?: Maybe<Scalars['String']>;
+  pubKeys: Array<Scalars['String']>;
+  /** Self descriptive. */
+  tokenValid: Scalars['Boolean'];
 };
 
 export type Get_KeysQueryVariables = Exact<{
   token: Scalars['String'];
+  userId?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type Get_KeysQuery = { __typename?: 'QueryType', get_keys: Array<string> };
+export type Get_KeysQuery = { __typename?: 'QueryType', get_keys: { __typename?: 'get_keys', errors?: string | null, tokenValid: boolean, pubKeys: Array<string> } };
 
 
 export const Get_KeysDocument = `
-    query get_keys($token: String!) {
-  get_keys(token: $token)
+    query get_keys($token: String!, $userId: String) {
+  get_keys(token: $token, userId: $userId) {
+    errors
+    tokenValid
+    pubKeys
+  }
 }
     `
 export const useGet_KeysQuery = <

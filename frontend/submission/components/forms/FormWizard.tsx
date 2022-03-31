@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
-import {useArmoredDatastore, useWizardState} from '../../state'
+import {useTokenStore, useArmoredDatastore, useWizardState} from '../../state'
 import LocalizedJsonForms from './LocalizedJsonForms'
 
 type FormWizardProps = Record<string, never>
@@ -15,14 +15,16 @@ export const FormWizard = ({}: FormWizardProps) => {
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
-  const {data} = useGet_KeysQuery({token: 'exampleToken'})
-
+  const {token} = useTokenStore()
+  const {data} = useGet_KeysQuery({token: token||''}, {enabled: !!token, staleTime: 60*60*1000})
 
   useEffect(() => {
     if (!data) return
-    const {get_keys: fetchedPubKeys} = data
-    log.debug({fetchedPubKeys})
-    setSerializedPubKeys(fetchedPubKeys)
+    const {errors, tokenValid, pubKeys} = data.get_keys
+    if (!tokenValid) console.error("token or userId is not valid")
+    if (errors && tokenValid) throw Error(errors)
+    log.debug({pubKeys})
+    setSerializedPubKeys(pubKeys)
   }, [data, setSerializedPubKeys])
 
 
@@ -42,7 +44,7 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(allFormsState)
     }, [setAllFormsState, pubKeys, allFormsState, setFormData])
 
-  return <>
+  return !data?.get_keys.tokenValid ? 'TODO: show nice component when combination of token+userId is invalid' : <>
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema, stepElement}) =>  <>
         {jsonschema && <LocalizedJsonForms
