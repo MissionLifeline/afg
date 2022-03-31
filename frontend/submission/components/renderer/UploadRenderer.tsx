@@ -43,7 +43,7 @@ const UploadRenderer = ({data, handleChange, path, label, schema}: UploadRendere
 
   const handleDelete = useCallback(
     (id: ID) => {
-      setUploadIDs( uploadIDs.filter((_id) => _id === id) )
+      setUploadIDs( uploadIDs.filter((_id) => _id !== id) )
     },
     [uploadIDs, setUploadIDs])
 
