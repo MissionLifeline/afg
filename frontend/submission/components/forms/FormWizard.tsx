@@ -46,14 +46,8 @@ export const FormWizard = ({}: FormWizardProps) => {
         ...prev,
         [name]: state.data
       }))
-    }, [setAllFormsState])
-
-  const handleEncryptAndSend = useCallback(
-    () => {
-      if (pubKeys.length <= 0) return
       setFormData(allFormsState)
-    },
-    [pubKeys, allFormsState, setFormData])
+    }, [setAllFormsState, pubKeys, allFormsState, setFormData])
 
   return <>
     {[steps[currentStep]]
