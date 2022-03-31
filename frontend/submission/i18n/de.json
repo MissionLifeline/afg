@@ -6,12 +6,15 @@
   "nextStep_title": "Fortfahren mit dem nächsten Schritt",
   "submit": "Absenden",
   "submitted": "Übermittelt",
+  "delete": "löschen",
   "error": {
     "format": "Falsches Format angegeben",
     "required": "Diese Angabe ist notwenig",
     "transfer": "Datenübertragungsfehler"
   },
   "attachment": {
-    "add": "Dokument hinzufügen"
+    "add_document": "Dokument hinzufügen",
+    "add": "{{label}} hinzufügen",
+    "replace": "{{label}} ersetzen"
   }
 }

@@ -1,12 +1,13 @@
 import {
+  and,
   createAjv,
-  defaultErrorTranslator, ErrorTranslator, JsonFormsI18nState,
-  JsonFormsRendererRegistryEntry, or, rankWith, scopeEndIs,
+  defaultErrorTranslator, ErrorTranslator, formatIs, hasType,
+  JsonFormsI18nState,
+  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, schemaSubPathMatches, scopeEndIs,
   Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
-import {JsonForms} from '@jsonforms/react'
-import {JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react/lib/JsonForms'
+import {JsonForms,JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
 import {Divider} from '@mui/material'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -16,6 +17,7 @@ import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTranslationState} from '../../state'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
+import UploadRenderer from '../renderer/UploadRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
 
 type LocalizedJsonFormsProps = {
@@ -27,11 +29,22 @@ type LocalizedJsonFormsProps = {
 const scopesEndIs = (scopes: string[]) => or(...scopes.map(s => scopeEndIs(s)))
 
 const defaultRenderers = [
-  ...materialRenderers, {
-    tester: rankWith(5, or(
-      scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany']),
-      uiTypeIs('ListWithDetail'))),
+  ...materialRenderers,
+  {
+    tester: rankWith(5,
+      or(
+        scopesEndIs(['fellowApplicantFamilyMembers', 'familyMembersInGermany']),
+        uiTypeIs('ListWithDetail'))),
     renderer: MaterialListWithDetailRenderer
+  }, {
+    tester: rankWith(5,
+      or(
+        formatIs('upload'),
+        and(
+          schemaMatches(schema => hasType(schema, 'array') && schema.format === 'upload'),
+          schemaSubPathMatches('items', schema => hasType(schema, 'string'))
+        ))),
+    renderer: UploadRenderer
   }
 ]
 

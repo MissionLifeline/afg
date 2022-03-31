@@ -1,6 +1,8 @@
+import {Delete} from '@mui/icons-material'
 import ArticleIcon from '@mui/icons-material/Article'
 import ErrorIcon from '@mui/icons-material/Error'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
+import {IconButton} from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import LinearProgress from '@mui/material/LinearProgress'
 import List from '@mui/material/List'
@@ -9,7 +11,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import {useTranslation} from 'react-i18next'
 
-import {AttachmentState, AttachmentStatus, useArmoredDatastore} from '../../state'
+import {AttachmentState, AttachmentStatus, ID} from '../../state'
 
 const statusToProgress = (t: (s: string) => string, status: AttachmentStatus) => {
   switch(status) {
@@ -37,9 +39,17 @@ const statusToIcon = (status: AttachmentStatus) => {
   }
 }
 
-const AttachmentEntry = ({ id, blob, status }: AttachmentState) => {
+type AttachmentEntryProps = {
+  onDeleteItem: (id: ID) => void
+}
+
+const AttachmentEntry = ({id,  blob, status, onDeleteItem }:  AttachmentEntryProps & AttachmentState) => {
   const {t} = useTranslation()
-  return <ListItem>
+  return <ListItem secondaryAction={
+    <IconButton edge="end" aria-label={t('delete')} onClick={() => onDeleteItem(id)}>
+      <Delete />
+    </IconButton>
+  }>
     <ListItemAvatar>
       <Avatar>
         {statusToIcon(status)}
@@ -49,14 +59,15 @@ const AttachmentEntry = ({ id, blob, status }: AttachmentState) => {
   </ListItem>
 }
 
-const AttachmentsList = ({}) => {
-  const { attachments } = useArmoredDatastore()
+type AttachementListProps = {
+  attachmentStates: AttachmentState[]
+} & AttachmentEntryProps
 
-  return <List>
-    {attachments.map(({ id, blob, status }) =>
-      <AttachmentEntry key={id} id={id} blob={blob} status={status}/>
+const AttachmentsList = ({attachmentStates, ...entryProps}: AttachementListProps) =>
+  <List>
+    {attachmentStates.map(({id, blob, status}) =>
+      <AttachmentEntry key={id} id={id} blob={blob} status={status} {...entryProps}/>
     )}
   </List>
-}
 
 export default AttachmentsList

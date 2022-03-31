@@ -5,7 +5,7 @@ import zustand from 'zustand'
 import {config} from '../config'
 import {encryptBlob, encryptString, readPubKeys} from '../utils'
 
-type ID = string
+export type ID = string
 
 export enum AttachmentStatus {
   /// to be processed by uploadWorker
@@ -40,6 +40,7 @@ type ArmoredDatastoreState = {
 
   attachments: AttachmentState[]
   addAttachment: (blob: File) => ID
+  addOrReplaceAttachment: (id: ID, blob: File) => ID
   updateAttachment: (fileId: ID, f: (attachment: AttachmentState) => AttachmentState) => void
   removeAttachment: (fileId: ID) => void
 
@@ -98,6 +99,24 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
         blob: fileBlob,
       }
     ]})
+    // start uploading if not already doing so
+    get().startWorker()
+
+    return id
+  },
+  addOrReplaceAttachment: (id, fileBlob: File): ID => {
+    // TODO: what if pubKeys promise is still pending in case of a
+    // very flakey network connection?
+    console.log('replace')
+    const newAttachment = {
+      id,
+      status: AttachmentStatus.NEW,
+      blob: fileBlob,
+    }
+    set(({attachments}) => (
+      { attachments: attachments.findIndex(({id: _id}) => _id === id) >= 0
+          ? attachments.map(attachment => attachment.id === id ? newAttachment : attachment)
+          : [...attachments, newAttachment]}))
     // start uploading if not already doing so
     get().startWorker()
 
