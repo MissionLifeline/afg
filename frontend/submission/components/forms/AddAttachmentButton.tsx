@@ -19,7 +19,12 @@ const AddAttachmentButton = ({onUploadsAdded, label, uploadCount = 0, ids = [], 
   const inputEl = useRef<HTMLInputElement | null>(null)
   const onInputChange = useCallback( () => {
     const files = inputEl?.current?.files
-    if (!files || !files.length || !token) {
+    if (!files || !files.length) {
+      console.error('missing files')
+      return
+    }
+    if (!token) {
+      console.error('missing token')
       return
     }
 
