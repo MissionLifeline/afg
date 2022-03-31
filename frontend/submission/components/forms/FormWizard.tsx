@@ -15,8 +15,11 @@ export const FormWizard = ({}: FormWizardProps) => {
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
-  const {token} = useTokenStore()
-  const {data} = useGet_KeysQuery({token: token||''}, {enabled: !!token, staleTime: 60*60*1000})
+  const {token, getSetUserId} = useTokenStore()
+  const userId = getSetUserId()
+  const {data} = useGet_KeysQuery({token: token||'', userId},
+                                  {enabled: Boolean(token && userId),
+                                   staleTime: 60*60*1000})
 
   useEffect(() => {
     if (!data) return

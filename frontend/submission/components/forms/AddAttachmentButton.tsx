@@ -2,7 +2,7 @@ import {Button} from '@mui/material'
 import React, {useCallback, useRef} from 'react'
 import {useTranslation} from 'react-i18next'
 
-import {ID, useArmoredDatastore,useTokenStore} from '../../state'
+import {ID, useArmoredDatastore, useTokenStore} from '../../state'
 
 type AddAttachementButtonProps = {
   onUploadsAdded?: (id: ID[]) => void,
@@ -13,7 +13,7 @@ type AddAttachementButtonProps = {
 
 const AddAttachmentButton = ({onUploadsAdded, label, uploadCount = 0, ids = [], ...inputProps}: AddAttachementButtonProps & React.InputHTMLAttributes<HTMLInputElement>) => {
   const {t} = useTranslation()
-  const {token} = useTokenStore()
+  const {token, userId} = useTokenStore()
   const { addAttachment, addOrReplaceAttachment } = useArmoredDatastore()
 
   const inputEl = useRef<HTMLInputElement | null>(null)
@@ -23,14 +23,14 @@ const AddAttachmentButton = ({onUploadsAdded, label, uploadCount = 0, ids = [], 
       console.error('missing files')
       return
     }
-    if (!token) {
-      console.error('missing token')
+    if (!token || !userId) {
+      console.error('missing token or userId')
       return
     }
 
-    const uploadedIDs = Array.from(files).map(file => (ids?.[0] && !inputProps.multiple) ? addOrReplaceAttachment(token, ids[0], file) :  addAttachment(token, file))
+    const uploadedIDs = Array.from(files).map(file => (ids?.[0] && !inputProps.multiple) ? addOrReplaceAttachment(token, userId, ids[0], file) :  addAttachment(token, userId, file))
     onUploadsAdded && onUploadsAdded(uploadedIDs)
-  }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, inputEl, ids])
+  }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, userId, inputEl, ids])
 
   return ( <>
     <Button onClick={() => inputEl.current?.click()}>

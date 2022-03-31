@@ -1,19 +1,18 @@
-import {Check,Lock,Pending,Send} from '@mui/icons-material'
+import {Check,Pending,Send} from '@mui/icons-material'
 import * as Icons from '@mui/icons-material'
 import {Button} from '@mui/material'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
-import {config} from '../../config'
 import {useArmoredDatastore,useTokenStore} from '../../state'
 
 type SubmitFormButtonProps = Record<string, never>
 
 const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
-  const {token} = useTokenStore()
-  const { formData, sendFormData } = useArmoredDatastore()
+  const {token, userId} = useTokenStore()
+  const {formData, sendFormData} = useArmoredDatastore()
   const [submitted, setSubmitted] = useState(false)
 
   useEffect(() => {
@@ -21,10 +20,10 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   }, [formData, setSubmitted])
 
   const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', async () => {
-    if (token) {
-      return await sendFormData(token)
+    if (token && userId) {
+      return await sendFormData(token, userId)
     } else {
-      throw new Error('no token')
+      throw new Error('no token or userId')
     }
   })
 
