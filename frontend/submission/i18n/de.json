@@ -12,6 +12,8 @@
     "transfer": "Datenübertragungsfehler"
   },
   "attachment": {
-    "add": "Dokument hinzufügen"
+    "add_document": "Dokument hinzufügen",
+    "add": "{{label}} hinzufügen",
+    "replace": "{{label}} ersetzen"
   }
 }

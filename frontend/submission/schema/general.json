@@ -49,6 +49,11 @@
       "type": "string",
       "format": "upload"
     },
+    "passportScanMulti": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
+    },
     "passportDateOfIssue": {
       "type": "string",
       "format": "date"

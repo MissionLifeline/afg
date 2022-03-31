@@ -1,3 +1,20 @@
 {
-  "language": "English"
+  "language": "English",
+  "prevStep": "back",
+  "prevStep_title": "back to previous step",
+  "nextStep": "next",
+  "nextStep_title": "proceed to next step",
+  "submit": "submit",
+  "submitted": "submitted",
+  "error": {
+    "format": "Wrong format given",
+    "required": "Required form field",
+    "transfer": "File transmission error"
+  },
+  "attachment": {
+    "add_document": "Dokument hinzufügen",
+    "add": "add {{label}}",
+    "replace": "replace {{label}}"
+
+  }
 }
