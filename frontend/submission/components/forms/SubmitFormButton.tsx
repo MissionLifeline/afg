@@ -1,4 +1,5 @@
-import {Check,Error,Lock,Pending,Send} from '@mui/icons-material'
+import {Check,Lock,Pending,Send} from '@mui/icons-material'
+import * as Icons from '@mui/icons-material'
 import {Button} from '@mui/material'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
@@ -22,6 +23,8 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', async () => {
     if (token) {
       return await sendFormData(token)
+    } else {
+      throw new Error('no token')
     }
   })
 
@@ -31,7 +34,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
 
   const endIcon = isLoading ? <Pending/> :
     isSuccess ? <Check/> :
-    isError ? <Error/> :
+    isError ? <Icons.Error/> :
     <Send/>
   // @ts-ignore
   return <Button endIcon={endIcon}
