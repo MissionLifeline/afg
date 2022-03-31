@@ -33,10 +33,6 @@ main {
   flex-grow: 1;
 }
 
-.form_container {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 .divider {
   margin-top: 1rem;
@@ -48,4 +44,11 @@ main {
   width: 100%;
   min-height: 3rem;
   padding: 1em;
+}
+
+.no-border {
+  .MuiOutlinedInput-notchedOutline, fieldset {
+    border: none !important;
+    border-width: 0;
+  }
 }

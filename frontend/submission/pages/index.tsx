@@ -1,4 +1,3 @@
-import {Box} from '@mui/material'
 import log from 'loglevel'
 import type { NextPage } from 'next'
 import Head from 'next/head'
@@ -39,9 +38,7 @@ const Home: NextPage = () => {
 
       <main>
         <WizardStepper />
-        <Box className={'form_container'}>
-          <FormWizard />
-        </Box>
+        <FormWizard />
       </main>
 
       <div className={'footer'}>

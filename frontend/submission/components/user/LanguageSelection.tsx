@@ -38,7 +38,7 @@ export const LanguageSelection = () => {
   return (
     <>
       <Typography>{t('language')}</Typography>
-      <Select value={selectedLang} renderValue={v => <Flag langCode={v}/>}>
+      <Select value={selectedLang} renderValue={v => <Flag langCode={v}/>} className={'no-border'}>
         {languages.map(lang => (
           <MenuItem dense value={lang} key={lang} onClick={() => i18next.changeLanguage(lang)}>
             <ListItemIcon><Flag langCode={lang}/></ListItemIcon>

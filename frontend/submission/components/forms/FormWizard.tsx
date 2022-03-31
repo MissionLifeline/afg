@@ -1,11 +1,11 @@
 import {JsonFormsCore} from '@jsonforms/core'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
-import {useTranslation} from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
 import {useTokenStore, useArmoredDatastore, useWizardState} from '../../state'
+import FinalControlStep from './FinalControlStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
 
 type FormWizardProps = Record<string, never>
@@ -59,7 +59,7 @@ export const FormWizard = ({}: FormWizardProps) => {
           data={allFormsState[name] || {}}
           validationMode={'ValidateAndShow'}
         />}
-        {stepElement && stepElement()}
+        {stepElement && <FinalControlStep />}
       </>)}
   </>
 }

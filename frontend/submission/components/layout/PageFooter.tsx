@@ -20,13 +20,12 @@ const PageFooter = ({}: PageFooterProps) => {
               title={t('prevStep_title')}
               startIcon={<NavigateBeforeIcon/>}
       >{t('prevStep')}</Button>}
-    {currentStep < steps.length - 1 ?
+    {currentStep < steps.length - 1 &&
       <Button variant='contained' color='primary'
               onClick={nextStep}
               title={t('nextStep_title')}
               endIcon={<NavigateNextIcon/>}
-      >{t('nextStep')}</Button> :
-      <SubmitFormButton/>
+      >{t('nextStep')}</Button>
     }
   </Box>
 }
