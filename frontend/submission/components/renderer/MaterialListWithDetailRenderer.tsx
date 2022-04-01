@@ -36,8 +36,9 @@ import {
 import {
   JsonFormsDispatch,
 } from '@jsonforms/react'
+import {Add} from '@mui/icons-material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {Grid, Hidden, IconButton, List, MenuItem, Select, Typography, useMediaQuery} from '@mui/material'
+import {Button, Grid, Hidden, IconButton, List, MenuItem, Select, Typography, useMediaQuery} from '@mui/material'
 import map from 'lodash/map'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
@@ -205,10 +206,9 @@ export const MaterialListWithDetailRenderer =
                     <p>No data</p>
                   )}
                   </Select>
-                  <IconButton aria-label='Delete' onClick={() => handleRemoveitem(path, selectedIndex)()} size='large'>
+                {typeof selectedIndex !== 'undefined' && <IconButton aria-label='Delete' onClick={() => handleRemoveitem(path, selectedIndex)()} size='large'>
                     <DeleteIcon />
-                  </IconButton>
-
+                  </IconButton>}
                 </Grid>
               )}
           </Grid>
@@ -223,8 +223,9 @@ export const MaterialListWithDetailRenderer =
                 path={composePaths(path, `${selectedIndex}`)}
               />
             ) : (
-              <Typography variant='h6'>No Selection</Typography>
+              <Typography variant='h6'> select one of {data.toString()} items</Typography>
             )}
+            <Button endIcon={<Add />} variant='outlined' onClick={makeAddItemCallback()}>add to {label}</Button>
           </Grid>
         </Grid>
       </Hidden>
