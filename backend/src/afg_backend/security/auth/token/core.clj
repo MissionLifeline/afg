@@ -18,5 +18,6 @@
   (let [tokenData (->token db_ctx token)]
        (when tokenData
              (if (:userId tokenData)
-                 (= userId (:userId tokenData))
+                 (or (= userId (:userId tokenData))
+                     (:ignoreUserId tokenData))
                  (token-assoc-userId! db_ctx tokenData userId)))))

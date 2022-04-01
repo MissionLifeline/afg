@@ -3,4 +3,9 @@
   :xt/spec :afg-backend.model.token/record
   :token "exampleToken"
   :assignedEditor :exampleEditor}
+ {:xt/id :demoToken
+  :xt/spec :afg-backend.model.token/record
+  :token "demoToken"
+  :ignoreUserId true
+  :assignedEditor :exampleEditor}
 ]
