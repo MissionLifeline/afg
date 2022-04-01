@@ -33,7 +33,7 @@ const AddAttachmentButton = ({onUploadsAdded, label, uploadCount = 0, ids = [], 
   }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, userId, inputEl, ids])
 
   return ( <>
-    <Button onClick={() => inputEl.current?.click()}>
+    <Button onClick={() => inputEl.current?.click()} variant='outlined'>
       { label ? (!inputProps.multiple && uploadCount > 0 ? t('attachment.replace', {label}) : t('attachment.add', {label})) : t('attachment.add_document')}
     </Button>
     <input {...inputProps} type="file" ref={inputEl} style={{ display: 'none' }}

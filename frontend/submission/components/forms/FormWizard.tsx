@@ -1,4 +1,5 @@
 import {JsonFormsCore} from '@jsonforms/core'
+import {Box} from '@mui/system'
 import log from 'loglevel'
 import React, {useCallback, useEffect, useState} from 'react'
 
@@ -49,7 +50,7 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(allFormsState)
     }, [setAllFormsState, pubKeys, allFormsState, setFormData])
 
-  return !data?.get_keys.tokenValid ? <>TODO: show nice component when combination of token+userId is invalid</> : <>
+  return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ? <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
     {[steps[currentStep]]
       .map(({name, jsonschema, uiSchema, finalStep}) => <>
         {!finalStep
@@ -64,6 +65,7 @@ export const FormWizard = ({}: FormWizardProps) => {
           />
           : <FinalControlStep/>}
       </>)}
-  </>
+  </>}
+  </Box>
 }
 
