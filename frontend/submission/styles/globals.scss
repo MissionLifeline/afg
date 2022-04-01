@@ -20,13 +20,13 @@ a {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 
 
 main {
-  margin: 1em auto;
-  max-width: 50rem;
+  max-width: 60rem;
   padding: 1em;
   display: flex;
   flex-direction: column;
