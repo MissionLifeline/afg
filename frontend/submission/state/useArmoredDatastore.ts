@@ -1,3 +1,4 @@
+import mapValues from 'lodash/mapValues'
 import {Key, WebStream} from 'openpgp'
 import { v4 as uuid } from 'uuid'
 import zustand from 'zustand'
@@ -20,8 +21,9 @@ export enum AttachmentStatus {
 
 export type AttachmentState = {
   id: ID
-  blob: File,
-  status: AttachmentStatus,
+  blob: File
+  status: AttachmentStatus
+  uploadStatus?: number
 }
 
 type ArmoredDatastoreState = {
@@ -58,7 +60,20 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   setFormData: (formData: any) => set({ formData }),
 
   sendFormData: async (token: string, userId: string) => {
-    const { formData, pubKeys } = get()
+    let { formData, pubKeys, attachments } = get()
+    // synchronize attachment upload HTTP status into formData
+    const updateUploadStatus = (id: ID, uploadStatus: undefined | number, upload: any): any =>
+      upload && upload.id === id
+      ? { ...upload, uploadStatus }
+      : upload.map
+      ? upload.map((upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
+      : typeof upload == 'object'
+      ? mapValues(upload, (upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
+      : upload
+    for (const { id, uploadStatus } of attachments) {
+      formData = updateUploadStatus(id, uploadStatus, formData)
+    }
+
     const dataString = JSON.stringify(formData)
     const encryptedFormData = await encryptString(dataString, pubKeys)
 
@@ -204,12 +219,14 @@ const uploadWorker = async (token: string, userId: string, get: () => ArmoredDat
       updateAttachment(fileId, attachment => ({
         ...attachment,
         status: AttachmentStatus.ERROR,
+        uploadStatus: res.status,
       }))
     } else if (res.ok) {
       // done
       updateAttachment(fileId, attachment => ({
         ...attachment,
         status: AttachmentStatus.DONE,
+        uploadStatus: res.status,
       }))
     } else {
       throw new Error(`upload-form: HTTP ${res.status}`)
