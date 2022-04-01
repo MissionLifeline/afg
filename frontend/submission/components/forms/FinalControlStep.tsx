@@ -1,22 +1,19 @@
-import {CheckCircle} from '@mui/icons-material'
+import {CheckCircle, Info} from '@mui/icons-material'
 import {Box, Paper, Typography} from '@mui/material'
-import { green, grey } from '@mui/material/colors'
+import {blue, green, grey} from '@mui/material/colors'
 import React from 'react'
+import {useTranslation} from 'react-i18next'
 
 import {useArmoredDatastore,useSubmittedStore} from '../../state'
 import AttachmentsList from './AttachmentsList'
 import SubmitFormButton from './SubmitFormButton'
 
 const FinalControlStep = () => {
+  const {t} = useTranslation()
   const { attachments, removeAttachment } = useArmoredDatastore()
   const {submitted} = useSubmittedStore()
-  if(submitted) {
-    return <Box>
-      <Typography variant='h2'>Successfully submitted</Typography>
-      <Typography variant='body1'>We received your data and will process it soon</Typography>
-    </Box>
-  } else {
-    return <Box
+
+  return <Box
       style={{minHeight: '50vh'}}
       display='flex'
       flexDirection='column'
@@ -26,12 +23,13 @@ const FinalControlStep = () => {
 
       <Paper elevation={3} sx={{backgroundColor: grey[100]}}>
         <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
-          <Box textAlign='center' sx={{backgroundColor: green[500], width: '100%', padding: '1em'}}>
-            <CheckCircle sx={{fontSize: '4rem', color: 'white'}}/></Box>
+          <Box textAlign='center' sx={{backgroundColor: !submitted ? blue[500] : green[500], width: '100%', padding: '1em'}}>
+            {submitted ? <CheckCircle sx={{fontSize: '4rem', color: 'white'}}/> : <Info  sx={{fontSize: '4rem', color: 'white'}} />}
+          </Box>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
-          <Typography variant='h4'>Almost done ...</Typography>
-          <Typography variant='body1'>Please check your uploads and submit finally</Typography>
+          <Typography variant='h4'>{submitted ? t('success_submit') : t('almost_done')}</Typography>
+          <Typography variant='body1'>{submitted ? t('success_received') : t('check_uploads')}</Typography>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
           <SubmitFormButton/>
@@ -42,7 +40,6 @@ const FinalControlStep = () => {
       </Paper>
 
     </Box>
-  }
 }
 
 export default FinalControlStep

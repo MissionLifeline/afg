@@ -7,6 +7,10 @@
   "submit": "submit",
   "submitted": "submitted",
   "delete": "delete",
+  "success_submit": "Successfully submitted",
+  "success_received": "We received your data and will process it soon",
+  "almost_done": "Almost done...",
+  "check_uploads": "Please check your uploads and submit finally",
   "error": {
     "format": "Wrong format given",
     "required": "Required form field",

@@ -7,6 +7,10 @@
   "submit": "Absenden",
   "submitted": "Übermittelt",
   "delete": "löschen",
+  "success_submit": "Erfolgreich übermittelt",
+  "success_received": "Wir haben die Daten erhalten und werden uns in Kürze um deren Bearbeitung kümmern",
+  "almost_done": "Fast geschafft...",
+  "check_uploads": "Bitte hochgeladene Anhänge kontrollieren und anschließend absenden",
   "error": {
     "format": "Falsches Format angegeben",
     "required": "Diese Angabe ist notwenig",
