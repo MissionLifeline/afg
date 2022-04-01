@@ -8,6 +8,7 @@ import {generalTranslation} from './generalTranslation'
 import {generalUISchema} from './generalUISchema'
 import risksSchema from './risks.json'
 import {risksTranslation} from './risksTranslation'
+import {risksUISchema} from './risksUISchema'
 import {WizardStep} from './types'
 
 
@@ -24,6 +25,7 @@ export const steps: WizardStep[] = [
     stepLabel: 'risk factors',
     jsonschema: risksSchema,
     translation: risksTranslation,
+    uiSchema: risksUISchema
   },
   {
     name: 'application',
