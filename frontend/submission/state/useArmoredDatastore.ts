@@ -122,7 +122,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   removeAttachment: (fileId: ID) => {
     set(({attachments}) => ({
-      attachments: attachments.filter(({id}) => fileId === id)
+      attachments: attachments.filter(({id}) => fileId !== id)
     }))
   },
 
