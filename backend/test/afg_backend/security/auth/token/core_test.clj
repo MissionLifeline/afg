@@ -6,14 +6,18 @@
 
 (use-fixtures :once (fn [testcases] (mount/stop) (mount/start) (testcases) (mount/stop)))
 
-(deftest introspection
+(deftest token-valid?-test
+
   (testing "not existing token"
-    (is (= nil (token-valid? db_ctx "notExistingToken" "1337coffee"))))
+    (is (= nil (token-valid? db_ctx "notExistingToken" "originalUserId"))))
 
-  (testing "new token and again with same userId"
-    (is (:xtdb.api/tx-id (token-valid? db_ctx "exampleToken" "1337coffee")))
+  (testing "new token and again with same and other userId"
+    (is (:xtdb.api/tx-id (token-valid? db_ctx "exampleToken" "originalUserId")))
     ((:sync db_ctx))
-    (is (= true (token-valid? db_ctx "exampleToken" "1337coffee"))))
+    (is (token-valid? db_ctx "exampleToken" "originalUserId"))
+    (is (not (token-valid? db_ctx "exampleToken" "someOtherUserId"))))
 
-  (testing "token + wrong userId"
-    (is (= false (token-valid? db_ctx "exampleToken" "0815coffee")))))
+  (testing "the demoToken has the :ignoreUserId attribute"
+    (is (:xtdb.api/tx-id (token-valid? db_ctx "demoToken" "originalUserId")))
+    ((:sync db_ctx))
+    (is (token-valid? db_ctx "demoToken" "someOtherUserId"))))
