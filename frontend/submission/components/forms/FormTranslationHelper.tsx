@@ -14,6 +14,7 @@ type FormTranslationHelperProps = {
   onTranslationChange: (change: Pick<JsonFormsCore, 'data' | 'errors'>) => void
   translationData: any
   schema?: JsonSchema
+  uischema?: UISchemaElement
   language: string,
   injectToCurrentLang?: boolean
 }
@@ -29,6 +30,7 @@ const FormTranslationHelper =
      translationData,
      onTranslationChange,
      schema,
+     uischema,
      language,
     injectToCurrentLang
    }: FormTranslationHelperProps) => {
@@ -64,6 +66,7 @@ const FormTranslationHelper =
       {showForm && <>
         <JsonForms
           schema={schema}
+          uischema={uischema}
           data={translationData}
           renderers={defaultRenderers}
           cells={materialCells}
