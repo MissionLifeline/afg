@@ -60,8 +60,9 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
     </ListItemAvatar>
     <ListItemText
       primary={<TextField
-        label={t('attachment.description')}
         variant='outlined'
+        sx={{ width: '100%' }}
+        label={t('attachment.description')}
         placeholder={t('attachment.placeholder', { name: blob.name })}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           onChangeDescription(event.target.value)
