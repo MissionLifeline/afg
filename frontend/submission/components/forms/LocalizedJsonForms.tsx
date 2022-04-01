@@ -39,12 +39,8 @@ const defaultRenderers = [
     renderer: MaterialListWithDetailRenderer
   }, {
     tester: rankWith(5,
-      or(
-        formatIs('upload'),
-        and(
-          schemaMatches(schema => hasType(schema, 'array') && schema.format === 'upload'),
-          schemaSubPathMatches('items', schema => hasType(schema, 'string'))
-        ))),
+      schemaMatches(schema => schema.hasOwnProperty('upload'))
+    ),
     renderer: UploadRenderer
   }
 ]
