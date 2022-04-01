@@ -9,9 +9,11 @@
           "relation": {
             "type": "string",
             "enum": [
-              "parent",
+	      "spouse",
               "child",
+              "parent",
               "sibling",
+              "uncleAunt",
               "other"
             ]
           },

@@ -7,6 +7,16 @@ const overrides: (UISchemaElement & Scopable)[] = [
   ...showOnTrue('#/properties/hazzardApplicationFiled', '#/properties/hazzardApplicationDate'),
   ...showOnTrue('#/properties/admissionApplicationFiled', '#/properties/admissionApplicationDate'),
   ...showOnTrue('#/properties/admissionApprovalFiled', '#/properties/admissionApprovalDate'),
+  { type: 'ListWithDetail',
+    scope: '#/properties/familyMembersInGermany',
+    options: {
+      elementLabelProp: ['firstName', 'lastName'],
+      detail: {
+        type: 'VerticalLayout',
+        elements: overrideScopes([], jsonSchema2UISchemaElements(schema.properties.familyMembersInGermany.items))
+      }
+    }
+  }
 ]
 export const applicationUISchema: VerticalLayout = {
   type: 'VerticalLayout',
