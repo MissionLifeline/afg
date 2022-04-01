@@ -9,7 +9,7 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
-import TextField from '@mui/material/TextField'
+import Input from '@mui/material/Input'
 import {useTranslation} from 'react-i18next'
 
 import {AttachmentState, AttachmentStatus, ID} from '../../state'
@@ -59,10 +59,8 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
       </Avatar>
     </ListItemAvatar>
     <ListItemText
-      primary={<TextField
-        variant='outlined'
+      primary={<Input
         sx={{ width: '100%' }}
-        label={t('attachment.description')}
         placeholder={t('attachment.placeholder', { name: blob.name })}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           onChangeDescription(event.target.value)
