@@ -8,6 +8,11 @@
       "type": "string",
       "format": "date"
     },
+    "hazzardApplicationAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
+    },
     "admissionApplicationFiled": {
       "type": "boolean"
     },
@@ -15,12 +20,22 @@
       "type": "string",
       "format": "date"
     },
-    "admissionApprovalFiled": {
+    "admissionApplicationAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
+    },
+    "admissionApprovalReceived": {
       "type": "boolean"
     },
     "admissionApprovalDate": {
       "type": "string",
       "format": "date"
+    },
+    "admissionApprovalAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
     },
     "familyMembersInGermany": {
       "type": "array",

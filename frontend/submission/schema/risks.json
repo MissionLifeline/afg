@@ -29,8 +29,18 @@
     "risksCV": {
       "type": "string"
     },
+    "risksCVAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
+    },
     "threatReport": {
       "type": "string"
+    },
+    "threatReportAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
     }
   },
   "required": [

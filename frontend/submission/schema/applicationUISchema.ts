@@ -4,9 +4,9 @@ import schema from './application.json'
 import {jsonSchema2UISchemaElements, overrideScopes, showOnTrue} from './utils'
 
 const overrides: (UISchemaElement & Scopable)[] = [
-  ...showOnTrue('#/properties/hazzardApplicationFiled', '#/properties/hazzardApplicationDate'),
-  ...showOnTrue('#/properties/admissionApplicationFiled', '#/properties/admissionApplicationDate'),
-  ...showOnTrue('#/properties/admissionApprovalFiled', '#/properties/admissionApprovalDate'),
+  ...showOnTrue('#/properties/hazzardApplicationFiled', ['#/properties/hazzardApplicationDate', '#/properties/hazzardApplicationAttachments']),
+  ...showOnTrue('#/properties/admissionApplicationFiled', ['#/properties/admissionApplicationDate', '#/properties/admissionApplicationAttachments']),
+  ...showOnTrue('#/properties/admissionApprovalReceived', ['#/properties/admissionApprovalDate', '#/properties/admissionApprovalAttachments']),
   { type: 'ListWithDetail',
     scope: '#/properties/familyMembersInGermany',
     options: {

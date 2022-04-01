@@ -17,12 +17,12 @@ const overrides: (UISchemaElement & Scopable)[] = [
       }
     }
   },
-  ...showOnTrue('#/properties/visaOtherCountryExisting',
-    '#/properties/visaOtherCountryWhich'),
-  ...showOnTrue('#/properties/tazkiraExisting',
-    ['#/properties/tazkiraNumber', '#/properties/tazkiraType']),
   ...showOnTrue('#/properties/passportExisting',
-    [ '#/properties/passportNumber', '#/properties/passportDateOfIssue', '#/properties/passportDateOfExpiration'])
+    ['#/properties/passportNumber', '#/properties/passportDateOfIssue', '#/properties/passportDateOfExpiration', '#/properties/passportAttachment']),
+  ...showOnTrue('#/properties/tazkiraExisting',
+    ['#/properties/tazkiraNumber', '#/properties/tazkiraType', '#/properties/tazkiraAttachment']),
+  ...showOnTrue('#/properties/visaOtherCountryExisting',
+    ['#/properties/visaOtherCountryWhich', '#/properties/visaOtherAttachments']),
 ]
 
 export const generalUISchema: VerticalLayout = {

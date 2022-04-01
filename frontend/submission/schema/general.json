@@ -45,15 +45,6 @@
     "passportNumber": {
       "type": "string"
     },
-    "passportScan": {
-      "type": "string",
-      "format": "upload"
-    },
-    "passportScanMulti": {
-      "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
-    },
     "passportDateOfIssue": {
       "type": "string",
       "format": "date"
@@ -61,6 +52,10 @@
     "passportDateOfExpiration": {
       "type": "string",
       "format": "date"
+    },
+    "passportAttachment": {
+      "type": "string",
+      "format": "upload"
     },
     "tazkiraExisting": {
       "type": "boolean"
@@ -75,11 +70,20 @@
     "tazkiraNumber": {
       "type": "string"
     },
+    "tazkiraAttachment": {
+      "type": "string",
+      "format": "upload"
+    },
     "visaOtherCountryExisting": {
       "type": "boolean"
     },
     "visaOtherCountryWhich": {
       "type": "string"
+    },
+    "visaOtherAttachments": {
+      "type": "array",
+      "items": { "type":  "string" },
+      "format": "upload"
     }
   },
   "required": [
