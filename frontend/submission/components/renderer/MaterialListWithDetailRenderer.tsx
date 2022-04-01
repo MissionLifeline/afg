@@ -225,7 +225,7 @@ export const MaterialListWithDetailRenderer =
             ) : (
               <Typography variant='h6'> select one of {data.toString()} items</Typography>
             )}
-            <Button endIcon={<Add />} variant='outlined' onClick={makeAddItemCallback()}>add to {label}</Button>
+            <Button endIcon={<Add />} variant='outlined' onClick={makeAddItemCallback(path, handleCreateDefaultValue())}>add to {label}</Button>
           </Grid>
         </Grid>
       </Hidden>
