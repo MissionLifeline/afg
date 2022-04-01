@@ -19,6 +19,8 @@
   "attachment": {
     "add_document": "Dokument hinzufügen",
     "add": "{{label}} hinzufügen",
-    "replace": "{{label}} ersetzen"
+    "replace": "{{label}} ersetzen",
+    "description": "Beschreibung",
+    "placeholder": "Beschreibung für Anhang {{name}}"
   }
 }

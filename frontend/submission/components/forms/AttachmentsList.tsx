@@ -62,7 +62,7 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
       primary={<TextField
         label={t('attachment.description')}
         variant='outlined'
-        placeholder={`Describe ${blob.name} if necessary`}
+        placeholder={t('attachment.placeholder', { name: blob.name })}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           onChangeDescription(event.target.value)
         }}
