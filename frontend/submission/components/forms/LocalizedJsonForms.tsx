@@ -7,8 +7,9 @@ import {
   Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
-import {JsonForms,JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
+import {JsonForms, JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
 import {Divider} from '@mui/material'
+import {useRouter} from 'next/router'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
@@ -65,6 +66,8 @@ const LocalizedJsonForms =
 
     const {formTranslation, setFormTranslationForLang} = useTranslationState()
     const ns = formNamespace(name)
+    const { query: { translationHelper }, isReady } = useRouter()
+    const enableTranslationHelper = translationHelper === 'true'
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
     const [translationsSchema] = useState(jsonSchema2TranslationJsonSchema(schema || {}))
@@ -131,14 +134,15 @@ const LocalizedJsonForms =
           ajv={ajv}
           {...props}
         />
-        <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
-        {<FormTranslationHelper
-          name={name}
-          language={language}
-          schema={translationsSchema}
-          translationData={formTranslation[name]?.[language] || {}}
-          onTranslationChange={({data}) => setFormTranslationForLang(name, language, data)}
-        />}
+        {enableTranslationHelper && <>
+          <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
+          <FormTranslationHelper
+            name={name}
+            language={language}
+            schema={translationsSchema}
+            translationData={formTranslation[name]?.[language] || {}}
+            onTranslationChange={({data}) => setFormTranslationForLang(name, language, data)}
+          /></>}
 
       </>
     )
