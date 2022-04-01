@@ -1,4 +1,4 @@
-import {JsonFormsCore, JsonSchema} from '@jsonforms/core'
+import {JsonFormsCore, JsonSchema, UISchemaElement} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {Box, ToggleButton} from '@mui/material'

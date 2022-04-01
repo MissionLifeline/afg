@@ -8,12 +8,12 @@ import {
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms, JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
 import {Divider} from '@mui/material'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo,useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
 import {formNamespace} from '../../i18n'
-import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
+import {jsonSchema2TranslationJsonSchema, jsonSchema2TranslationUISchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTokenStore, useTranslationState} from '../../state'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
@@ -79,7 +79,10 @@ const LocalizedJsonForms =
     const enableTranslationHelper = data_is_translator?.is_translator
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
-    const translationsSchema = useMemo(() => jsonSchema2TranslationJsonSchema(schema || {}), [schema])
+    const [translationsSchema, translationUISchema] = useMemo(() => [
+      jsonSchema2TranslationJsonSchema(schema || {}),
+      jsonSchema2TranslationUISchema(schema || {}),
+    ], [schema])
     const {
       t,
       i18n: {language, exists: _exists, addResourceBundle, removeResourceBundle, reloadResources}
@@ -149,6 +152,7 @@ const LocalizedJsonForms =
             name={name}
             language={language}
             schema={translationsSchema}
+            uischema={translationUISchema}
             translationData={formTranslation[name]?.[language] || {}}
             onTranslationChange={({data}) => setFormTranslationForLang(name, language, data)}
           /></>}
