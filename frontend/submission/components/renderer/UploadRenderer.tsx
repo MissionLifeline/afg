@@ -10,6 +10,8 @@ import AttachmentsList from '../forms/AttachmentsList'
 type Upload = {
   id: ID,
   description: string,
+  fileName: string,
+  fileType: string,
 }
 
 type UploadRendererProps = {
@@ -41,9 +43,12 @@ const UploadRenderer = ({data, handleChange, path, label, schema, visible}: Uplo
   const ownAttachmentStates = useMemo(() => attachments.filter(({id}) => uploads.some(upload => upload.id === id)), [attachments, uploads])
 
 
-  const handleAddUploadIDs = useCallback(
-    (ids: ID[]) => {
-      setUploads([...uploads, ...ids.map(id => ({ id, description: '' }))])
+  const handleAddUploads = useCallback(
+    (newUploads: { id: ID, fileName: string, fileType: string }[]) => {
+      setUploads([
+        ...uploads,
+        ...newUploads.map(upload => ({ ...upload, description: '' })),
+      ])
     }, [uploads, setUploads])
 
   const handleDelete = useCallback(
@@ -64,7 +69,7 @@ const UploadRenderer = ({data, handleChange, path, label, schema, visible}: Uplo
 
   return <Hidden xsUp={!visible}>
     <Box style={{marginTop: '1em'}}>
-      <AddAttachmentButton ids={uploads.map(({ id }) => id)} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
+      <AddAttachmentButton ids={uploads.map(({ id }) => id)} onUploadsAdded={handleAddUploads} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
       <AttachmentsList
         attachmentStates={ownAttachmentStates}
         descriptions={uploads}
