@@ -1,6 +1,6 @@
 import {JsonSchema} from '@jsonforms/core'
 import {withJsonFormsControlProps} from '@jsonforms/react'
-import {Box} from '@mui/material'
+import {Box, Hidden} from '@mui/material'
 import React, {useCallback, useMemo} from 'react'
 
 import {ID, useArmoredDatastore} from '../../state'
@@ -13,26 +13,27 @@ type UploadRendererProps = {
   path: string;
   label: string;
   schema: JsonSchema;
+  visible?: boolean
 }
 
-const UploadRenderer = ({data, handleChange, path, label, schema}: UploadRendererProps) => {
+const UploadRenderer = ({data, handleChange, path, label, schema, visible}: UploadRendererProps) => {
   const isArray = useMemo(() => schema.type === 'array', [schema])
   const uploadIDs = useMemo(() =>
     isArray && data
       ? data.filter((d: any) => typeof d === 'string') as string[]
-      : typeof data ==='string'
+      : typeof data === 'string'
         ? data.split(',')
         : [], [data, isArray])
 
   const setUploadIDs = useCallback(
     (ids: string[]) => {
       isArray
-        ? handleChange( path, ids)
-        : handleChange( path, ids[0])
+        ? handleChange(path, ids)
+        : handleChange(path, ids[0])
     },
     [path, handleChange, isArray])
 
-  const { attachments } = useArmoredDatastore()
+  const {attachments} = useArmoredDatastore()
   const ownAttachmentStates = useMemo(() => attachments.filter(({id}) => uploadIDs.includes(id)), [attachments, uploadIDs])
 
 
@@ -43,15 +44,18 @@ const UploadRenderer = ({data, handleChange, path, label, schema}: UploadRendere
 
   const handleDelete = useCallback(
     (id: ID) => {
-      setUploadIDs( uploadIDs.filter((_id) => _id !== id) )
+      setUploadIDs(uploadIDs.filter((_id) => _id !== id))
     },
     [uploadIDs, setUploadIDs])
 
 
-  return <Box>
-    <AddAttachmentButton ids={uploadIDs} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
-    <AttachmentsList attachmentStates={ownAttachmentStates} onDeleteItem={handleDelete} />
-  </Box>
+  return <Hidden xsUp={!visible}>
+    <Box style={{marginTop: '1em'}}>
+      <AddAttachmentButton ids={uploadIDs} onUploadsAdded={handleAddUploadIDs} multiple={isArray} label={label}
+                           uploadCount={ownAttachmentStates.length}/>
+      <AttachmentsList attachmentStates={ownAttachmentStates} onDeleteItem={handleDelete}/>
+    </Box>
+  </Hidden>
 }
 
 export default withJsonFormsControlProps(UploadRenderer)
