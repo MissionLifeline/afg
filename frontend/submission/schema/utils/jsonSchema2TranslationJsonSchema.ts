@@ -1,4 +1,4 @@
-import {JsonSchema, UISchemaElement} from '@jsonforms/core'
+import {GroupLayout, JsonSchema, Layout, UISchemaElement, VerticalLayout} from '@jsonforms/core'
 
 export const jsonSchema2TranslationJsonSchema: (jsonschema: JsonSchema) => JsonSchema
   = (jsonschema) => ({
@@ -13,25 +13,26 @@ export const jsonSchema2TranslationJsonSchema: (jsonschema: JsonSchema) => JsonS
         ]
       ).flat())
 })
-export const jsonSchema2TranslationUISchema: (jsonschema: JsonSchema) => UISchemaElement
-  = (jsonschema) => ({
+export const jsonSchema2TranslationUISchema: <K extends Layout = VerticalLayout>(jsonschema: JsonSchema, scopeBase?: string, options?: Partial<K>) => UISchemaElement
+  = (jsonschema, scopeBase = '#/properties/', options) => ({
   type: 'VerticalLayout',
+  ...(options || {}),
   elements:
     Object.entries(jsonschema.properties || {})
       .map(([k, v]) =>
         [
           {
             type: 'Control',
-            scope: `#/properties/${k}.label`
+            scope: `${scopeBase}${k}.label`
           },
           {
             type: 'Control',
-            scope: `#/properties/${k}.description`,
+            scope: `${scopeBase}${k}.description`,
             options: {
               multi: true
             }
           },
-          ...(!v.items?.properties ? [] :  [jsonSchema2TranslationUISchema(v.items)])
+          ...(!v.items?.properties ? [] :  [jsonSchema2TranslationUISchema<GroupLayout>(v.items, `${scopeBase}${k}/properties/`,{type: 'Group', label: k})])
         ]
       ).flat()
 })
