@@ -3,26 +3,27 @@ import {RuleEffect, Scopable, UISchemaElement, VerticalLayout} from '@jsonforms/
 import schema from './general.json'
 import {jsonSchema2UISchemaElements, overrideScopes, showOnTrue} from './utils'
 
+const scope = (s: string) => `#/properties/${s}`
 
 const overrides: (UISchemaElement & Scopable)[] = [
   {
     type: 'Control',
-    scope: '#/properties/placeOfResidenceOther',
+    scope: scope('placeOfResidenceOther'),
     rule: {
       effect: RuleEffect.SHOW,
       condition: {
         //@ts-ignore
-        scope: '#/properties/placeOfResidenceList',
+        scope: scope('placeOfResidenceList'),
         schema: {enum: [ 'other' ]}
       }
     }
   },
-  ...showOnTrue('#/properties/passportExisting',
-    ['#/properties/passportNumber', '#/properties/passportDateOfIssue', '#/properties/passportDateOfExpiration', '#/properties/passportAttachment']),
-  ...showOnTrue('#/properties/tazkiraExisting',
-    ['#/properties/tazkiraNumber', '#/properties/tazkiraType', '#/properties/tazkiraAttachment']),
-  ...showOnTrue('#/properties/visaOtherCountryExisting',
-    ['#/properties/visaOtherCountryWhich', '#/properties/visaOtherAttachments']),
+  ...showOnTrue(scope('passportExisting'),
+    [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]),
+  ...showOnTrue(scope('tazkiraExisting'),
+    [scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment')]),
+  ...showOnTrue(scope('visaOtherCountryExisting'),
+    [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]),
 ]
 
 export const generalUISchema: VerticalLayout = {
