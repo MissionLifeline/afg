@@ -164,7 +164,7 @@ export const MaterialListWithDetailRenderer =
           createDefault={handleCreateDefaultValue}
         />
         <Grid container direction={matches ? 'row' : 'column'} spacing={2}>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             {matches
               ? (<List>
                 {data > 0 ? (
