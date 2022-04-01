@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next'
 import {ID, useArmoredDatastore, useTokenStore} from '../../state'
 
 type AddAttachementButtonProps = {
-  onUploadsAdded?: (id: ID[]) => void,
+  onUploadsAdded?: (id: { id: ID, fileName: string, fileType: string }[]) => void,
   label?: string,
   uploadCount?: number
   ids?: ID[]
@@ -23,7 +23,7 @@ const AddAttachmentButton = ({
   const { addAttachment, addOrReplaceAttachment } = useArmoredDatastore()
   const inputEl = useRef<HTMLInputElement | null>(null)
 
-  const onInputChange = useCallback( () => {
+  const onInputChange = useCallback(() => {
     const files = inputEl?.current?.files
     if (!files || !files.length) {
       console.error('missing files')
@@ -35,11 +35,13 @@ const AddAttachmentButton = ({
     }
 
     const uploadedIDs = Array.from(files)
-      .map(file =>
-        (ids?.[0] && !inputProps.multiple)
+      .map(file => ({
+        id: (ids?.[0] && !inputProps.multiple)
           ? addOrReplaceAttachment(token, userId, ids[0], file)
-          :  addAttachment(token, userId, file)
-      )
+          : addAttachment(token, userId, file),
+        fileName: file.name,
+        fileType: file.type,
+      }))
     onUploadsAdded && onUploadsAdded(uploadedIDs)
   }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, userId, inputEl, ids])
 
