@@ -54,8 +54,16 @@
       "format": "date"
     },
     "passportAttachment": {
-      "type": "string",
-      "format": "upload"
+      "upload": true,
+      "type":  "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileType": { "type": "string" },
+        "description": { "type": "string" },
+        "uploadStatus": { "type": "number" }
+      },
+      "required": ["id"]
     },
     "tazkiraExisting": {
       "type": "boolean"
@@ -71,8 +79,16 @@
       "type": "string"
     },
     "tazkiraAttachment": {
-      "type": "string",
-      "format": "upload"
+      "upload": true,
+      "type":  "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileType": { "type": "string" },
+        "description": { "type": "string" },
+        "uploadStatus": { "type": "number" }
+      },
+      "required": ["id"]
     },
     "visaOtherCountryExisting": {
       "type": "boolean"
@@ -81,9 +97,19 @@
       "type": "string"
     },
     "visaOtherAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     }
   },
   "required": [

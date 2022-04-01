@@ -9,9 +9,19 @@
       "format": "date"
     },
     "hazzardApplicationAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     },
     "admissionApplicationFiled": {
       "type": "boolean"
@@ -21,9 +31,19 @@
       "format": "date"
     },
     "admissionApplicationAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     },
     "admissionApprovalReceived": {
       "type": "boolean"
@@ -33,9 +53,19 @@
       "format": "date"
     },
     "admissionApprovalAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     },
     "familyMembersInGermany": {
       "type": "array",

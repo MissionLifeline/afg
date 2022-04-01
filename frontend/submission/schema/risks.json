@@ -30,17 +30,37 @@
       "type": "string"
     },
     "risksCVAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     },
     "threatReport": {
       "type": "string"
     },
     "threatReportAttachments": {
+      "upload": true,
       "type": "array",
-      "items": { "type":  "string" },
-      "format": "upload"
+      "items": {
+        "type":  "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fileName": { "type": "string" },
+          "fileType": { "type": "string" },
+          "description": { "type": "string" },
+          "uploadStatus": { "type": "number" }
+        },
+        "required": ["id"]
+      }
     }
   },
   "required": [
