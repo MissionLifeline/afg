@@ -3,7 +3,7 @@ describe('Minimal test before testing details', () => {
     cy.visit('/?token=demoToken')
     cy.log('In case of a dev build it might take some time to jit compile…')
     // TODO can we change the property name to something namespaced by the form?
-    cy.get('input[id="#/properties/firstName2-input"]', {timeout: 30000})
+    cy.get('input[id="#/properties/firstName-input"]', {timeout: 30000})
       .type('Max')
 
     cy.log('Visit wizards last form step before submission')
