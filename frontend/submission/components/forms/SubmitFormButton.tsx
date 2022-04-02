@@ -29,7 +29,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
 
   useEffect(() => {
     setSubmitted(!!isSuccess)
-  }, [isSuccess])
+  }, [isSuccess, setSubmitted])
 
   const endIcon = isLoading ? <Pending/> :
     isSuccess ? <Check/> :

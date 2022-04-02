@@ -60,7 +60,8 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   setFormData: (formData: any) => set({ formData }),
 
   sendFormData: async (token: string, userId: string) => {
-    let { formData, pubKeys, attachments } = get()
+    const { pubKeys, attachments } = get()
+    let { formData } = get()
     // synchronize attachment upload HTTP status into formData
     const updateUploadStatus = (id: ID, uploadStatus: undefined | number, upload: any): any =>
       upload && upload.id === id
