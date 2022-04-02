@@ -17,9 +17,16 @@
     "transfer": "File transmission error"
   },
   "attachment": {
-    "add_document": "Dokument hinzufügen",
+    "add_document": "add document",
     "add": "add {{label}}",
-    "replace": "replace {{label}}"
-
+    "replace": "replace {{label}}",
+    "placeholder": "description for {{name}}"
+  },
+  "steps": {
+    "general": "about you",
+    "risks": "risk factors",
+    "application": "formal application",
+    "fellowApplicants": "fellow applicants",
+    "submit": "check & submit"
   }
 }

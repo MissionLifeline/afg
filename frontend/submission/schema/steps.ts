@@ -1,4 +1,3 @@
-import {filterUndefOrNull} from '../utils'
 import applicationSchema from './application.json'
 import {applicationUISchema} from './applicationUISchema'
 import fellowApplicants from './fellowApplicants.json'
@@ -15,7 +14,7 @@ import {WizardStep} from './types'
 export const steps: WizardStep[] = [
   {
     name: 'general',
-    stepLabel: 'About you',
+    stepLabel: 'about you',
     jsonschema: generalSchema,
     uiSchema: generalUISchema,
     translation: generalTranslation,
@@ -48,4 +47,3 @@ export const steps: WizardStep[] = [
 
 ]
 
-export const buildInitialTranslation = () => Object.fromEntries(filterUndefOrNull(steps.map(({name, translation}) => translation && [name, translation] )))

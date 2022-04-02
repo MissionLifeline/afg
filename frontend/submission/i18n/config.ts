@@ -11,6 +11,8 @@ import {foldInner2Outer, isDevelopment} from '../utils'
 import de from './de.json'
 import en from './en.json'
 import {formNamespace} from './formNamespace'
+import translationHelper_de from './translationHelper/de.json'
+import translationHelper_en from './translationHelper/en.json'
 
 type LanguageKeys = 'en' | 'de'
 const languages: LanguageKeys[] = ['en', 'de']
@@ -48,22 +50,20 @@ export const fromTranslationStateToFormTranslation = (formTranslation: { [k: str
 
 export const resources: { [k in LanguageKeys]: any } = {
   en: {
-    common: {
-      ...en,
-    },
+    common: en,
+    translationHelper: translationHelper_en,
     ...formTranslations.en
   },
   de: {
-    common: {
-      ...de,
-    },
+    common: de,
+    translationHelper: translationHelper_de,
     ...formTranslations.de
   },
 }
 
 const availableLanguages = Object.keys(resources)
 
-const ns = [...Object.keys(formTranslations.en), 'common']
+const ns = [...Object.keys(formTranslations.en), 'common', 'translationHelper']
 
 export const getAvailableLanguages = () => availableLanguages
 

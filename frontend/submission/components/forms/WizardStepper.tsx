@@ -19,7 +19,7 @@ export const WizardStepper =  () => {
       <Stepper activeStep={currentStep} alternativeLabel>
         {steps.map(({name, stepLabel: label}, index) => (
           <Step key={name} onClick={() => gotoStep(index)}>
-            <StepLabel>{t(label)}</StepLabel>
+            <StepLabel>{t(`steps.${name}`, label)}</StepLabel>
           </Step>
         ))}
       </Stepper>

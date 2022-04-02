@@ -1,7 +1,8 @@
 import create from 'zustand'
 
-import {buildInitialTranslation} from '../schema'
+import {steps} from '../schema'
 import {FormTranslation, LocalizedFormTranslation} from '../schema/utils/types'
+import {filterUndefOrNull} from '../utils'
 
 
 export interface TranslationState {
@@ -12,6 +13,7 @@ export interface TranslationState {
   setFormTranslationForLang: (name: string, language: string, t: FormTranslation) => void
   setForAll: (t: {    [k: string]: LocalizedFormTranslation }) => void
 }
+export const buildInitialTranslation = () => Object.fromEntries(filterUndefOrNull(steps.map(({name, translation}) => translation && [name, translation] )))
 
 export const useTranslationState = create<TranslationState>(set => ({
   formTranslation: buildInitialTranslation(),
