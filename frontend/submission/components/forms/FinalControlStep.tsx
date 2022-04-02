@@ -1,17 +1,23 @@
 import {CheckCircle, Info} from '@mui/icons-material'
-import {Box, Paper, Typography} from '@mui/material'
+import {Box, Divider, Paper, Typography} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
-import React from 'react'
+import {useRouter} from 'next/router'
+import React, {useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
-import {useArmoredDatastore,useSubmittedStore} from '../../state'
-import AttachmentsList from './AttachmentsList'
+import {resources} from '../../i18n'
+import {useArmoredDatastore, useSubmittedStore} from '../../state'
+import FormTranslationHelper from './FormTranslationHelper'
 import SubmitFormButton from './SubmitFormButton'
 
 const FinalControlStep = () => {
-  const {t} = useTranslation()
+  const {t, i18n: {language}} = useTranslation()
   const { attachments, removeAttachment } = useArmoredDatastore()
   const {submitted} = useSubmittedStore()
+  const { query: { translationHelper }, isReady } = useRouter()
+  const enableTranslationHelper = translationHelper === 'true'
+
+  const [commonTranslation, setCommonTranslation] = useState(resources.en.common)
 
   return <Box
       style={{minHeight: '50vh'}}
@@ -35,8 +41,16 @@ const FinalControlStep = () => {
           <SubmitFormButton/>
         </Box>
       </Paper>
+    {enableTranslationHelper && <>
+      <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
+      <FormTranslationHelper
+        name={'common'}
+        language={language}
+        translationData={commonTranslation}
+        onTranslationChange={({data}) => setCommonTranslation( data)}
+      /></>}
 
-    </Box>
+  </Box>
 }
 
 export default FinalControlStep
