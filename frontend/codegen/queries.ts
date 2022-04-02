@@ -10,8 +10,14 @@ export const get_keys = gql`
   }
 `
 
+export const is_translator = gql`
+  query is_translator($auth: Auth!) {
+    is_translator(auth: $auth)
+  }
+`
+
 export const write_translation = gql`
-  mutation write_translation($translationInput: JsonInput!) {
-      write_translations(translationsInput: $translationInput)
+  mutation write_translation($auth: Auth!, $translationInput: JsonInput!) {
+    write_translations(auth: $auth, translationsInput: $translationInput)
   }
 `

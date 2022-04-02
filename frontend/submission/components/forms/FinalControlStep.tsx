@@ -1,21 +1,24 @@
 import {CheckCircle, Info} from '@mui/icons-material'
 import {Box, Divider, Paper, Typography} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
-import {useRouter} from 'next/router'
 import React, {useState} from 'react'
 import {useTranslation} from 'react-i18next'
-
 import {resources} from '../../i18n'
-import {useArmoredDatastore, useSubmittedStore} from '../../state'
+import {useTokenStore, useSubmittedStore} from '../../state'
+import {useIs_TranslatorQuery} from '../../api/generates'
 import FormTranslationHelper from './FormTranslationHelper'
 import SubmitFormButton from './SubmitFormButton'
 
 const FinalControlStep = () => {
   const {t, i18n: {language}} = useTranslation()
-  const { attachments, removeAttachment } = useArmoredDatastore()
   const {submitted} = useSubmittedStore()
-  const { query: { translationHelper }, isReady } = useRouter()
-  const enableTranslationHelper = translationHelper === 'true'
+  const {token, userId} = useTokenStore()
+  const {data: data_is_translator} = useIs_TranslatorQuery({auth: {token, userId}},
+    {
+      enabled: Boolean(token && userId),
+      staleTime: 60 * 60 * 1000
+    })
+  const enableTranslationHelper = data_is_translator?.is_translator
 
   const [commonTranslation, setCommonTranslation] = useState((resources as any)[language]?.common || resources.en.common)
 
