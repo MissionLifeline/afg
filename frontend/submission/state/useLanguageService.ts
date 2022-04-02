@@ -24,7 +24,7 @@ export const useLanguageService = () => {
       } catch (e) {
         return
       }
-      if(!trans.allTranslations) return
+      if(!trans?.allTranslations) return
       Object.entries(trans.allTranslations).forEach(([language, nsData]) => {
         typeof nsData === 'object' && nsData && Object.entries(nsData).forEach(([ns, translation]) => {
           if(typeof translation === 'object' && translation) {
