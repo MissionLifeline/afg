@@ -43,6 +43,8 @@ export type QueryType = {
   /** PGP public keys of the editors that are allowed to read the data submitted with this token */
   get_keys: Get_Keys;
   get_translations: Scalars['Json'];
+  /** This query allows the frontend to show the translation feature only when the user is authorized. */
+  is_translator: Scalars['Boolean'];
 };
 
 
@@ -50,6 +52,12 @@ export type QueryType = {
 export type QueryTypeGet_KeysArgs = {
   token: Scalars['String'];
   userId?: InputMaybe<Scalars['String']>;
+};
+
+
+/** The type that query operations will be rooted at. */
+export type QueryTypeIs_TranslatorArgs = {
+  auth: Scalars['Auth'];
 };
 
 /** PGP public keys of the editors that are allowed to read the data submitted with this token */
@@ -68,6 +76,13 @@ export type Get_KeysQueryVariables = Exact<{
 
 
 export type Get_KeysQuery = { __typename?: 'QueryType', get_keys: { __typename?: 'get_keys', errors?: string | null, tokenValid: boolean, pubKeys: Array<string> } };
+
+export type Is_TranslatorQueryVariables = Exact<{
+  auth: Scalars['Auth'];
+}>;
+
+
+export type Is_TranslatorQuery = { __typename?: 'QueryType', is_translator: boolean };
 
 export type Write_TranslationMutationVariables = Exact<{
   auth: Scalars['Auth'];
@@ -97,6 +112,23 @@ export const useGet_KeysQuery = <
     useQuery<Get_KeysQuery, TError, TData>(
       ['get_keys', variables],
       fetcher<Get_KeysQuery, Get_KeysQueryVariables>(Get_KeysDocument, variables),
+      options
+    )
+export const Is_TranslatorDocument = `
+    query is_translator($auth: Auth!) {
+  is_translator(auth: $auth)
+}
+    `
+export const useIs_TranslatorQuery = <
+      TData = Is_TranslatorQuery,
+      TError = unknown
+    >(
+      variables: Is_TranslatorQueryVariables,
+      options?: UseQueryOptions<Is_TranslatorQuery, TError, TData>
+    ) =>
+    useQuery<Is_TranslatorQuery, TError, TData>(
+      ['is_translator', variables],
+      fetcher<Is_TranslatorQuery, Is_TranslatorQueryVariables>(Is_TranslatorDocument, variables),
       options
     )
 export const Write_TranslationDocument = `

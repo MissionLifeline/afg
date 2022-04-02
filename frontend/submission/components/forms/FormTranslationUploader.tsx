@@ -3,8 +3,9 @@ import {Button} from '@mui/material'
 import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useQueryClient} from 'react-query'
-import {useTokenStore} from '../../state'
+
 import {useWrite_TranslationMutation} from '../../api/generates'
+import {useTokenStore} from '../../state'
 
 type FormTranslationUploaderProps ={
   language: string,
@@ -28,10 +29,10 @@ const FormTranslationUploader = ({language, getAllTranslations}: FormTranslation
                                                allTranslations: getAllTranslations()
                                              }
                                             })
-      if(!result.write_translations) throw Error("Uploading translations failed")
+      if(!result.write_translations) throw Error('Uploading translations failed')
       // TODO: isError should be true
     },
-    [writeTranslation, getAllTranslations, language]
+    [token, userId, writeTranslation, getAllTranslations, language]
   )
 
 

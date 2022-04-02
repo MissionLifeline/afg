@@ -1,22 +1,21 @@
 import {
-  and,
   createAjv,
-  defaultErrorTranslator, ErrorTranslator, formatIs, hasType,
+  defaultErrorTranslator, ErrorTranslator,
   JsonFormsI18nState,
-  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, schemaSubPathMatches, scopeEndIs,
+  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, scopeEndIs,
   Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms, JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
 import {Divider} from '@mui/material'
-import {useRouter} from 'next/router'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {formNamespace} from '../../i18n'
 import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
-import {useTranslationState} from '../../state'
+import {useTokenStore, useTranslationState} from '../../state'
+import {useIs_TranslatorQuery} from '../../api/generates'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
@@ -62,8 +61,14 @@ const LocalizedJsonForms =
 
     const {formTranslation, setFormTranslationForLang} = useTranslationState()
     const ns = formNamespace(name)
-    const { query: { translationHelper }, isReady } = useRouter()
-    const enableTranslationHelper = translationHelper === 'true'
+
+    const {token, userId} = useTokenStore()
+    const {data: data_is_translator} = useIs_TranslatorQuery({auth: {token, userId}},
+      {
+        enabled: Boolean(token && userId),
+        staleTime: 60 * 60 * 1000
+      })
+    const enableTranslationHelper = data_is_translator?.is_translator
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
     const translationsSchema = useMemo(() => jsonSchema2TranslationJsonSchema(schema || {}), [schema])

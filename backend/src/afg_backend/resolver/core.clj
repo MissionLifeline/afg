@@ -3,11 +3,13 @@
             [mount.core :as mount :refer [defstate]]
             [afg-backend.config.state :refer [env]]
             [afg-backend.resolver.user.get-keys :refer [get_keys]]
+            [afg-backend.resolver.translator.is-translator :refer [is_translator]]
             [afg-backend.resolver.translator.get-translations :refer [get_translations]]
             [afg-backend.resolver.translator.write-translations :refer [write_translations]]
             [afg-backend.db.state :refer [->db_ctx db_ctx]]))
 
 (def graphql* (executor {:query {:get_keys #'get_keys
+                                 :is_translator #'is_translator
                                  :get_translations #'get_translations}
                          :mutation {:write_translations #'write_translations}}))
 
