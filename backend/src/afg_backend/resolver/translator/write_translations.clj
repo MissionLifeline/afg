@@ -2,19 +2,20 @@
   (:require [clojure.spec.alpha :as s]
             [specialist-server.type :as t]
             [spec-rbac.core :refer [authorized?]]
-            [spec-rbac.roles.public :refer [public]]
-            [spec-rbac.roles.token :refer [token+userId]]
+            [spec-rbac.roles.token :refer [ctx+auth->roles]]
             [spec-rbac.model.roles.auth :as auth]
             [afg-backend.model.translations :as translations]))
 
+(def translator-token ^{:ctx->wrap-identity ctx+auth->roles} #{:spec-rbac.model.roles.token/translator})
+
 (s/fdef write_translations
-        :args (s/tuple map? (s/keys :req-un [::translations/translationsInput] :opt-un [::auth/auth]) map? map?)
+        :args (s/tuple map? (s/keys :req-un [::auth/auth ::translations/translationsInput]) map? map?)
         :ret t/boolean)
 
 (defn write_translations
   [_node opt ctx _info]
   (boolean
-    (when (authorized? [token+userId public] (:auth opt) {:ctx ctx})  ;; till the frontend sends the auth, anyone is allowed to translate
+    (when (authorized? [translator-token] (:auth opt) {:ctx ctx})
       (let [{:keys [db_ctx]} ctx
             {:keys [tx]} db_ctx
             {:keys [translationsInput]} opt

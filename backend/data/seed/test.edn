@@ -8,4 +8,10 @@
   :token "demoToken"
   :ignoreUserId true
   :assignedEditor :exampleEditor}
+ {:xt/id :demoTranslatorToken
+  :xt/spec :spec-rbac.model.roles.token/record
+  :spec-rbac.model.roles.token/roles [:spec-rbac.model.roles.token/translator]
+  :token "demoTranslatorToken"
+  :ignoreUserId true
+  :assignedEditor :exampleEditor}
 ]
