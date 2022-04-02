@@ -7,6 +7,8 @@
     "build": "next build",
     "export": "next export",
     "start": "next start --hostname ::",
+    "cypress:run": "nix run ../..#cypress -- run",
+    "cypress:open": "nix run ../..#cypress -- open",
     "lint": "next lint && eslint .",
     "lint:fix": "next lint --fix && eslint --fix ."
   },

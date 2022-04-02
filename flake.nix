@@ -37,7 +37,6 @@
   in
   rec {
     nixosConfigurations = {
-  
       lifeline = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [
           ./deployment/hosts/lifeline/configuration.nix
@@ -47,7 +46,10 @@
           #./deployment/modules/jenkins.nix
         ];
       });
-
+    };
+    legacyPackages.x86_64-linux = {
+      inherit pkgs;
+      cypress = import ./frontend/nix/tools/cypress/override.nix { inherit pkgs; };
     };
   };
 }

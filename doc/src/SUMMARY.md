@@ -22,5 +22,7 @@
   - [Rest]()
     - [`/api/upload-form`](./backend/rest/upload-form.md)
     - [`/api/upload-attachment`](./backend/rest/upload-attachment.md)
+- [Integration tests]()
+  - [Cypress](./cypress/README.md)
 
 # Administration notes
