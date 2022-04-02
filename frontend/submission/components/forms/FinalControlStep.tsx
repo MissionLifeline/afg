@@ -3,9 +3,10 @@ import {Box, Divider, Paper, Typography} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
 import React, {useState} from 'react'
 import {useTranslation} from 'react-i18next'
-import {resources} from '../../i18n'
-import {useTokenStore, useSubmittedStore} from '../../state'
+
 import {useIs_TranslatorQuery} from '../../api/generates'
+import {resources} from '../../i18n'
+import {useSubmittedStore,useTokenStore} from '../../state'
 import FormTranslationHelper from './FormTranslationHelper'
 import SubmitFormButton from './SubmitFormButton'
 
