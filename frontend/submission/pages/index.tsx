@@ -9,13 +9,15 @@ import {WizardStepper} from '../components/forms/WizardStepper'
 import { CustomAppBar } from '../components/layout'
 import PageFooter from '../components/layout/PageFooter'
 import { LanguageSelection } from '../components/user'
-import {useTokenStore} from '../state'
+import {useLanguageService, useTokenStore} from '../state'
 import {isDevelopment} from '../utils'
 
 const Home: NextPage = () => {
   const {query, isReady} = useRouter()
   const {token} = query
   const {setToken} = useTokenStore()
+
+  useLanguageService()
 
   useEffect(() => {
     isReady && typeof(token) === 'string' && setToken(token)
