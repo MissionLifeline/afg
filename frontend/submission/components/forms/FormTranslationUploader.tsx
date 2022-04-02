@@ -22,21 +22,21 @@ const FormTranslationUploader = ({language, getAllTranslations}: FormTranslation
 
   const handleUploadMutation = useCallback(
     async () => {
-      await writeTranslation({
-	auth: {token, userId},
-        translationInput: {
-          currentSelectedLanguage: language,
-          allTranslations: getAllTranslations()
-        }
-      })
-
+      const result = await writeTranslation({auth: {token, userId},
+                                             translationInput: {
+                                               currentSelectedLanguage: language,
+                                               allTranslations: getAllTranslations()
+                                             }
+                                            })
+      if(!result.write_translations) throw Error("Uploading translations failed")
+      // TODO: isError should be true
     },
-    [writeTranslation, getAllTranslations, language],
+    [writeTranslation, getAllTranslations, language]
   )
 
 
   return <Button onClick={handleUploadMutation}
-                 endIcon={isError ? <WarningAmber/> : isSuccess ? <Check/> : null}>{t('upload_translation')}</Button>
+                 endIcon={/*isError ? <WarningAmber/> : isSuccess ? <Check/> :*/ null}>{t('upload_translation')}</Button>
 }
 
 export default FormTranslationUploader
