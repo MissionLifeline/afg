@@ -10,7 +10,7 @@ import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms, JsonFormsInitStateProps, JsonFormsReactProps} from '@jsonforms/react'
 import {Divider} from '@mui/material'
 import {useRouter} from 'next/router'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {formNamespace} from '../../i18n'
@@ -70,7 +70,7 @@ const LocalizedJsonForms =
     const enableTranslationHelper = translationHelper === 'true'
 
     const [currentLangData, setCurrentLangData] = useState<any>({})
-    const [translationsSchema] = useState(jsonSchema2TranslationJsonSchema(schema || {}))
+    const translationsSchema = useMemo(() => jsonSchema2TranslationJsonSchema(schema || {}), [schema])
     const {
       t,
       i18n: {language, exists: _exists, addResourceBundle, removeResourceBundle, reloadResources}
