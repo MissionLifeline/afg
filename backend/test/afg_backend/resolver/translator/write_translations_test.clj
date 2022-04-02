@@ -10,9 +10,10 @@
   (testing "write translations and read them back"
 
     (is (= {:data {:write_translations true}}
-           (graphql {:query "mutation WriteTranslations($translations: JsonInput) {
-                               write_translations(translationsInput: $translations) }"
-                     :variables {:translations {:hello "hallo" :foo {:bar "blub"}}}})))
+           (graphql {:query "mutation WriteTranslations($auth: Auth, $translations: JsonInput) {
+                               write_translations(auth: $auth, translationsInput: $translations) }"
+                     :variables {:auth {:token "demoToken"}
+                                 :translations {:hello "hallo" :foo {:bar "blub"}}}})))
     ((:sync db_ctx))
 
     (is (= {:data {:get_translations {:json {:hello "hallo" :foo {:bar "blub"}}

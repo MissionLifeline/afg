@@ -1,3 +1,3 @@
 (ns afg-backend.model.records
-  (:require [afg-backend.model.token]
+  (:require [spec-rbac.model.roles.token]
             [afg-backend.model.translations]))

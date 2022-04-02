@@ -5,13 +5,20 @@
 (defn authorized?
   "Like `cemerick.friend/authorized?`, but based on `s/valid` instead of `isa?`
    Also we return a tuple of the matching required and granted role."
-  [required-roles:specs identity:map]
-  (let [granted-roles (-> identity:map #_current-authentication :roles)]
-       (first (for [granted granted-roles
-                    required required-roles:specs
-                    :when (s/valid? required granted)]
-                   [required granted]))))
+  ([required-roles:specs id] (authorized? required-roles:specs id {}))
+  ([required-roles:specs id options]
+  (first (for [required required-roles:specs
+               granted (-> id
+                           (#(let [wrap (or (when-let [f (:ctx->wrap-identity (meta required))]
+                                                      (f (:ctx options)))
+                                            (:wrap-identity (meta required))
+                                            (:wrap-identity options)
+                                            identity)]
+                                  (wrap %)))
+                           :roles)
+               :when (s/valid? required granted)]
+              [required granted]))))
 
-;; Helpers to process the return values of authorized?
+;; Helpers to process the return values of `authorized?`
 (def required first)
 (def granted second)

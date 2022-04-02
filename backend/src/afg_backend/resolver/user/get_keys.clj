@@ -2,8 +2,9 @@
   (:require [clojure.spec.alpha :as s]
             [specialist-server.type :as t]
             [afg-backend.config.state :refer [env]]
-            [afg-backend.security.auth.token.core :refer [token-valid?]]
-            [afg-backend.model.token :as token]
+            [spec-rbac.core :refer [authorized?]]
+            [spec-rbac.roles.token :refer [token+userId]]
+            [spec-rbac.model.roles.token :as token]
             [afg-backend.model.pubkey :as pubkey]))
 
 (s/def ::errors (s/nilable t/string))
@@ -17,9 +18,8 @@
 (defn get_keys
   "PGP public keys of the editors that are allowed to read the data submitted with this token"
   [_node opt ctx _info]
-  (let [{:keys [db_ctx]} ctx
-        {:keys [token userId]} opt]
-       (cond (not (token-valid? db_ctx token userId))
+  (let [auth (select-keys opt [:token :userId])]
+       (cond (not (authorized? [token+userId] auth {:ctx ctx}))
                {:errors "token or userId not valid"
                 :tokenValid false
                 :pubKeys []}

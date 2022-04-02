@@ -2,7 +2,8 @@
   (:import [java.io File])
   (:require [afg-backend.config.state :refer [env]]
             [afg-backend.db.state :refer [db_ctx]]
-            [afg-backend.security.auth.token.core :refer [token-valid?]]
+            [spec-rbac.core :refer [authorized?]]
+            [spec-rbac.roles.token :refer [token+userId]]
             [afg-backend.webserver.middleware.graphql :refer [wrap-rest]]
             [ring.util.response :refer [response]]
             [compojure.core :refer [POST]]
@@ -42,7 +43,8 @@
 
 (defn upload-formData
   [token userId formData]
-  (let [source (:tempfile formData)
+  (let [auth {:token token :userId userId}
+        source (:tempfile formData)
         upload-limit-mb (:upload-limit-mb env)
         path token
         date (current-date-for-filename)
@@ -52,7 +54,7 @@
          (not (and token userId formData source))
            {:status 400
             :body "Request misses a required param"}
-         (not (token-valid? db_ctx token userId))
+         (not (authorized? [token+userId] auth {:ctx {:db_ctx db_ctx}}))
            {:status 403
             :body "A valid combination of token and userId is required"}
          (> (.length (io/file source))
@@ -71,7 +73,8 @@
 
 (defn upload-attachment
   [token userId fileId fileType attachment]
-  (let [source (:tempfile attachment)
+  (let [auth {:token token :userId userId}
+        source (:tempfile attachment)
         upload-limit-mb (:upload-limit-mb env)
         path token
         date (current-date-for-filename)
@@ -82,7 +85,7 @@
          (not (and token userId fileId attachment source))
            {:status 400
             :body "Request misses a required param"}
-         (not (token-valid? db_ctx token userId))
+         (not (authorized? [token+userId] auth {:ctx {:db_ctx db_ctx}}))
            {:status 403
             :body "A valid combination of token and userId is required"}
          (> (.length (io/file source))

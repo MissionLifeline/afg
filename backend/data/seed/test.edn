@@ -1,10 +1,10 @@
 [
  {:xt/id :exampleToken
-  :xt/spec :afg-backend.model.token/record
+  :xt/spec :spec-rbac.model.roles.token/record
   :token "exampleToken"
   :assignedEditor :exampleEditor}
  {:xt/id :demoToken
-  :xt/spec :afg-backend.model.token/record
+  :xt/spec :spec-rbac.model.roles.token/record
   :token "demoToken"
   :ignoreUserId true
   :assignedEditor :exampleEditor}
