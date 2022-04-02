@@ -46,7 +46,6 @@ const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arra
 
   const classes = useStyles()
 
-  console.log({schema, arrayData})
   const options = schema.enum?.map((key) => ({
     key: key as string,
     value: key,
