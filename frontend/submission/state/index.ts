@@ -1,4 +1,5 @@
 export * from './useArmoredDatastore'
+export * from  './useLanguageService'
 export * from './useSubmittedStore'
 export * from './useTokenStore'
 export * from './useTranslationState'

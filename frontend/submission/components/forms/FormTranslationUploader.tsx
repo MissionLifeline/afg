@@ -2,6 +2,7 @@ import {Check, WarningAmber} from '@mui/icons-material'
 import {Button} from '@mui/material'
 import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
+import {useQueryClient} from 'react-query'
 
 import {useWrite_TranslationMutation} from '../../api/generates'
 
@@ -11,9 +12,12 @@ type FormTranslationUploaderProps ={
 }
 
 const FormTranslationUploader = ({language, getAllTranslations}: FormTranslationUploaderProps) => {
+  const queryClient = useQueryClient()
   const {t} = useTranslation('translationHelper')
 
-  const {mutateAsync: writeTranslation, isSuccess, isError} = useWrite_TranslationMutation()
+  const {mutateAsync: writeTranslation, isSuccess, isError} = useWrite_TranslationMutation({
+      onSuccess: () => { queryClient.invalidateQueries('get_translations')}
+    })
 
   const handleUploadMutation = useCallback(
     async () => {

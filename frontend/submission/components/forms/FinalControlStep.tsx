@@ -17,7 +17,7 @@ const FinalControlStep = () => {
   const { query: { translationHelper }, isReady } = useRouter()
   const enableTranslationHelper = translationHelper === 'true'
 
-  const [commonTranslation, setCommonTranslation] = useState(resources.en.common)
+  const [commonTranslation, setCommonTranslation] = useState((resources as any)[language]?.common || resources.en.common)
 
   return <Box
       style={{minHeight: '50vh'}}
