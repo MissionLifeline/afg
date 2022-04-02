@@ -15,19 +15,21 @@
         (let [{:keys [tx]} db_ctx]
              (tx [[:xtdb.api/put (assoc tokenData :userId userId)]]))))
 
-(defn- ctx+auth->roles [ctx]
+(defn ctx+auth->roles [ctx]
   (fn [auth]
       (let [token (->token (:db_ctx ctx) (:token auth))
-            valid (boolean token)]  ;; TODO token invalidation
-           {:roles [(when valid
-                          ::token-exists)
-                    (when (and valid (::token/public token))
-                          ::token-public)
-                    (when (and valid (or (= (:userId auth) (:userId token))
-                                         (:ignoreUserId token)
-                                         (token-assoc-userId! (:db_ctx ctx) token (:userId auth))))
-                          ::token+userId)]})))
+            valid token]  ;; TODO token invalidation
+           {:roles (when valid
+                     (concat
+                       (:spec-rbac.model.roles.token/roles token)
+                       [::token-valid
+                        (when (::token/public token)
+                              ::token-public)
+                        (when (or (= (:userId auth) (:userId token))
+                                  (:ignoreUserId token)
+                                  (token-assoc-userId! (:db_ctx ctx) token (:userId auth)))
+                              ::token+userId)]))})))
 
-(def token-exists ^{:ctx->wrap-identity ctx+auth->roles} #{::token-exists})
+(def token-valid ^{:ctx->wrap-identity ctx+auth->roles} #{::token-valid})
 (def token-public ^{:ctx->wrap-identity ctx+auth->roles} #{::token-public})
 (def token+userId ^{:ctx->wrap-identity ctx+auth->roles} #{::token+userId})

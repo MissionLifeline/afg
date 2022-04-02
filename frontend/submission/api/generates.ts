@@ -14,6 +14,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Any supported kind of authorization */
+  Auth: any;
   /** Anything not yet specified */
   Json: any;
   /** Anything not yet specified */
@@ -31,6 +33,7 @@ export type MutationType = {
 
 /** If this server supports mutation, the type that mutation operations will be rooted at. */
 export type MutationTypeWrite_TranslationsArgs = {
+  auth: Scalars['Auth'];
   translationsInput: Scalars['JsonInput'];
 };
 
@@ -67,6 +70,7 @@ export type Get_KeysQueryVariables = Exact<{
 export type Get_KeysQuery = { __typename?: 'QueryType', get_keys: { __typename?: 'get_keys', errors?: string | null, tokenValid: boolean, pubKeys: Array<string> } };
 
 export type Write_TranslationMutationVariables = Exact<{
+  auth: Scalars['Auth'];
   translationInput: Scalars['JsonInput'];
 }>;
 
@@ -96,8 +100,8 @@ export const useGet_KeysQuery = <
       options
     )
 export const Write_TranslationDocument = `
-    mutation write_translation($translationInput: JsonInput!) {
-  write_translations(translationsInput: $translationInput)
+    mutation write_translation($auth: Auth!, $translationInput: JsonInput!) {
+  write_translations(auth: $auth, translationsInput: $translationInput)
 }
     `
 export const useWrite_TranslationMutation = <

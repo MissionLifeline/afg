@@ -3,7 +3,7 @@ import {Button} from '@mui/material'
 import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useQueryClient} from 'react-query'
-
+import {useTokenStore} from '../../state'
 import {useWrite_TranslationMutation} from '../../api/generates'
 
 type FormTranslationUploaderProps ={
@@ -14,6 +14,7 @@ type FormTranslationUploaderProps ={
 const FormTranslationUploader = ({language, getAllTranslations}: FormTranslationUploaderProps) => {
   const queryClient = useQueryClient()
   const {t} = useTranslation('translationHelper')
+  const {token, userId} = useTokenStore()
 
   const {mutateAsync: writeTranslation, isSuccess, isError} = useWrite_TranslationMutation({
       onSuccess: () => { queryClient.invalidateQueries('get_translations')}
@@ -22,6 +23,7 @@ const FormTranslationUploader = ({language, getAllTranslations}: FormTranslation
   const handleUploadMutation = useCallback(
     async () => {
       await writeTranslation({
+	auth: {token, userId},
         translationInput: {
           currentSelectedLanguage: language,
           allTranslations: getAllTranslations()
