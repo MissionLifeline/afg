@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query'
+import { useMutation, UseMutationOptions,useQuery, UseQueryOptions } from 'react-query'
 
 import { fetcher } from './fetcher'
 
@@ -66,6 +66,13 @@ export type Get_KeysQueryVariables = Exact<{
 
 export type Get_KeysQuery = { __typename?: 'QueryType', get_keys: { __typename?: 'get_keys', errors?: string | null, tokenValid: boolean, pubKeys: Array<string> } };
 
+export type Write_TranslationMutationVariables = Exact<{
+  translationInput: Scalars['JsonInput'];
+}>;
+
+
+export type Write_TranslationMutation = { __typename?: 'MutationType', write_translations: boolean };
+
 
 export const Get_KeysDocument = `
     query get_keys($token: String!, $userId: String) {
@@ -86,5 +93,19 @@ export const useGet_KeysQuery = <
     useQuery<Get_KeysQuery, TError, TData>(
       ['get_keys', variables],
       fetcher<Get_KeysQuery, Get_KeysQueryVariables>(Get_KeysDocument, variables),
+      options
+    )
+export const Write_TranslationDocument = `
+    mutation write_translation($translationInput: JsonInput!) {
+  write_translations(translationsInput: $translationInput)
+}
+    `
+export const useWrite_TranslationMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<Write_TranslationMutation, TError, Write_TranslationMutationVariables, TContext>) =>
+    useMutation<Write_TranslationMutation, TError, Write_TranslationMutationVariables, TContext>(
+      ['write_translation'],
+      (variables?: Write_TranslationMutationVariables) => fetcher<Write_TranslationMutation, Write_TranslationMutationVariables>(Write_TranslationDocument, variables)(),
       options
     )

@@ -5,12 +5,13 @@ import {Box, ToggleButton} from '@mui/material'
 import React, {useState} from 'react'
 
 import FormTranslationDownloader from './FormTranslationDownloader'
+import FormTranslationUploader from './FormTranslationUploader'
 
 type FormTranslationHelperProps = {
   name: string,
   onTranslationChange: (change: Pick<JsonFormsCore, 'data' | 'errors'>) => void
   translationData: any
-  schema: JsonSchema
+  schema?: JsonSchema
   language: string
 }
 
@@ -21,6 +22,7 @@ const defaultRenderers = [
 
 const FormTranslationHelper =
   ({
+     name,
      translationData,
      onTranslationChange,
      schema,
@@ -35,7 +37,7 @@ const FormTranslationHelper =
         value="check"
         selected={showForm}
         onChange={() => setShowForm(prevState => !prevState)}
-      >help translating to {language}</ToggleButton>
+      >help translating {name} into {language}</ToggleButton>
       {showForm && <>
         <JsonForms
           schema={schema}
@@ -45,7 +47,8 @@ const FormTranslationHelper =
           onChange={onTranslationChange}
         />
         <Box display='flex' flexDirection='column'>
-          <FormTranslationDownloader />
+          <FormTranslationUploader language={language}/>
+          <FormTranslationDownloader language={language}/>
         </Box>
       </>}
     </>

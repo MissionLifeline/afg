@@ -9,3 +9,9 @@ export const get_keys = gql`
     }
   }
 `
+
+export const write_translation = gql`
+  mutation write_translation($translationInput: JsonInput!) {
+      write_translations(translationsInput: $translationInput)
+  }
+`
