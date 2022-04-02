@@ -6,12 +6,12 @@ import React from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {steps} from '../../schema'
-import {useWizardState} from '../../state'
+import {useWizardQueryState} from '../../state'
 
 
 export const WizardStepper =  () => {
 
-  const { currentStep,gotoStep } = useWizardState()
+  const { currentStep,gotoStep } = useWizardQueryState()
   const { t } = useTranslation()
 
   return (

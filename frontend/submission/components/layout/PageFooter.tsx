@@ -5,14 +5,14 @@ import React from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {steps} from '../../schema'
-import {useWizardState} from '../../state'
+import {useWizardQueryState} from '../../state'
 import SubmitFormButton from '../forms/SubmitFormButton'
 
 type PageFooterProps = Record<string, never>
 
 const PageFooter = ({}: PageFooterProps) => {
   const {t} = useTranslation()
-  const {currentStep, nextStep, prevStep} = useWizardState()
+  const {currentStep, nextStep, prevStep} = useWizardQueryState()
   return <Box display='flex' flexDirection='row' justifyContent={'space-around'}>
     {currentStep > 0 &&
       <Button variant='contained' color='secondary'

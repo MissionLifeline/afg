@@ -5,14 +5,14 @@ import React, {useCallback, useEffect, useState} from 'react'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps} from '../../schema'
-import {useArmoredDatastore, useTokenStore, useWizardState} from '../../state'
+import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
 import FinalControlStep from './FinalControlStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
 
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
-  const {currentStep} = useWizardState()
+  const {currentStep} = useWizardQueryState()
   const {setSerializedPubKeys, pubKeys, formData} = useArmoredDatastore()
   const [allFormsState, setAllFormsState] = useState<{ [k: string]: any }>({})
 
