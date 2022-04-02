@@ -44,6 +44,7 @@ const FinalControlStep = () => {
     {enableTranslationHelper && <>
       <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
       <FormTranslationHelper
+        injectToCurrentLang
         name={'common'}
         language={language}
         translationData={commonTranslation}

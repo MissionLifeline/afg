@@ -4,33 +4,28 @@ import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {useWrite_TranslationMutation} from '../../api/generates'
-import {formNamespace, fromTranslationStateToFormTranslation} from '../../i18n'
-import {useTranslationState} from '../../state'
 
 type FormTranslationUploaderProps ={
-  language: string
+  language: string,
+  getAllTranslations: () => any
 }
 
-const FormTranslationUploader = ({language}: FormTranslationUploaderProps) => {
+const FormTranslationUploader = ({language, getAllTranslations}: FormTranslationUploaderProps) => {
   const {t} = useTranslation('translationHelper')
-  const {formTranslation} = useTranslationState()
 
   const {mutateAsync: writeTranslation, isSuccess, isError} = useWrite_TranslationMutation()
 
   const handleUploadMutation = useCallback(
     async () => {
-      const formTranslationFolded = fromTranslationStateToFormTranslation(
-        Object.fromEntries(Object.entries(formTranslation)
-          .map(([k, v]) => [formNamespace(k), v])))
       await writeTranslation({
         translationInput: {
           currentSelectedLanguage: language,
-          allTranslations: formTranslationFolded
+          allTranslations: getAllTranslations()
         }
       })
 
     },
-    [writeTranslation, formTranslation, language],
+    [writeTranslation, getAllTranslations, language],
   )
 
 

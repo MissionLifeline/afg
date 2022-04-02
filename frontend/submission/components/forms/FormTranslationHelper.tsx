@@ -2,8 +2,10 @@ import {JsonFormsCore, JsonSchema} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {Box, ToggleButton} from '@mui/material'
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 
+import {formNamespace, fromTranslationStateToFormTranslation} from '../../i18n'
+import {useTranslationState} from '../../state'
 import FormTranslationDownloader from './FormTranslationDownloader'
 import FormTranslationUploader from './FormTranslationUploader'
 
@@ -12,7 +14,8 @@ type FormTranslationHelperProps = {
   onTranslationChange: (change: Pick<JsonFormsCore, 'data' | 'errors'>) => void
   translationData: any
   schema?: JsonSchema
-  language: string
+  language: string,
+  injectToCurrentLang?: boolean
 }
 
 const defaultRenderers = [
@@ -26,11 +29,31 @@ const FormTranslationHelper =
      translationData,
      onTranslationChange,
      schema,
-     language
+     language,
+    injectToCurrentLang
    }: FormTranslationHelperProps) => {
 
 
     const [showForm, setShowForm] = useState(false)
+    const {formTranslation} = useTranslationState()
+
+    const prepareTranslations = useCallback(
+      () => {
+
+        const formTranslationFolded = fromTranslationStateToFormTranslation(
+          Object.fromEntries(Object.entries(formTranslation)
+            .map(([k, v]) => [formNamespace(k), v])))
+        if(injectToCurrentLang) {
+          formTranslationFolded[language] = {
+            ...(formTranslationFolded[language] || {}),
+            [name]: translationData
+          }
+        }
+        return formTranslationFolded
+      },
+      [ formTranslation, language, injectToCurrentLang, name, translationData],
+    )
+
 
     return <>
       <ToggleButton
@@ -47,8 +70,8 @@ const FormTranslationHelper =
           onChange={onTranslationChange}
         />
         <Box display='flex' flexDirection='column'>
-          <FormTranslationUploader language={language}/>
-          <FormTranslationDownloader language={language}/>
+          <FormTranslationUploader language={language} getAllTranslations={prepareTranslations}/>
+          <FormTranslationDownloader language={language} getAllTranslations={prepareTranslations}/>
         </Box>
       </>}
     </>

@@ -2,28 +2,25 @@ import {Button} from '@mui/material'
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
-import {formNamespace, fromTranslationStateToFormTranslation} from '../../i18n'
 import {useTranslationState} from '../../state'
 
 type FormTranslationDownloaderProps ={
-  language: string
+  language: string,
+  getAllTranslations: () => any
 }
 
-const FormTranslationDownloader = ({language}: FormTranslationDownloaderProps) => {
+const FormTranslationDownloader = ({language, getAllTranslations}: FormTranslationDownloaderProps) => {
   const {t} = useTranslation('translationHelper')
   const {formTranslation} = useTranslationState()
   const [downloadUrl, setDownloadUrl] = useState<string | undefined>()
 
   const prepareDownload = useCallback(() => {
-    const formTranslationFolded = fromTranslationStateToFormTranslation(
-      Object.fromEntries(Object.entries(formTranslation)
-        .map(([k, v]) => [formNamespace(k), v])))
-    const jsonString = JSON.stringify( formTranslationFolded, null, 2)
+    const jsonString = JSON.stringify( getAllTranslations(), null, 2)
     const blob = new Blob([jsonString], {type: 'application/json;charset=utf-8'})
     const url = URL.createObjectURL(blob)
     setDownloadUrl(url)
 
-  }, [formTranslation])
+  },  [getAllTranslations])
 
   useEffect(() => {
     setDownloadUrl(undefined)
