@@ -48,7 +48,7 @@ export const FormWizard = ({}: FormWizardProps) => {
         [name]: state.data
       }))
       setFormData(allFormsState)
-    }, [setAllFormsState, pubKeys, allFormsState, setFormData])
+    }, [setAllFormsState, allFormsState, setFormData])
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ? <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
     {[steps[currentStep]]

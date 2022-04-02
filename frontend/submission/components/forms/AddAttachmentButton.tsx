@@ -43,7 +43,7 @@ const AddAttachmentButton = ({
         fileType: file.type,
       }))
     onUploadsAdded && onUploadsAdded(uploadedIDs)
-  }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, userId, inputEl, ids])
+  }, [onUploadsAdded, addAttachment, addOrReplaceAttachment, token, userId, inputEl, ids, inputProps.multiple])
 
   return <>
     <Button onClick={() => inputEl.current?.click()} variant='outlined'>
