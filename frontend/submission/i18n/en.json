@@ -14,7 +14,8 @@
   "error": {
     "format": "Wrong format given",
     "required": "Required form field",
-    "transfer": "File transmission error"
+    "transfer": "File transmission error",
+    "enum": "must be at least one of the allowed values"
   },
   "attachment": {
     "add_document": "add document",

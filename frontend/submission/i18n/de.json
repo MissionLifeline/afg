@@ -13,8 +13,9 @@
   "check_uploads": "Bitte hochgeladene Anhänge kontrollieren und anschließend absenden",
   "error": {
     "format": "Falsches Format angegeben",
-    "required": "Diese Angabe ist notwenig",
-    "transfer": "Datenübertragungsfehler"
+    "required": "Diese Angabe ist notwendig",
+    "transfer": "Datenübertragungsfehler",
+    "enum": "muss eines der erlaubten Werte haben"
   },
   "attachment": {
     "add_document": "Dokument hinzufügen",
