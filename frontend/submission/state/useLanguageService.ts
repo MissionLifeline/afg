@@ -17,7 +17,6 @@ export const useLanguageService = () => {
   } = useTranslation()
   const {setFormTranslationForLang} = useTranslationState()
   useEffect(() => {
-    console.log('invalidated')
       if(!data) return
       let trans
       try {
@@ -29,13 +28,11 @@ export const useLanguageService = () => {
       Object.entries(trans.allTranslations).forEach(([language, nsData]) => {
         typeof nsData === 'object' && nsData && Object.entries(nsData).forEach(([ns, translation]) => {
           if(typeof translation === 'object' && translation) {
-            console.log(ns)
             removeResourceBundle(language, ns)
             addResourceBundle(language, ns, translation, undefined, true)
             reloadResources(language, ns)
             if(isFormNamespace(ns)) {
               const formName = stripFormPrefix(ns)
-              console.log('formName', formName)
               setFormTranslationForLang(formName, language, translation)
             }
           }
