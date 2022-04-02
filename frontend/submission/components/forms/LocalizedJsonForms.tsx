@@ -16,6 +16,7 @@ import {formNamespace} from '../../i18n'
 import {jsonSchema2TranslationJsonSchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTokenStore, useTranslationState} from '../../state'
+import CustomArrayControlRenderer from '../renderer/CustomArrayControlRenderer'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
@@ -41,6 +42,9 @@ const defaultRenderers = [
       schemaMatches(schema => schema.hasOwnProperty('upload'))
     ),
     renderer: UploadRenderer
+  }, {
+  tester: rankWith(5, scopeEndIs('riskCategory')),
+  renderer: CustomArrayControlRenderer
   }
 ]
 
