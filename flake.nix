@@ -53,7 +53,7 @@
       });
     };
 
-    packages.x86_64-linux = {
+    packages.${system} = {
       ## The packages provided by the inputs of this flake
       inherit pkgs;
 
