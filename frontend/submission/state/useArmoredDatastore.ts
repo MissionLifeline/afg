@@ -63,14 +63,16 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     const { pubKeys, attachments } = get()
     let { formData } = get()
     // synchronize attachment upload HTTP status into formData
-    const updateUploadStatus = (id: ID, uploadStatus: undefined | number, upload: any): any =>
-      upload && upload.id === id
-      ? { ...upload, uploadStatus }
-      : upload.map
-      ? upload.map((upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
-      : typeof upload == 'object'
-      ? mapValues(upload, (upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
-      : upload
+    const updateUploadStatus = (id: ID, uploadStatus: undefined | number, data: any): any =>
+      !data
+      ? data
+      : data && data.id === id
+      ? { ...data, uploadStatus }
+      : data.map
+      ? data.map((upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
+      : typeof data == 'object'
+      ? mapValues(data, (upload_: any) => updateUploadStatus(id, uploadStatus, upload_))
+      : data
     for (const { id, uploadStatus } of attachments) {
       formData = updateUploadStatus(id, uploadStatus, formData)
     }
