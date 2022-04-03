@@ -27,7 +27,7 @@ export const FormWizard = ({}: FormWizardProps) => {
   useEffect(() => {
     if (!data) return
     const {errors, tokenValid, pubKeys} = data.get_keys
-    if (!tokenValid) console.error('token or userId is not valid')
+    if (!tokenValid) log.error('token or userId is not valid')
     if (errors && tokenValid) throw Error(errors)
     log.debug({pubKeys})
     setSerializedPubKeys(pubKeys)

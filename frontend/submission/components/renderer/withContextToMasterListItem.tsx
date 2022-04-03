@@ -60,7 +60,6 @@ export const ctxToMasterListItemProps = (
 export const withContextToMasterListItemProps =
   // @ts-ignore
   (Component: ComponentType<StatePropsOfMasterItem>): ComponentType<OwnPropsOfMasterListItem> => ({ctx, props}: JsonFormsStateContext & StatePropsOfMasterItem) => {
-      console.log({props})
       const stateProps = ctxToMasterListItemProps(ctx, props)
       return (<Component {...stateProps} {...props} />)
     }

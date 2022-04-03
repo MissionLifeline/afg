@@ -16,7 +16,6 @@ export const useWizardQueryState: () => AppConfigState = () => {
   useEffect(() => {
     const query = parseQuery(asPath)
     const step = query.get('step')
-    console.log({query})
       const s = parseInt(step || '0')
       if(isNaN(s)) return
       setCurrentStep(s)
@@ -27,7 +26,6 @@ export const useWizardQueryState: () => AppConfigState = () => {
       if(newStep >= 0 && newStep < stepLength ) {
         const query = parseQuery(asPath)
         query.set('step', newStep.toString())
-        console.log('new query', query)
         push(pathname, {query: Object.fromEntries( query.entries())})
       }
     },

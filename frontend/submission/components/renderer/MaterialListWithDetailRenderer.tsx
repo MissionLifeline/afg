@@ -134,7 +134,6 @@ export const MaterialListWithDetailRenderer =
     const deleteConfirm = useCallback(
       () => {
         if (typeof aboutToRemove !== 'undefined') {
-          console.log({aboutToRemove})
           handleRemoveItem(path, aboutToRemove)()
         }
         setDeleteDialogOpen(false)

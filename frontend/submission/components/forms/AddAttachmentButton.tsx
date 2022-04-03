@@ -1,4 +1,5 @@
 import {Button} from '@mui/material'
+import log from 'loglevel'
 import React, {useCallback, useRef} from 'react'
 import {useTranslation} from 'react-i18next'
 
@@ -26,11 +27,11 @@ const AddAttachmentButton = ({
   const onInputChange = useCallback(() => {
     const files = inputEl?.current?.files
     if (!files || !files.length) {
-      console.error('missing files')
+      log.error('missing files')
       return
     }
     if (!token || !userId) {
-      console.error('missing token or userId')
+      log.error('missing token or userId')
       return
     }
 
