@@ -75,5 +75,16 @@
         patchPublic = self.packages.${system}.afg-submission-staticHTML;
       };
     };
+
+    # `nix develop`
+    devShell.${system} = with nixpkgs.legacyPackages.${system}; mkShell {
+      nativeBuildInputs = [
+        # backend
+        leiningen
+        # frontend
+        nodejs yarn
+        self.legacyPackages.${system}.cypress
+      ];
+    };
   };
 }
