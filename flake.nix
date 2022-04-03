@@ -48,8 +48,16 @@
       });
     };
     legacyPackages.x86_64-linux = {
+      ## The packages provided by the inputs of this flake
       inherit pkgs;
+
+      ## Tools for devops
       cypress = import ./frontend/nix/tools/cypress/override.nix { inherit pkgs; };
+
+      ## Derivations provided by this repo
+      inherit (pkgs.callPackages ./frontend/submission/nix {})
+        afg-submission-deps
+        afg-submission-staticHTML;
     };
   };
 }
