@@ -11,9 +11,13 @@
       url = "github:kirelagin/dns.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mvn2nix = {
+      url = "github:fzakaria/mvn2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, sops-nix, dns }:
+  outputs = { self, nixpkgs, sops-nix, dns, mvn2nix }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
@@ -36,6 +40,7 @@
     ];
   in
   rec {
+
     nixosConfigurations = {
       lifeline = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [
@@ -47,17 +52,28 @@
         ];
       });
     };
-    legacyPackages.x86_64-linux = {
+
+    packages.x86_64-linux = {
       ## The packages provided by the inputs of this flake
       inherit pkgs;
 
       ## Tools for devops
+      updateBackendDeps = pkgs.callPackage ./backend/nix/tools/updated-deps.nix {
+        inherit (mvn2nix.legacyPackages.${system}) mvn2nix;
+      };
       cypress = import ./frontend/nix/tools/cypress/override.nix { inherit pkgs; };
 
       ## Derivations provided by this repo
       inherit (pkgs.callPackages ./frontend/submission/nix {})
         afg-submission-deps
         afg-submission-staticHTML;
+      afg-backend = pkgs.callPackage ./backend/nix {
+        inherit (mvn2nix.legacyPackages.${system}) buildMavenRepositoryFromLockFile;
+        inherit pkgs;
+      };
+      afg-fullstack = self.packages.${system}.afg-backend.override {
+        patchPublic = self.packages.${system}.afg-submission-staticHTML;
+      };
     };
   };
 }
