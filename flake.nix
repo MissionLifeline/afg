@@ -79,6 +79,49 @@
         };
       };
 
+    checks.${system}.submission-integration = with pkgs;
+      let
+        testResults = runCommandNoCC "afg-submission-integration-tests" {
+          nativeBuildInputs = with self.packages.${system}; [
+            curl gnupg
+            self.packages.${system}.afg-fullstack
+            cypress
+          ];
+        } ''
+          export HOME=$(mktemp -d)
+
+          mkdir backend
+          pushd backend
+          cp -r ${./backend/data} data
+          gpg --import data/keys/test.sec.gpg
+          chmod -R u+w data
+          CONFIG=data/config/test.edn afg-backend &
+          popd
+
+          while ! curl -s http://localhost:4000; do
+            echo Wait for backend
+            sleep 1
+          done
+
+          mkdir -p frontend/submission $out
+          cd frontend/submission
+          cp ${./frontend/submission/cypress.json} cypress.json
+          cp -r ${./frontend/submission/cypress} cypress
+          chmod -R u+w cypress
+          export CYPRESS_BASE_URL=http://localhost:4000
+          set +e
+          cypress run
+          echo $? > $out/result
+          set -e
+
+          cp -r cypress/{results,screenshots} $out/
+        '';
+      in runCommandNoCC "afg-submission-integration-check" {} ''
+        echo See test results at ${testResults}
+        RESULT=$(cat "${testResults}/result")
+        exit $RESULT
+      '';
+
     # `nix develop`
     devShell.${system} = with nixpkgs.legacyPackages.${system}; mkShell {
       nativeBuildInputs = [
