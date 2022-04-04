@@ -84,9 +84,12 @@
       nativeBuildInputs = [
         # backend
         leiningen
+        gnupg
         # frontend
         nodejs yarn
-        self.legacyPackages.${system}.cypress
+        self.packages.${system}.cypress
+        # doc
+        mdbook mdbook-mermaid
       ];
     };
   };
