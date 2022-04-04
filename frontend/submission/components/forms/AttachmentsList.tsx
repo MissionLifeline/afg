@@ -55,7 +55,7 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
   // dependency array, stuff goes very wrong if put in there.
   useEffect(() => {
     onChangeDescription(descriptionState)
-  }, [descriptionState])
+  }, [descriptionState, onChangeDescription])
 
   return <ListItem secondaryAction={
     <IconButton edge="end" aria-label={t('delete')} onClick={() => onDeleteItem(id)}>
