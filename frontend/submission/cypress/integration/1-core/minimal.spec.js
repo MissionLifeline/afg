@@ -32,6 +32,12 @@ describe('Minimal test, to check the setup before testing details', () => {
       .then($result => {
 	const formData = JSON.parse($result.stdout)
 	cy.log(formData)
+        expect(formData).to.have.any.keys('general')
+        expect(formData.general).to.have.any.keys('firstName')
+        expect(formData.general.firstName).to.equal('Max')
+        expect(formData).to.have.any.keys('risks')
+        expect(formData.risks).to.have.any.keys('risksCV')
+        expect(formData.risks.risksCV).to.equal('risks…')
       })
   })
 })
