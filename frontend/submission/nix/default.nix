@@ -12,7 +12,7 @@ let
   };
 
   afg-submission-staticHTML = stdenv.mkDerivation {
-    name = "swlkup-frontend-staticHTML";
+    name = "afg-submission-staticHTML";
     src = ./..;
     buildPhase = ''
       export PATH="${afg-submission-deps}/libexec/afg-escape-submission/node_modules/.bin/:$PATH"

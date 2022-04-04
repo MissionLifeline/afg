@@ -19,18 +19,19 @@
             file (string/replace (:uri req) #".*/" "")
             html (->> (list-resources (str "public" path))
                       (remove #(re-matches #".+[/].*" %))  ;; Only files that are not in a subdirectory
-                      (filter #(re-matches #".*\.html" %)))]
+                      (filter #(re-matches #".*\.html" %)))
+            query-string (str "?" (:query-string req))]
            (cond (not (or (= 404 (:status res))
                           (= "/" (:uri req))))
                    res
                  (and (ends-with? (:uri req) "/")
                       (some #{"index.html"} html))
                    {:status 302
-                    :headers {"Location" (str (:uri req) "index.html")}
+                    :headers {"Location" (str (:uri req) "index.html" query-string)}
                     :body ""}
                  (some #{(str file ".html")} html)
                    {:status 302
-                    :headers {"Location" (str (:uri req) ".html")}
+                    :headers {"Location" (str (:uri req) ".html" query-string)}
                     :body ""}
                  (= 1 (count html))
                    (-> (resource-response (str "public" path (first html)))
