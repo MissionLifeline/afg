@@ -53,28 +53,31 @@
       });
     };
 
-    packages.${system} = {
-      ## The packages provided by the inputs of this flake
-      inherit pkgs;
+    legacyPackages.${system} = { inherit pkgs; };
 
-      ## Tools for devops
-      updateBackendDeps = pkgs.callPackage ./backend/nix/tools/updated-deps.nix {
-        inherit (mvn2nix.legacyPackages.${system}) mvn2nix;
-      };
-      cypress = import ./frontend/nix/tools/cypress/override.nix { inherit pkgs; };
-
-      ## Derivations provided by this repo
-      inherit (pkgs.callPackages ./frontend/submission/nix {})
-        afg-submission-deps
-        afg-submission-staticHTML;
-      afg-backend = pkgs.callPackage ./backend/nix {
-        inherit (mvn2nix.legacyPackages.${system}) buildMavenRepositoryFromLockFile;
+    packages.${system} =
+      let
+        ## The packages provided by the inputs of this flake
         inherit pkgs;
+      in {
+        ## Tools for devops
+        updateBackendDeps = pkgs.callPackage ./backend/nix/tools/updated-deps.nix {
+          inherit (mvn2nix.legacyPackages.${system}) mvn2nix;
+        };
+        cypress = import ./frontend/nix/tools/cypress/override.nix { inherit pkgs; };
+
+        ## Derivations provided by this repo
+        inherit (pkgs.callPackages ./frontend/submission/nix {})
+          afg-submission-deps
+          afg-submission-staticHTML;
+        afg-backend = pkgs.callPackage ./backend/nix {
+          inherit (mvn2nix.legacyPackages.${system}) buildMavenRepositoryFromLockFile;
+          inherit pkgs;
+        };
+        afg-fullstack = self.packages.${system}.afg-backend.override {
+          patchPublic = self.packages.${system}.afg-submission-staticHTML;
+        };
       };
-      afg-fullstack = self.packages.${system}.afg-backend.override {
-        patchPublic = self.packages.${system}.afg-submission-staticHTML;
-      };
-    };
 
     # `nix develop`
     devShell.${system} = with nixpkgs.legacyPackages.${system}; mkShell {
