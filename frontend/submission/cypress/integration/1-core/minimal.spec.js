@@ -1,3 +1,10 @@
+const gotoNextPage = () => {
+  // wait for {formData} to hit the state
+  cy.wait(300)
+
+  cy.get('button[title="proceed to next step"]').click()
+}
+
 describe('Minimal test, to check the setup before testing details', () => {
   it('Click through wizard and fill some of the forms', () => {
     cy.visit('/?token=demoToken')
@@ -9,17 +16,20 @@ describe('Minimal test, to check the setup before testing details', () => {
      **/
     cy.get('input[id="#/properties/firstName-input"]', {timeout: 30000})
       .type('Max')
+    cy.get('input[id="#/properties/lastName-input"]', {timeout: 30000})
+      .type('Mustermann')
+    cy.wait(300)
 
-    cy.get('button[title="proceed to next step"]').click()
+    gotoNextPage()
     cy.get('textarea[id="#/properties/risksCV-input"]')
       .type('risks…')
   })
 
   it('Submit the formData', () => {
     // TODO we need selectors for navigating to a wizard step (without reloading the page)
-    cy.get('button[title="proceed to next step"]').click()
-    cy.get('button[title="proceed to next step"]').click()
-    cy.get('button[title="proceed to next step"]').click()
+    gotoNextPage()
+    gotoNextPage()
+    gotoNextPage()
     cy.get('main').contains('Almost done')
 
     cy.get('button[title="submit"]').first().click()
@@ -35,6 +45,8 @@ describe('Minimal test, to check the setup before testing details', () => {
         expect(formData).to.have.any.keys('general')
         expect(formData.general).to.have.any.keys('firstName')
         expect(formData.general.firstName).to.equal('Max')
+        expect(formData.general).to.have.any.keys('lastName')
+        expect(formData.general.lastName).to.equal('Mustermann')
         expect(formData).to.have.any.keys('risks')
         expect(formData.risks).to.have.any.keys('risksCV')
         expect(formData.risks.risksCV).to.equal('risks…')
