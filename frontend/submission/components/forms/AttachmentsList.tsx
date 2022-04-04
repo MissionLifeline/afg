@@ -4,12 +4,12 @@ import ErrorIcon from '@mui/icons-material/Error'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import {IconButton} from '@mui/material'
 import Avatar from '@mui/material/Avatar'
-import Input from '@mui/material/Input'
 import LinearProgress from '@mui/material/LinearProgress'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
+import TextField from '@mui/material/TextField'
 import React, {useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 
@@ -68,13 +68,17 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
       </Avatar>
     </ListItemAvatar>
     <ListItemText
-      primary={<Input
+      primary={<TextField
+        variant='outlined'
         sx={{ width: '100%' }}
-        placeholder={t('attachment.placeholder', { name: blob.name })}
+        label={t('attachment.description', { name: blob.name })}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           setDescriptionState(event.target.value)
         }}
         value={descriptionState}
+        // indicate warning if attachment description is left blank
+        focused={!descriptionState}
+        color={!descriptionState ? 'warning' : 'secondary'}
       />}
       secondary={statusToProgress(t, status)}
     />
