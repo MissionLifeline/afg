@@ -19,6 +19,7 @@ import {useTokenStore, useTranslationState} from '../../state'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import SelectListWithChipsRenderer from '../renderer/SelectListWithChipsRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
+import VerticalLayoutWithDescriptionRenderer from '../renderer/VerticalLayoutWithDescriptionRenderer'
 import FormTranslationHelper from './FormTranslationHelper'
 
 type LocalizedJsonFormsProps = {
@@ -44,7 +45,10 @@ const defaultRenderers = [
     renderer: UploadRenderer
   }, {
     tester: rankWith(5, scopeEndIs('riskCategory')),
-    renderer: SelectListWithChipsRenderer
+    renderer: SelectListWithChipsRenderer,
+  }, {
+    tester: rankWith(2, uiTypeIs('VerticalLayout')),
+    renderer: VerticalLayoutWithDescriptionRenderer,
   }
 ]
 
