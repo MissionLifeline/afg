@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
-import React, {useEffect, useState} from 'react'
+import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 
 import {AttachmentState, AttachmentStatus, ID} from '../../state'
@@ -50,12 +50,9 @@ type AttachmentEntryProps = {
 const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, onDeleteItem }:  AttachmentEntryProps & AttachmentState) => {
   const {t} = useTranslation()
 
-  const [descriptionState, setDescriptionState] = useState(description)
-  // though eslint claims onChangeDescription belongs in useEffect's
-  // dependency array, stuff goes very wrong if put in there.
-  useEffect(() => {
-    onChangeDescription(descriptionState)
-  }, [descriptionState, onChangeDescription])
+  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeDescription(event.target.value)
+  }, [onChangeDescription])
 
   return <ListItem secondaryAction={
     <IconButton edge="end" aria-label={t('delete')} onClick={() => onDeleteItem(id)}>
@@ -72,13 +69,11 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
         variant='outlined'
         sx={{ width: '100%' }}
         label={t('attachment.description', { name: blob.name })}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setDescriptionState(event.target.value)
-        }}
-        value={descriptionState}
+        onChange={handleChange}
+        value={description}
         // indicate warning if attachment description is left blank
-        focused={!descriptionState}
-        color={!descriptionState ? 'warning' : 'secondary'}
+        focused={!description}
+        color={!description ? 'warning' : 'secondary'}
       />}
       secondary={statusToProgress(t, status)}
     />
