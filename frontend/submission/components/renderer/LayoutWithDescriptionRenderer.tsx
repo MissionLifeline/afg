@@ -7,7 +7,8 @@ import {
   getTranslator, hasShowRule, isVisible,
   JsonFormsCellRendererRegistryEntry, JsonFormsRendererRegistryEntry,
   JsonSchema,
-  OwnPropsOfRenderer,Resolve} from '@jsonforms/core'
+  OwnPropsOfRenderer, Resolve
+} from '@jsonforms/core'
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
 import {FormHelperText, Grid, Hidden} from '@mui/material'
 import Ajv from 'ajv'
