@@ -43,8 +43,8 @@ const defaultRenderers = [
     ),
     renderer: UploadRenderer
   }, {
-  tester: rankWith(5, scopeEndIs('riskCategory')),
-  renderer: CustomArrayControlRenderer
+    tester: rankWith(5, scopeEndIs('riskCategory')),
+    renderer: CustomArrayControlRenderer
   }
 ]
 

@@ -1,6 +1,5 @@
-import {
-  ArrayLayoutProps} from '@jsonforms/core'
-import {Cancel} from '@mui/icons-material'
+import { ArrayLayoutProps } from '@jsonforms/core'
+import { Cancel } from '@mui/icons-material'
 import {
   Checkbox, Chip, FormControl,
   Hidden,
@@ -10,19 +9,19 @@ import {
   Select,
   SelectChangeEvent
 } from '@mui/material'
-import {createStyles, makeStyles, Theme} from '@mui/styles'
+import { createStyles, DefaultTheme, makeStyles } from '@mui/styles'
 import _ from 'lodash'
-import React, {useCallback} from 'react'
-import {useTranslation} from 'react-i18next'
+import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import {withJsonFormsArrayLayoutProps} from './withJsonFormsArrayLayoutProps'
+import { withJsonFormsArrayLayoutProps } from './withJsonFormsArrayLayoutProps'
 
 type ArrayDataProp = {
   arrayData: any[]
 }
 
 type CustomArrayLayoutProps = ArrayLayoutProps & ArrayDataProp
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: { spacing: (x: number) => number }) =>
   createStyles({
     formControl: {
       margin: theme.spacing(1),
@@ -52,13 +51,10 @@ const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arra
     label: key
   }))
 
-  const getLabel = (_key:string) =>
-   options?.find(({key}) => key === _key)?.label || _key
-
   const handleChange = useCallback(
     ({ target: { value: targetValues } }: SelectChangeEvent<string[]>) => {
       const diff = _.xor(values, targetValues)
-      if(targetValues.length > values.length) {
+      if (targetValues.length > values.length) {
         diff.forEach(item => addItem(path, item)())
       } else {
         diff.forEach(item => {
@@ -68,7 +64,7 @@ const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arra
     [path, addItem, removeItems, values])
 
   const handleDelete = useCallback(
-    (e: any, value: string) => {
+    (_: any, value: string) => {
       const i = values.indexOf(value)
       i >= 0 && removeItems && removeItems(path, [i])()
     },
@@ -81,15 +77,13 @@ const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arra
       <InputLabel id="multiple-chip-checkbox-label">{label}</InputLabel>
       {
         <Select
-          labelId="mutiple-chip-checkbox-label"
-          id="mutiple-chip-checkbox"
+          labelId="multiple-chip-checkbox-label"
+          id="multiple-chip-checkbox"
           multiple
           value={values}
           style={{maxWidth: '100%'}}
           onChange={handleChange}
           onOpen={() => console.log('select opened')}
-          //input={<Input />}
-          // MenuProps={MenuProps}
           renderValue={(selected) => (
             <div className={classes.chips}>
               {(selected as string[]).map((value) => (
