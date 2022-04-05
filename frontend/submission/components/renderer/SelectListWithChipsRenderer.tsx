@@ -82,6 +82,7 @@ const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arr
           multiple
           value={values}
           style={{maxWidth: '100%'}}
+          autoWidth={true}
           onChange={handleChange}
           onOpen={() => console.log('select opened')}
           renderValue={(selected) => (
