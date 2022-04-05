@@ -1,14 +1,22 @@
-import applicationSchema from './application.json'
-import {applicationUISchema} from './applicationUISchema'
-import fellowApplicants from './fellowApplicants.json'
-import {fellowApplicantsUISchema} from './fellowApplicantsUISchema'
+import {WizardStep} from './types'
+
 import generalSchema from './general.json'
 import {generalTranslation} from './generalTranslation'
 import {generalUISchema} from './generalUISchema'
+
 import risksSchema from './risks.json'
 import {risksTranslation} from './risksTranslation'
 import {risksUISchema} from './risksUISchema'
-import {WizardStep} from './types'
+
+import applicationSchema from './application.json'
+import {applicationUISchema} from './applicationUISchema'
+
+import spouseSchema from './spouse.json'
+import {spouseTranslation} from './spouseTranslation'
+import {spouseUISchema} from './spouseUISchema'
+
+import fellowApplicants from './fellowApplicants.json'
+import {fellowApplicantsUISchema} from './fellowApplicantsUISchema'
 
 
 export const steps: WizardStep[] = [
@@ -31,6 +39,13 @@ export const steps: WizardStep[] = [
     stepLabel: 'formal application',
     uiSchema: applicationUISchema,
     jsonschema: applicationSchema
+  },
+  {
+    name: 'spouse',
+    stepLabel: 'spouse',
+    jsonschema: spouseSchema,
+    uiSchema: spouseUISchema,
+    translation: spouseTranslation,
   },
   {
     name: 'fellowApplicants',
