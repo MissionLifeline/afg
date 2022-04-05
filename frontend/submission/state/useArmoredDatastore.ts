@@ -33,7 +33,7 @@ type ArmoredDatastoreState = {
   pubKeys: Key[]
 
   formData: any
-  setFormData: (formData: any) => void
+  setFormData: (name: string, formData: any) => void
 
   sendFormData: (token: string, userId: string) => Promise<void>
 
@@ -57,7 +57,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   pubKeys: [],
 
   formData: {},
-  setFormData: (formData: any) => set({ formData }),
+  setFormData: (name: string, data: any) => set(({formData}) => ({ formData: { ...formData, [name]: data }})),
 
   sendFormData: async (token: string, userId: string) => {
     const { pubKeys, attachments } = get()
