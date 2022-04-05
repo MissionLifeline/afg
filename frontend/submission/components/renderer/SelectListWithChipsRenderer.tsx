@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: { spacing: (x: number) => number }) =>
     }
   })
 )
-const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arrayData: values = [], path, label }: CustomArrayLayoutProps) => {
+const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arrayData: values = [], path, label }: CustomArrayLayoutProps) => {
   const  { t } = useTranslation()
 
   const classes = useStyles()
@@ -117,4 +117,4 @@ const CustomArrayControlRenderer = ({removeItems, addItem, visible, schema, arra
 }
 
 
-export default withJsonFormsArrayLayoutProps(CustomArrayControlRenderer)
+export default withJsonFormsArrayLayoutProps(SelectListWithChipsRenderer)
