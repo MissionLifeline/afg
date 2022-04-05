@@ -1,22 +1,11 @@
 {
   "type": "object",
   "properties": {
-    "fellowApplicantFamilyMembers": {
+    "spouse": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
-          "relation": {
-            "type": "string",
-            "enum": [
-              "daughter",
-              "son",
-              "parent",
-              "sibling",
-              "uncleAunt",
-              "other"
-            ]
-          },
           "firstName": {
             "type": "string"
           },
@@ -69,6 +58,18 @@
             "type": "string",
             "format": "date"
           },
+          "passportAttachment": {
+            "upload": true,
+            "type":  "object",
+            "properties": {
+              "id": { "type": "string" },
+              "fileName": { "type": "string" },
+              "fileType": { "type": "string" },
+              "description": { "type": "string" },
+              "uploadStatus": { "type": "number" }
+            },
+            "required": ["id"]
+          },
           "tazkiraExisting": {
             "type": "boolean"
           },
@@ -82,13 +83,43 @@
           "tazkiraNumber": {
             "type": "string"
           },
+          "tazkiraAttachment": {
+            "upload": true,
+            "type":  "object",
+            "properties": {
+              "id": { "type": "string" },
+              "fileName": { "type": "string" },
+              "fileType": { "type": "string" },
+              "description": { "type": "string" },
+              "uploadStatus": { "type": "number" }
+            },
+            "required": ["id"]
+          },
           "visaOtherCountryExisting": {
             "type": "boolean"
           },
           "visaOtherCountryWhich": {
             "type": "string"
+          },
+          "visaOtherAttachments": {
+            "upload": true,
+            "type": "array",
+            "items": {
+              "type":  "object",
+              "properties": {
+                "id": { "type": "string" },
+                "fileName": { "type": "string" },
+                "fileType": { "type": "string" },
+                "description": { "type": "string" },
+                "uploadStatus": { "type": "number" }
+              },
+              "required": ["id"]
+            }
           }
-        }
+        },
+        "required": [
+          "firstName"
+        ]
       }
     }
   }
