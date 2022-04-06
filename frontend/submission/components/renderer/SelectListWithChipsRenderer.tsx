@@ -1,17 +1,17 @@
 import { ArrayLayoutProps } from '@jsonforms/core'
-import { Cancel } from '@mui/icons-material'
+import {Cancel, Close} from '@mui/icons-material'
 import {
-  Checkbox, Chip, FormControl,
+  Checkbox, Chip, Fab, FormControl,
   Hidden,
   InputLabel,
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent
+  SelectChangeEvent, useMediaQuery
 } from '@mui/material'
-import { createStyles, DefaultTheme, makeStyles } from '@mui/styles'
+import { createStyles, makeStyles } from '@mui/styles'
 import _ from 'lodash'
-import React, { useCallback } from 'react'
+import React, {useCallback, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { withJsonFormsArrayLayoutProps } from './withJsonFormsArrayLayoutProps'
@@ -42,6 +42,8 @@ const useStyles = makeStyles((theme: { spacing: (x: number) => number }) =>
 )
 const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arrayData: values = [], path, label }: CustomArrayLayoutProps) => {
   const  { t } = useTranslation()
+  const [selectOpen, setSelectOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width:800px)')
 
   const classes = useStyles()
 
@@ -84,7 +86,9 @@ const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arr
           style={{maxWidth: '100%'}}
           autoWidth={true}
           onChange={handleChange}
-          onOpen={() => console.log('select opened')}
+          onOpen={() => setSelectOpen(true)}
+          onClose={() => setSelectOpen(false)}
+          open={selectOpen}
           renderValue={(selected) => (
             <div className={classes.chips}>
               {(selected as string[]).map((value) => (
@@ -113,6 +117,11 @@ const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arr
           ))}
         </Select>
       }
+      {isMobile && selectOpen && <Fab
+          style={{position: 'fixed', bottom: 16, right: 16, zIndex: 10000}}
+          color={'primary'}
+          onClick={() => setSelectOpen(false)}><Close/></Fab> }
+
     </FormControl>
   </Hidden>
 }
