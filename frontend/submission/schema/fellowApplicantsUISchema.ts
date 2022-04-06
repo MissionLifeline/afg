@@ -13,6 +13,18 @@ const overrides: (UISchemaElement & Scopable)[] = [{
     detail: {
       type: 'VerticalLayout',
       elements: overrideScopes([
+        {
+          type: 'Control',
+          scope: scope('eligible'),
+          rule: {
+            effect: RuleEffect.HIDE,
+            condition: {
+              type: 'AND',
+              // @ts-ignore
+              conditions: [],
+            },
+          },
+        },
         ...showOnTrue(
           scope('eligible'),
           [scope('passportExisting'), scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment'),
