@@ -4,8 +4,8 @@ import {
   ControlElement,
   getAjv, getData,
   getI18nKey, getSchema,
-getTranslator, hasShowRule, isVisible,
-JsonFormsCellRendererRegistryEntry,   JsonFormsRendererRegistryEntry,
+  getTranslator, hasShowRule, isVisible,
+  JsonFormsCellRendererRegistryEntry, JsonFormsRendererRegistryEntry,
   JsonSchema,
   OwnPropsOfRenderer,Resolve} from '@jsonforms/core'
 import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
@@ -40,14 +40,14 @@ export const renderLayoutElements = (
     // @ts-ignore
     const i18nDescription = translator(i18nKey, description)
     const visible: boolean = hasShowRule(child)
-        ? isVisible(child, rootData, childPath, getAjv(state)) : true
+        ? isVisible(child, rootData, '', getAjv(state)) : true
     return (
       <Grid item key={`${path}-${index}`} xs>
         <Grid container direction={'column'}>
           <Hidden xsUp={!visible}>
-          <Grid item xs>
-            <FormHelperText>{i18nDescription}</FormHelperText>
-          </Grid>
+            <Grid item xs>
+              <FormHelperText>{i18nDescription}</FormHelperText>
+            </Grid>
           </Hidden>
           <Grid item xs>
             <JsonFormsDispatch
