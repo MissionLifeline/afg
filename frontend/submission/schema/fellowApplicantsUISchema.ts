@@ -14,6 +14,16 @@ const overrides: (UISchemaElement & Scopable)[] = [{
       type: 'VerticalLayout',
       elements: overrideScopes([
         ...showOnTrue(
+          scope('eligible'),
+          [scope('passportExisting'), scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment'),
+           scope('tazkiraExisting'), scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment'),
+           scope('visaOtherCountryExisting'),
+           scope('visaOtherCountryWhich'), scope('visaOtherAttachments'),
+           scope('placeOfResidenceList'), scope('placeOfResidenceOther'),
+          ]
+        ),
+        // @ts-ignore
+        ...showOnTrue(
           scope('passportExisting'),
           [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]
         ),
