@@ -53,3 +53,8 @@ main {
     border-width: 0;
   }
 }
+
+/* hide form textfield descriptions */
+.MuiInput-root + .MuiFormHelperText-root {
+  display: none;
+}
