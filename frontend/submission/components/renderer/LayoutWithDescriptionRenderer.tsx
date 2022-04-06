@@ -13,7 +13,10 @@ import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
 import {FormHelperText, Grid, Hidden} from '@mui/material'
 import Ajv from 'ajv'
 import isEmpty from 'lodash/isEmpty'
-import React, { ComponentType } from 'react'
+import React, {ComponentType} from 'react'
+import rehypeSanitize from 'rehype-sanitize'
+
+import {MDEditorMarkdown} from './MDEditor'
 
 export const renderLayoutElements = (
   state: JsonFormsState,
@@ -41,14 +44,18 @@ export const renderLayoutElements = (
     // @ts-ignore
     const i18nDescription = translator(i18nKey, description)
     const visible: boolean = hasShowRule(child)
-        ? isVisible(child, rootData, '', getAjv(state)) : true
+      ? isVisible(child, rootData, '', getAjv(state)) : true
     return (
       <Grid item key={`${path}-${index}`} xs>
         <Grid container direction={'column'}>
           <Hidden xsUp={!visible}>
-            <Grid item xs>
-              <FormHelperText>{i18nDescription}</FormHelperText>
-            </Grid>
+            {i18nDescription && i18nDescription.length > 0 && <Grid item xs>
+              <FormHelperText>
+                <MDEditorMarkdown
+                  source={i18nDescription}
+                  rehypePlugins={[[rehypeSanitize]]}/>
+              </FormHelperText>
+            </Grid>}
           </Hidden>
           <Grid item xs>
             <JsonFormsDispatch
@@ -70,20 +77,21 @@ export interface MaterialLayoutRendererProps extends OwnPropsOfRenderer {
   elements: UISchemaElement[];
   direction: 'row' | 'column';
 }
+
 const MaterialLayoutRendererComponent =
   (props: MaterialLayoutRendererProps) => {
-  const {
+    const {
       visible,
-        elements,
-        schema,
-        path,
-        enabled,
-        direction,
-        renderers,
-        cells
+      elements,
+      schema,
+      path,
+      enabled,
+      direction,
+      renderers,
+      cells
     } = props
     const ctx = useJsonForms()
-    const state = { jsonforms: ctx}
+    const state = {jsonforms: ctx}
     if (isEmpty(elements)) {
       return null
     } else {
@@ -96,15 +104,15 @@ const MaterialLayoutRendererComponent =
           >
             {
               renderLayoutElements(
-              state,
-              elements,
-              //@ts-ignore
-              schema,
-              path,
-              enabled,
-              renderers,
-              cells,
-            )}
+                state,
+                elements,
+                //@ts-ignore
+                schema,
+                path,
+                enabled,
+                renderers,
+                cells,
+              )}
           </Grid>
         </Hidden>
       )
@@ -122,5 +130,5 @@ export const withAjvProps = <P extends {}>(Component: ComponentType<AjvProps & P
     const ajv = getAjv({jsonforms: {...ctx}})
 
     // @ts-ignore
-    return (<Component {...props} ajv={ajv} />)
+    return (<Component {...props} ajv={ajv}/>)
   }

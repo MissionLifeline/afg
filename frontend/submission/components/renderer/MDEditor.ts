@@ -17,5 +17,14 @@ const MDEditor = dynamic(
   },
   { ssr: false }
 )
+export const MDEditorMarkdown = dynamic(
+  () => {
+    const promise: Promise<React.ForwardRefExoticComponent<MarkdownPreviewProps & React.RefAttributes<MarkdownPreviewRef>>>
+      = import('@uiw/react-md-editor').then((mod) => mod.default.Markdown)
+    return promise
+  },
+  { ssr: false }
+)
+
 
 export default MDEditor
