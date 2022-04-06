@@ -53,9 +53,6 @@ const defaultRenderers = [
   }, {
     tester: rankWith(4, isEnumControl),
     renderer: EnumRenderer,
-  }, {
-    tester: rankWith(5, scopeEndIs('eligible')),
-    renderer: (_: any) => null,
   }
 ]
 
