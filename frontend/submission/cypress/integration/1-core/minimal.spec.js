@@ -30,6 +30,7 @@ describe('Minimal test, to check the setup before testing details', () => {
     gotoNextPage()
     gotoNextPage()
     gotoNextPage()
+    gotoNextPage()
     cy.get('main').contains('Almost done')
 
     cy.get('button[title="submit"]').first().click()
