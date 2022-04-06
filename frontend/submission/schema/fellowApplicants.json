@@ -35,6 +35,22 @@
               "other"
             ]
           },
+          "maritalStatus": {
+            "type": "string",
+            "enum": [
+              "single",
+              "married"
+            ]
+          },
+          "fragile": {
+            "type": "boolean"
+          },
+          "requiresCare": {
+            "type": "boolean"
+          },
+          "requiresCareExplanation": {
+            "type": "string"
+          },
           "emailAddress": {
             "type": "string",
             "format": "email"

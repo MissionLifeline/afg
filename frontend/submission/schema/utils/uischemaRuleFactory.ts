@@ -14,3 +14,18 @@ export const showOnTrue: (conditionalScope: string, hiddenScopes: (string | stri
         }
       }
     } as (UISchemaElement & Scopable)))
+
+export const showOnEnum: (conditionalScope: string, conditionalValues: string[], hiddenScopes: (string | string[])) => (UISchemaElement & Scopable)[] =
+  (conditionalScope, conditionalValue, hiddenScopes) =>
+    (Array.isArray(hiddenScopes) ? hiddenScopes : [hiddenScopes]).map(hiddenScope => ({
+      type: 'Control',
+      scope: hiddenScope,
+      rule: {
+        effect: RuleEffect.SHOW,
+        condition: {
+          //@ts-ignore
+          scope: conditionalScope,
+          schema: {enum: conditionalValue}
+        }
+      }
+    } as (UISchemaElement & Scopable)))
