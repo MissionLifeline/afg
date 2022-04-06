@@ -8,7 +8,7 @@ export const jsonSchema2TranslationJsonSchema: (jsonschema: JsonSchema) => JsonS
       .map(([k, v]) =>
         [
           [`${k}.label`, {type: 'string'}],
-          [`${k}.description`, {type: 'string'}],
+          [`${k}.description`, {type: 'string', format: 'markdown'}],
           ...(!v.items?.properties ? [] : [[k, jsonSchema2TranslationJsonSchema(v.items)]])
         ]
       ).flat())
@@ -27,10 +27,7 @@ export const jsonSchema2TranslationUISchema: <K extends Layout = VerticalLayout>
           },
           {
             type: 'Control',
-            scope: `${scopeBase}${k}.description`,
-            options: {
-              multi: true
-            }
+            scope: `${scopeBase}${k}.description`
           },
           ...(!v.items?.properties ? [] :  [jsonSchema2TranslationUISchema<GroupLayout>(v.items, `${scopeBase}${k}/properties/`,{type: 'Group', label: k})])
         ]

@@ -1,4 +1,4 @@
-import {JsonFormsCore, JsonSchema, UISchemaElement} from '@jsonforms/core'
+import {formatIs, JsonFormsCore, JsonSchema, rankWith, UISchemaElement} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {Box, ToggleButton} from '@mui/material'
@@ -6,6 +6,7 @@ import React, {useCallback, useState} from 'react'
 
 import {formNamespace, fromTranslationStateToFormTranslation} from '../../i18n'
 import {useTranslationState} from '../../state'
+import MarkdownTextFieldRenderer from '../renderer/MarkdownTextFieldRenderer'
 import FormTranslationDownloader from './FormTranslationDownloader'
 import FormTranslationUploader from './FormTranslationUploader'
 
@@ -21,7 +22,10 @@ type FormTranslationHelperProps = {
 
 const defaultRenderers = [
   ...materialRenderers,
-  //register custom renderers
+  {
+    tester: rankWith(5, formatIs('markdown')),
+    renderer: MarkdownTextFieldRenderer
+  }
 ]
 
 const FormTranslationHelper =
