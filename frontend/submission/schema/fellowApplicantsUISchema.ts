@@ -27,26 +27,25 @@ const overrides: (UISchemaElement & Scopable)[] = [{
         },
         ...showOnTrue(
           scope('eligible'),
-          [scope('passportExisting'), scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment'),
-           scope('tazkiraExisting'), scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment'),
+          [scope('passportExisting'),
+           scope('tazkiraExisting'),
            scope('visaOtherCountryExisting'),
-           scope('visaOtherCountryWhich'), scope('visaOtherAttachments'),
            scope('placeOfResidenceList'), scope('placeOfResidenceOther'),
           ]
         ),
         // @ts-ignore
         ...showOnTrue(
-          scope('passportExisting'),
+          [scope('passportExisting'), scope('eligible')],
           [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]
         ),
         // @ts-ignore
         ...showOnTrue(
-          scope('tazkiraExisting'),
+          [scope('tazkiraExisting'), scope('eligible')],
           [scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment')]
         ),
         // @ts-ignore
         ...showOnTrue(
-          scope('visaOtherCountryExisting'),
+          [scope('visaOtherCountryExisting'), scope('eligible')],
           [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]
         ),
         // @ts-ignore
