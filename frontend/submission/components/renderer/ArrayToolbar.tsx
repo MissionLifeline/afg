@@ -8,6 +8,7 @@ import {
   Typography
 } from '@mui/material'
 import * as React from 'react'
+import {useTranslation} from 'react-i18next'
 
 import ValidationIcon from './ValidationIcon'
 
@@ -26,6 +27,7 @@ export const ArrayLayoutToolbar = React.memo(
     path,
     createDefault
   }: ArrayLayoutToolbarProps) => {
+    const {t} = useTranslation()
     return (
       <Toolbar disableGutters={true}>
         <Grid container alignItems='center' justifyContent='space-between'>
@@ -42,11 +44,11 @@ export const ArrayLayoutToolbar = React.memo(
               <Grid item>
                 <Tooltip
                   id='tooltip-add'
-                  title={`Add to ${label}`}
+                  title={t('add_another', {item: label}) || ''}
                   placement='bottom'
                 >
                   <IconButton
-                    aria-label={`Add to ${label}`}
+                    aria-label={t('add_another', {item: label})}
                     onClick={addItem(path, createDefault())}
                     size='large'>
                     <AddIcon />

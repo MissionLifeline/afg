@@ -11,6 +11,10 @@
   "success_received": "We received your data and will process it soon",
   "almost_done": "Almost done...",
   "check_uploads": "Please check your uploads and submit finally",
+  "add_another": "add another {{item}}",
+  "add_first": "add first {{item}}",
+  "choose_or_add": "either choose from the list or add an entry",
+  "no_entry_add": "no entry yet, to add an entry press +",
   "error": {
     "format": "Wrong format given",
     "required": "Required form field",

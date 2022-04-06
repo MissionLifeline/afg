@@ -11,6 +11,10 @@
   "success_received": "Wir haben die Daten erhalten und werden uns in Kürze um deren Bearbeitung kümmern",
   "almost_done": "Fast geschafft...",
   "check_uploads": "Bitte hochgeladene Anhänge kontrollieren und anschließend absenden",
+  "add_another": "weitere(n/s) {{item}} hinzufügen",
+  "add_first": "füge ein(e/en) {{item}} hinzu",
+  "choose_or_add": "entweder vorhandenen Eintrag auswählen oder hinzufügen",
+  "no_entry_add": "noch kein Eintrag vorhanden, mit + einen hinzufügen",
   "error": {
     "format": "Falsches Format angegeben",
     "required": "Diese Angabe ist notwendig",

@@ -38,11 +38,22 @@ import {
 } from '@jsonforms/react'
 import {Add} from '@mui/icons-material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import {Button, Grid, Hidden, IconButton, List, MenuItem, Select, Typography, useMediaQuery} from '@mui/material'
+import {
+  Button,
+  FormHelperText,
+  Grid,
+  Hidden,
+  IconButton,
+  List,
+  MenuItem,
+  Select,
+  useMediaQuery
+} from '@mui/material'
 import map from 'lodash/map'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import React, {useCallback, useMemo, useState} from 'react'
+import {useTranslation} from 'react-i18next'
 
 import {ArrayLayoutToolbar} from './ArrayToolbar'
 import {DeleteDialog} from './DeleteDialog'
@@ -62,11 +73,12 @@ export const MaterialListWithDetailRenderer =
      required,
      removeItems,
      addItem,
-     data,
+     data: dataLength,
      renderers,
      cells,
      config
    }: CustomArrayLayoutProps) => {
+    const {t} = useTranslation()
     const [selectedIndex, setSelectedIndex] = useState<number | undefined>(undefined)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const matches = useMediaQuery('(min-width:600px)')
@@ -118,10 +130,10 @@ export const MaterialListWithDetailRenderer =
         return (..._args: any[]) => {
           // @ts-ignore
           __addItem(..._args)
-          setSelectedIndex(data)
+          setSelectedIndex(dataLength)
         }
       },
-      [addItem, setSelectedIndex, data],
+      [addItem, setSelectedIndex, dataLength],
     )
 
     const deleteCancel = useCallback(
@@ -166,8 +178,8 @@ export const MaterialListWithDetailRenderer =
           <Grid item xs={4}>
             {matches
               ? (<List>
-                {data > 0 ? (
-                  map(range(data), index => (
+                {dataLength > 0 ? (
+                  map(range(dataLength), index => (
                     <ListWithDetailMasterItem
                       index={index}
                       path={path}
@@ -190,8 +202,8 @@ export const MaterialListWithDetailRenderer =
                     onChange={({target: {value}}) => {
                       setSelectedIndex(typeof value === 'string' ? parseInt(value) : value)
                     }}
-                  >{data > 0 ? (
-                    map(range(data), index => (<MenuItem key={index} value={index.toString()}>
+                  >{dataLength > 0 ? (
+                    map(range(dataLength), index => (<MenuItem key={index} value={index.toString()}>
                         <SelectListWithDetailMasterItem
                           index={index}
                           path={path}
@@ -222,9 +234,13 @@ export const MaterialListWithDetailRenderer =
                 path={composePaths(path, `${selectedIndex}`)}
               />
             ) : (
-              <Typography variant='h6'> select one of {data.toString()} items</Typography>
+              <FormHelperText>{dataLength > 0 ? t('choose_or_add') : t('no_entry_add') }</FormHelperText>
             )}
-            <Button endIcon={<Add />} variant='outlined' onClick={makeAddItemCallback(path, handleCreateDefaultValue())}>add to {label}</Button>
+            <Button
+              endIcon={<Add />}
+              variant='outlined'
+              onClick={makeAddItemCallback(path, handleCreateDefaultValue())}
+            >{t(dataLength > 0 ? 'add_another' : 'add_first', {item: label})}</Button>
           </Grid>
         </Grid>
       </Hidden>
