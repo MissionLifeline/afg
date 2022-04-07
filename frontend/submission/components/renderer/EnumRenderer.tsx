@@ -24,11 +24,13 @@ const EnumRenderer = React.memo(
     return ( <FormControl>
       <FormLabel id={`enum-label-${path}`}>{t(label)}</FormLabel>
       <RadioGroup
+        value={data}
+        onChange={ev => handleChange(path, ev.target.value)}
         aria-labelledby={`enum-label-${path}`}
         sx={{ flexDirection: 'row' }}
       >
         {(schema.enum || []).map(value =>
-          <FormControlLabel value={value} control={<Radio />} label={t(value)} />
+          <FormControlLabel value={value} control={<Radio/>} label={`${t(value)}`}/>
         )}
       </RadioGroup>
     </FormControl> )
