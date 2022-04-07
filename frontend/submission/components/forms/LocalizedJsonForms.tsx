@@ -52,6 +52,11 @@ const defaultRenderers = [
   }
 ]
 
+const ajv = createAjv({
+  allErrors: true,
+  verbose: true,
+})
+
 
 /** This is a first version of the `Part 1` of the questionnaire.
  *  See: `Online Tool Spezialfälle Vorschlag abzufragende Daten und Abfolge.docx`
@@ -99,10 +104,6 @@ const LocalizedJsonForms =
       translate: translator,
       translateError: errorTranslator
     })
-    const [ajv] = useState(createAjv({
-      allErrors: true,
-      verbose: true,
-    }))
 
     useEffect(() => {
       setJsonFormsI18nState({
