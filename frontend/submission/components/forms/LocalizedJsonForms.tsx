@@ -2,7 +2,7 @@ import {
   createAjv,
   defaultErrorTranslator, ErrorTranslator,
   JsonFormsI18nState,
-  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, scopeEndIs,
+  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, isEnumControl, scopeEndIs,
   Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
@@ -16,6 +16,7 @@ import {formNamespace} from '../../i18n'
 import {jsonSchema2TranslationJsonSchema, jsonSchema2TranslationUISchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTokenStore, useTranslationState} from '../../state'
+import EnumRenderer from '../renderer/EnumRenderer'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import SelectListWithChipsRenderer from '../renderer/SelectListWithChipsRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
@@ -49,7 +50,10 @@ const defaultRenderers = [
   }, {
     tester: rankWith(2, uiTypeIs('VerticalLayout')),
     renderer: VerticalLayoutWithDescriptionRenderer,
-  }
+  }, {
+    tester: rankWith(4, isEnumControl),
+    renderer: EnumRenderer,
+  },
 ]
 
 const ajv = createAjv({
