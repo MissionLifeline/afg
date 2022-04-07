@@ -1,10 +1,10 @@
 import {JsonSchema} from '@jsonforms/core'
 import {withJsonFormsControlProps} from '@jsonforms/react'
+import FormControl from '@mui/material/FormControl'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormLabel from '@mui/material/FormLabel'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
 import React from 'react'
 import {useTranslation} from 'react-i18next'
 
@@ -18,7 +18,7 @@ type EnumRendererProps = {
 }
 
 const EnumRenderer = React.memo(
-  ({data, handleChange, path, label, schema, visible}: EnumRendererProps) => {
+  ({data, handleChange, path, label, schema}: EnumRendererProps) => {
     const {t} = useTranslation()
 
     return ( <FormControl>
@@ -30,7 +30,7 @@ const EnumRenderer = React.memo(
         sx={{ flexDirection: 'row' }}
       >
         {(schema.enum || []).map(value =>
-          <FormControlLabel value={value} control={<Radio/>} label={`${t(value)}`}/>
+          <FormControlLabel key={value} value={value} control={<Radio/>} label={`${t(value)}`}/>
         )}
       </RadioGroup>
     </FormControl> )

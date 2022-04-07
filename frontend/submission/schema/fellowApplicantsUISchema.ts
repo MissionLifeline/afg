@@ -17,17 +17,21 @@ const overrides: (UISchemaElement & Scopable)[] = [{
           scope('passportExisting'),
           [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]
         ),
+        // @ts-ignore
         ...showOnTrue(
           scope('tazkiraExisting'),
           [scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment')]
         ),
+        // @ts-ignore
         ...showOnTrue(
           scope('visaOtherCountryExisting'),
           [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]
         ),
+        // @ts-ignore
         ...showOnEnum(
           scope('relation'), ['daughter'], scope('maritalStatus')
         ),
+        // @ts-ignore
         ...showOnEnum(
           scope('relation'), ['parent'], scope('fragile')
         ),

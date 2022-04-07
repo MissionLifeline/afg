@@ -1,8 +1,8 @@
 import {
   createAjv,
   defaultErrorTranslator, ErrorTranslator,
-  JsonFormsI18nState,
-  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, isEnumControl, scopeEndIs,
+  isEnumControl, JsonFormsI18nState,
+  JsonFormsRendererRegistryEntry, or, rankWith, schemaMatches, scopeEndIs,
   Translator, uiTypeIs
 } from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
