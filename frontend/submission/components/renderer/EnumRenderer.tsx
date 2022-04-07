@@ -24,7 +24,7 @@ const EnumRenderer = React.memo(
     return ( <FormControl>
       <FormLabel id={`enum-label-${path}`}>{t(label)}</FormLabel>
       <RadioGroup
-        value={data}
+        value={data || null}
         onChange={ev => handleChange(path, ev.target.value)}
         aria-labelledby={`enum-label-${path}`}
         sx={{ flexDirection: 'row' }}
