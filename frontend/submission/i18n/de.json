@@ -27,7 +27,7 @@
     "replace": "{{label}} ersetzen",
     "description": "Beschreibung für {{name}}"
   },
-  "step": {
-
+  "fellow_applicants": {
+    "not_eligible": "Für Verwandte, welche nicht zur Kernfamilie gehören, kann nach Absenden ein gesonderter Formularzugang erteilt werden."
   }
 }

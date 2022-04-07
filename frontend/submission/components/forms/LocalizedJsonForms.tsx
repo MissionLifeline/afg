@@ -17,6 +17,7 @@ import {jsonSchema2TranslationJsonSchema, jsonSchema2TranslationUISchema} from '
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTokenStore, useTranslationState} from '../../state'
 import EnumRenderer from '../renderer/EnumRenderer'
+import FellowApplicantEligibleRenderer from '../renderer/FellowApplicantEligibleRenderer'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import SelectListWithChipsRenderer from '../renderer/SelectListWithChipsRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
@@ -53,7 +54,10 @@ const defaultRenderers = [
   }, {
     tester: rankWith(4, isEnumControl),
     renderer: EnumRenderer,
-  }
+  }, {
+    tester: rankWith(7, scopeEndIs('eligible')),
+    renderer: FellowApplicantEligibleRenderer,
+  },
 ]
 
 const ajv = createAjv({

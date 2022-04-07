@@ -59,10 +59,10 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   formData: {},
   setFormData: (name: string, data: any) => {
     set(({formData}) => ({
-      formData: preProcessFormData({
+      formData: {
         ...formData,
         [name]: data,
-      })
+      }
     }))
   },
 
@@ -185,24 +185,6 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     get().startWorker(token, userId)
   }
 }))
-
-const preProcessFormData = (data: any): any => {
-  return {
-    ...data,
-    fellowApplicants: {
-      ...data?.fellowApplicants,
-      fellowApplicantFamilyMembers: (
-        data?.fellowApplicants?.fellowApplicantFamilyMembers || []
-      ).map((m: any) => ({
-        ...m,
-        eligible: (m.relation === 'son' && m.dateOfBirth < '2004-')
-          || (m.relation == 'daughter' && m.maritalStatus == 'single')
-          || (m.relation == 'parent' && m.fragile)
-          || (m.relation == 'uncleAunt' && m.requiresCare),
-      })),
-    }
-  }
-}
 
 const uploadWorker = async (token: string, userId: string, get: () => ArmoredDatastoreState, attachment: AttachmentState) => {
   const fileId = attachment.id
