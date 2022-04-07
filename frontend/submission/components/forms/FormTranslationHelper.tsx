@@ -1,4 +1,4 @@
-import {formatIs, JsonFormsCore, JsonSchema, rankWith, UISchemaElement} from '@jsonforms/core'
+import {createAjv, formatIs, JsonFormsCore, JsonSchema, rankWith, UISchemaElement} from '@jsonforms/core'
 import {materialCells, materialRenderers} from '@jsonforms/material-renderers'
 import {JsonForms} from '@jsonforms/react'
 import {Box, ToggleButton} from '@mui/material'
@@ -27,6 +27,12 @@ const defaultRenderers = [
     renderer: MarkdownTextFieldRenderer
   }
 ]
+
+const ajv = createAjv({
+  allErrors: true,
+  verbose: true,
+  formats: { 'markdown': true }
+})
 
 const FormTranslationHelper =
   ({
@@ -75,6 +81,7 @@ const FormTranslationHelper =
           renderers={defaultRenderers}
           cells={materialCells}
           onChange={onTranslationChange}
+          ajv={ajv}
         />
         <Box display='flex' flexDirection='column'>
           <FormTranslationUploader language={language} getAllTranslations={prepareTranslations}/>
