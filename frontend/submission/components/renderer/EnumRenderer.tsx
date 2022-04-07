@@ -22,7 +22,7 @@ const EnumRenderer = React.memo(
     const {t} = useTranslation()
 
     return ( <FormControl>
-      <FormLabel id={`enum-label-${path}`}>Gender</FormLabel>
+      <FormLabel id={`enum-label-${path}`}>{t(label)}</FormLabel>
       <RadioGroup
         aria-labelledby={`enum-label-${path}`}
         sx={{ flexDirection: 'row' }}
