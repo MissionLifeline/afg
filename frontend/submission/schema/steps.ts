@@ -1,4 +1,4 @@
-import {WizardStep} from './types'
+import {WizardOverride, WizardStep} from './types.d'
 
 import generalSchema from './general.json'
 import {generalTranslation} from './generalTranslation'
@@ -57,7 +57,7 @@ export const steps: WizardStep[] = [
     name: 'submit',
     stepLabel: 'submit the application',
     jsonschema: {},
-    finalStep: true
+    override: WizardOverride.FINAL,
   }
 
 ]
