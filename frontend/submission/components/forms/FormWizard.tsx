@@ -4,7 +4,7 @@ import log from 'loglevel'
 import React, {useCallback, useEffect} from 'react'
 
 import {useGet_KeysQuery} from '../../api/generates'
-import {steps} from '../../schema'
+import { steps, WizardOverride } from '../../schema'
 import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
 import FinalControlStep from './FinalControlStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
@@ -41,8 +41,8 @@ export const FormWizard = ({}: FormWizardProps) => {
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ? <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
     {[steps[currentStep]]
-      .map(({name, jsonschema, uiSchema, finalStep}) => <>
-        {!finalStep
+     .map(({name, jsonschema, uiSchema, override}) => <>
+        {!override
           ? <LocalizedJsonForms
             key={name}
             name={name}
@@ -52,7 +52,10 @@ export const FormWizard = ({}: FormWizardProps) => {
             data={formData[name] || {}}
             validationMode={'ValidateAndShow'}
           />
-          : <FinalControlStep/>}
+          : override == WizardOverride.FINAL
+          ? <FinalControlStep/>
+          : null
+        }
       </>)}
   </>}
   </Box>
