@@ -19,6 +19,7 @@ const overrides: (UISchemaElement & Scopable)[] = [{
            scope('tazkiraExisting'),
            scope('visaOtherCountryExisting'),
            scope('placeOfResidenceList'), scope('placeOfResidenceOther'),
+           scope('emailAddress'), scope('telephoneNumber'),
           ]
         ),
         // @ts-ignore
@@ -44,9 +45,11 @@ const overrides: (UISchemaElement & Scopable)[] = [{
         ...showOnEnum(
           scope('relation'), ['parent'], scope('fragile')
         ),
-        // ...showOnEnum(
-        //   scope('relation'), ['uncleAunt'], scope('requiresCare')
-        // ),
+        // @ts-ignore
+        ...showOnEnum(
+          // show sex except for son+daughter
+          scope('relation'), ['parent', 'sibling', 'uncleAunt', 'other'], scope('sex')
+        ),
         {
           type: 'Control',
           scope: scope('requiresCareExplanation'),

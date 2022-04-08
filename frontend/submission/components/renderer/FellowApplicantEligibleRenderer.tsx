@@ -36,8 +36,8 @@ const FellowApplicantEligibleRenderer = React.memo(
           || (applicant.relation == 'daughter' && applicant.maritalStatus == 'single')
           // elderly parents
           || (applicant.relation == 'parent' && applicant.fragile)
-          // care-requiring uncle/aunt
-          || (applicant.relation == 'uncleAunt' && applicant.requiresCare)
+          // care-requiring *
+          || applicant.requiresCare
         if (eligible !== eligible_) {
           setEligible(eligible_)
         }
