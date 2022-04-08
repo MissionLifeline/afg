@@ -21,6 +21,12 @@ import {fellowApplicantsUISchema} from './fellowApplicantsUISchema'
 
 export const steps: WizardStep[] = [
   {
+    name: 'welcome',
+    stepLabel: 'welcome',
+    jsonschema: {},
+    override: WizardOverride.WELCOME,
+  },
+  {
     name: 'general',
     stepLabel: 'about you',
     jsonschema: generalSchema,

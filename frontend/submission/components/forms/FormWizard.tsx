@@ -7,6 +7,7 @@ import {useGet_KeysQuery} from '../../api/generates'
 import { steps, WizardOverride } from '../../schema'
 import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
 import FinalControlStep from './FinalControlStep'
+import WelcomeStep from './WelcomeStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
 
 type FormWizardProps = Record<string, never>
@@ -32,18 +33,15 @@ export const FormWizard = ({}: FormWizardProps) => {
     setSerializedPubKeys(pubKeys)
   }, [data, setSerializedPubKeys])
 
-
-
   const handleFormChange = useCallback(
     (name: string, state: Pick<JsonFormsCore, 'data' | 'errors'>) => {
       setFormData(name, state.data)
     }, [setFormData])
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ? <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
-    {[steps[currentStep]]
-     .map(({name, jsonschema, uiSchema, override}) => <>
-        {!override
-          ? <LocalizedJsonForms
+    {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
+      return !override
+        ? <LocalizedJsonForms
             key={name}
             name={name}
             schema={jsonschema}
@@ -52,11 +50,12 @@ export const FormWizard = ({}: FormWizardProps) => {
             data={formData[name] || {}}
             validationMode={'ValidateAndShow'}
           />
-          : override == WizardOverride.FINAL
-          ? <FinalControlStep/>
-          : null
-        }
-      </>)}
+        : override == WizardOverride.WELCOME
+        ? <WelcomeStep/>
+        : override == WizardOverride.FINAL
+        ? <FinalControlStep/>
+        : null
+    })}
   </>}
   </Box>
 }
