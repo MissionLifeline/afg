@@ -15,7 +15,7 @@ export const WizardStepper =  () => {
   const { t } = useTranslation()
 
   return (
-    <Box sx={{width: '100%'}}>
+    <Box sx={{maxWidth: '100%', overflowX: 'auto'}}>
       <Stepper activeStep={currentStep} alternativeLabel>
         {steps.map(({name, stepLabel: label}, index) => (
           <Step key={name} onClick={() => gotoStep(index)}>
