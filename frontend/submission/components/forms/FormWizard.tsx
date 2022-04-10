@@ -1,6 +1,7 @@
 import {JsonFormsCore} from '@jsonforms/core'
 import {Box} from '@mui/system'
 import log from 'loglevel'
+import {useRouter} from 'next/router'
 import React, {useCallback, useEffect} from 'react'
 
 import {useGet_KeysQuery} from '../../api/generates'
@@ -15,6 +16,7 @@ type FormWizardProps = Record<string, never>
 export const FormWizard = ({}: FormWizardProps) => {
   const {currentStep} = useWizardQueryState()
   const {setSerializedPubKeys, formData, setFormData} = useArmoredDatastore()
+  const { replace } = useRouter()
 
   const {token, getSetUserId} = useTokenStore()
   const userId = getSetUserId()
@@ -27,11 +29,13 @@ export const FormWizard = ({}: FormWizardProps) => {
   useEffect(() => {
     if (!data) return
     const {errors, tokenValid, pubKeys} = data.get_keys
-    if (!tokenValid) log.error('token or userId is not valid')
+    if (!tokenValid) {
+      log.error('token or userId is not valid')
+      replace(`/token_invalid?token=${token}`)
+    }
     if (errors && tokenValid) throw Error(errors)
-    log.debug({pubKeys})
     setSerializedPubKeys(pubKeys)
-  }, [data, setSerializedPubKeys])
+  }, [data, setSerializedPubKeys, token, replace])
 
   const handleFormChange = useCallback(
     (name: string, state: Pick<JsonFormsCore, 'data' | 'errors'>) => {
@@ -39,7 +43,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     }, [setFormData])
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ?
-    <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
+    <p>invalid token</p> : <>
       {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
         switch (override) {
           case WizardOverride.WELCOME:
