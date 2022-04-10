@@ -4,11 +4,11 @@ import log from 'loglevel'
 import React, {useCallback, useEffect} from 'react'
 
 import {useGet_KeysQuery} from '../../api/generates'
-import { steps, WizardOverride } from '../../schema'
+import {steps, WizardOverride} from '../../schema'
 import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
 import FinalControlStep from './FinalControlStep'
-import WelcomeStep from './WelcomeStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
+import WelcomeStep from './WelcomeStep'
 
 type FormWizardProps = Record<string, never>
 
@@ -38,25 +38,27 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(name, state.data)
     }, [setFormData])
 
-  return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ? <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
-    {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
-      return !override
-        ? <LocalizedJsonForms
-            key={name}
-            name={name}
-            schema={jsonschema}
-            uischema={uiSchema}
-            onChange={(state) => handleFormChange(name, state)}
-            data={formData[name] || {}}
-            validationMode={'ValidateAndShow'}
-          />
-        : override == WizardOverride.WELCOME
-        ? <WelcomeStep/>
-        : override == WizardOverride.FINAL
-        ? <FinalControlStep/>
-        : null
-    })}
-  </>}
+  return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ?
+    <p>TODO: show nice component when combination of token+userId is invalid</p> : <>
+      {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
+        switch (override) {
+          case WizardOverride.WELCOME:
+            return <WelcomeStep/>
+          case WizardOverride.FINAL:
+            return <FinalControlStep/>
+          default:
+            return <LocalizedJsonForms
+              key={name}
+              name={name}
+              schema={jsonschema}
+              uischema={uiSchema}
+              onChange={(state) => handleFormChange(name, state)}
+              data={formData[name] || {}}
+              validationMode={'ValidateAndShow'}
+            />
+        }
+      })}
+    </>}
   </Box>
 }
 
