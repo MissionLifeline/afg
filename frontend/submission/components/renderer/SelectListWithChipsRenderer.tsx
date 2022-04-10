@@ -75,8 +75,8 @@ const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arr
 
 
   return <Hidden xsUp={!visible}>
-    <FormControl fullWidth={true} className={classes.formControl}>
-      <InputLabel id="multiple-chip-checkbox-label">{label}</InputLabel>
+    <FormControl fullWidth={true} className={classes.formControl} sx={{ marginTop: '0.5rem' }}>
+      <InputLabel id="multiple-chip-checkbox-label" sx={{ top: '-0.5rem' }}>{label}</InputLabel>
       {
         <Select
           labelId="multiple-chip-checkbox-label"
