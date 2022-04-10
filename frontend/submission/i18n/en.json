@@ -32,7 +32,9 @@
     "risks": "risk factors",
     "application": "formal application",
     "fellowApplicants": "fellow applicants",
-    "submit": "check & submit"
+    "submit": "check & submit",
+    "spouse": "spouse",
+    "welcome": "welcome"
   },
   "fellow_applicants": {
     "not_eligible": "You can obtain a separate form access link for family members who do not belonging to your immediate family after submitting this data."
