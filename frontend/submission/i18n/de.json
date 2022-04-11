@@ -7,6 +7,8 @@
   "submit": "Absenden",
   "submitted": "Übermittelt",
   "delete": "löschen",
+  "invalid_token": "Ungültiger Zugangschiffre",
+  "enter_valid_token": "Bitte gültigen Zugangschiffre eingeben",
   "welcome_step": "Willkommen!",
   "success_submit": "Erfolgreich übermittelt",
   "success_received": "Wir haben die Daten erhalten und werden uns in Kürze um deren Bearbeitung kümmern",
