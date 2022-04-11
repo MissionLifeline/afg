@@ -3,6 +3,7 @@ import {Box} from '@mui/system'
 import log from 'loglevel'
 import {useRouter} from 'next/router'
 import React, {useCallback, useEffect} from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps, WizardOverride} from '../../schema'
@@ -14,6 +15,7 @@ import WelcomeStep from './WelcomeStep'
 type FormWizardProps = Record<string, never>
 
 export const FormWizard = ({}: FormWizardProps) => {
+  const { t } = useTranslation()
   const {currentStep} = useWizardQueryState()
   const {setSerializedPubKeys, formData, setFormData} = useArmoredDatastore()
   const { replace } = useRouter()
@@ -48,7 +50,7 @@ export const FormWizard = ({}: FormWizardProps) => {
     }, [setFormData])
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ?
-    <p>invalid token</p> : <>
+    <p>{t('invalid_token')}</p> : <>
       {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
         switch (override) {
           case WizardOverride.WELCOME:

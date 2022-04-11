@@ -12,7 +12,7 @@ import {LanguageSelection} from '../components/user'
 
 
 const TokenInvalid: NextPage = () => {
-  const t = useTranslation()
+  const { t } = useTranslation()
   const { query, push } = useRouter()
   const [token, setToken] = useState(query.token || '')
 
@@ -44,9 +44,8 @@ const TokenInvalid: NextPage = () => {
           </Box>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
-          <Typography variant='h4'>No valid token given</Typography>
-          <Typography variant='body1'>please enter a valid token</Typography>
-
+          <Typography variant='h4'>{t('invalid_token')}</Typography>
+          <Typography variant='body1'>{t('enter_valid_token')}</Typography>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
           <form onSubmit={openWithToken}>
