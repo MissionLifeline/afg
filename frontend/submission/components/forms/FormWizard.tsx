@@ -27,6 +27,11 @@ export const FormWizard = ({}: FormWizardProps) => {
     })
 
   useEffect(() => {
+    if (!token) {
+      log.error('token is missing')
+      replace(`/token_invalid`)
+    }
+
     if (!data) return
     const {errors, tokenValid, pubKeys} = data.get_keys
     if (!tokenValid) {
