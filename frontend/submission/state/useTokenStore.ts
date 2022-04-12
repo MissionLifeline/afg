@@ -10,6 +10,12 @@ function loadOrGenerateUserId() {
   return uuid()
 }
 
+// stub for server-side and clients w/o localStorage
+const localStorage = (typeof window != 'undefined' && window.localStorage) || {
+  getItem: _k => undefined,
+  setItem: (_k, _v) => {},
+}
+
 type TokenState = {
   token: string|undefined
   setToken: (token: string) => void
@@ -21,8 +27,14 @@ export const useTokenStore = zustand<TokenState>((set, get) => ({
   token: undefined,
   setToken: token => set({token}),
   userId: undefined,
-  getSetUserId: () => {if(!get().userId)
-	                 set({userId: loadOrGenerateUserId()})
-	               return get().userId}
+  getSetUserId: () => {
+    if (!get().userId) {
+      // no current userId, revive from localStorage or generate a new one
+      const userId = localStorage.getItem('userId') || loadOrGenerateUserId()
+      localStorage.setItem('userId', userId)
+      set({ userId })
+    }
+    return get().userId
+  },
 }))
 
