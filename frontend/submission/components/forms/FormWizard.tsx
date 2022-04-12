@@ -31,7 +31,7 @@ export const FormWizard = ({}: FormWizardProps) => {
   useEffect(() => {
     if (!token) {
       log.error('token is missing')
-      replace(`/token_invalid`)
+      replace('/token_invalid')
     }
 
     if (!data) return
