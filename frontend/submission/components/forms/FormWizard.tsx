@@ -54,9 +54,9 @@ export const FormWizard = ({}: FormWizardProps) => {
       {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
         switch (override) {
           case WizardOverride.WELCOME:
-            return <WelcomeStep/>
+            return <WelcomeStep key={'welcome'}/>
           case WizardOverride.FINAL:
-            return <FinalControlStep/>
+            return <FinalControlStep key={'final'}/>
           default:
             return <LocalizedJsonForms
               key={name}
