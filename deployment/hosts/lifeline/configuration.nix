@@ -22,24 +22,70 @@
   networking = {
     hostName = "lifeline";
     hostId = "deadbeef";
+    useNetworkd = true;
 
+    useDHCP = false;
     usePredictableInterfaceNames = false;
-    interfaces.eth0 = {
-      ipv4.addresses = [ {
-        address = "65.108.193.134";
-        prefixLength = 26;
-      } ];
-      ipv6.addresses = [ {
-        address = "2a01:4f9:1a:95a9::1";
-        prefixLength = 64;
-      } ];
-    };
-    defaultGateway = "65.108.193.129";
-    defaultGateway6 = {
-      address = "fe80::1";
-      interface = "eth0";
-    };
+#   interfaces.eth0 = {
+#     ipv4.addresses = [ {
+#       address = "65.108.193.134";
+#       prefixLength = 26;
+#     } ];
+#     ipv6.addresses = [ {
+#       address = "2a01:4f9:1a:95a9::1";
+#       prefixLength = 64;
+#     } ];
+#   };
+#   defaultGateway = "65.108.193.129";
+#   defaultGateway6 = {
+#     address = "fe80::1";
+#     interface = "eth0";
+#   };
     nameservers = [ "9.9.9.9" "1.1.1.1" ];
+    nat = {
+      enable = true;
+      enableIPv6 = true;
+      externalInterface = "eth0";
+      internalInterfaces = [ "uvm" ];
+      forwardPorts = [ { destination = "10.0.0.2:22"; proto = "tcp"; sourcePort = 2222; } ];
+    };
+  };
+  systemd.network = {
+    # Hetzner Uplink
+    networks."00-eth0" = {
+      matchConfig.Name = "eth0";
+      addresses = [ {
+        addressConfig.Address = "65.108.193.134/26";
+      } {
+        addressConfig.Address = "2a01:4f9:1a:95a9::1/64";
+      } ];
+      gateway = [ "65.108.193.129" "fe80::1" ];
+    };
+    # Create bridge
+    netdevs."10-uvm".netdevConfig = {
+      Kind = "bridge";
+      Name = "uvm";
+    };
+    networks."10-uvm" = {
+      matchConfig.Name = "uvm";
+      networkConfig = {
+        DHCPServer = true;
+        IPv6SendRA = true;
+      };
+      addresses = [ {
+        addressConfig.Address = "10.0.0.1/24";
+      } {
+        addressConfig.Address = "fd12:3456:789a::1/64";
+      } ];
+      ipv6Prefixes = [ {
+        ipv6PrefixConfig.Prefix = "fd12:3456:789a::/64";
+      } ];
+    };
+    # Attach MicroVM TAP interfaces to bridge
+    networks."11-uvm" = {
+      matchConfig.Name = "uvm-*";
+      networkConfig.Bridge = "uvm";
+    };
   };
 
   # Set your time zone.
@@ -108,7 +154,7 @@
   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 22 2222 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

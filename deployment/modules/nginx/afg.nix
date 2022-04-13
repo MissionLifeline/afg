@@ -14,7 +14,7 @@
       forceSSL = true;
       useACMEHost = config.networking.domain;
       locations."/" = {
-        proxyPass = "http://localhost:4000";
+        proxyPass = "http://10.0.0.2:4000";
         extraConfig = "proxy_pass_header Authorization;";
       };
     };
@@ -23,7 +23,7 @@
       forceSSL = true;
       useACMEHost = config.networking.domain;
       locations."/" = {
-        proxyPass = "http://localhost:3000";
+        proxyPass = "http://10.0.0.2:3000";
         proxyWebsockets = true;
         extraConfig = "proxy_pass_header Authorization;";
       };

@@ -36,9 +36,7 @@
       #sops-nix.nixosModules.sops
       #./deployment/modules/sops.nix
       ./deployment/modules/default.nix
-      ./deployment/modules/dns.nix
       #./deployment/modules/monitoring/client.nix
-      ./deployment/modules/nginx/afg.nix
       #nix-deploy-git.nixosModule
       #./deployment/modules/nix-deploy-git.nix
     ];
@@ -51,9 +49,18 @@
           microvm.nixosModules.host
           ./deployment/hosts/lifeline/configuration.nix
           ./deployment/modules/afg.nix
+          ./deployment/modules/nginx/afg.nix
+          ./deployment/modules/dns.nix
           #./deployment/modules/binarycache/server.nix
           #./deployment/modules/monitoring/server.nix
           #./deployment/modules/jenkins.nix
+        ];
+      });
+
+      afg-staging = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
+        modules = commonModules ++ [
+          microvm.nixosModules.microvm
+          ./deployment/hosts/afg-staging/configuration.nix
         ];
       });
     };
