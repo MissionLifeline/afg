@@ -114,14 +114,16 @@
           echo $? > $out/result
           set -e
 
-          cp -r cypress/results $out/
+          if [ -e cypress/results ]; then
+            cp -r cypress/results $out/
+          fi
           if [ -e cypress/screenshots ]; then
             cp -r cypress/screenshots $out/
           fi
         '';
       in runCommandNoCC "afg-submission-integration-check" {} ''
         echo See test results at ${testResults}
-        touch $out
+        ln -s ${testResults} $out
         RESULT=$(cat "${testResults}/result")
       '';
 
