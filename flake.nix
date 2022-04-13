@@ -15,9 +15,13 @@
       url = "github:fzakaria/mvn2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, sops-nix, dns, mvn2nix }:
+  outputs = { self, nixpkgs, sops-nix, dns, mvn2nix, microvm }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
@@ -44,6 +48,7 @@
     nixosConfigurations = {
       lifeline = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [
+          microvm.nixosModules.host
           ./deployment/hosts/lifeline/configuration.nix
           ./deployment/modules/afg.nix
           #./deployment/modules/binarycache/server.nix
