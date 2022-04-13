@@ -8,6 +8,7 @@ import {ID, useArmoredDatastore, useTokenStore} from '../../state'
 type AddAttachementButtonProps = {
   onUploadsAdded?: (id: { id: ID, fileName: string, fileType: string }[]) => void,
   label?: string,
+  path: string,
   uploadCount?: number
   ids?: ID[]
 }
@@ -15,6 +16,7 @@ type AddAttachementButtonProps = {
 const AddAttachmentButton = ({
   onUploadsAdded,
   label,
+  path,
   uploadCount = 0,
   ids = [],
   ...inputProps
@@ -55,7 +57,7 @@ const AddAttachmentButton = ({
         : t('attachment.add_document')
       }
     </Button>
-    <input {...inputProps} type="file" ref={inputEl} style={{ display: 'none' }}
+    <input {...inputProps} id={`${path}-file-input`} type="file" ref={inputEl} style={{ display: 'none' }}
        onChange={onInputChange}
     />
   </>
