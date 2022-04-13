@@ -69,7 +69,7 @@ const UploadRenderer = ({data, handleChange, path, label, schema, visible}: Uplo
 
   return <Hidden xsUp={!visible}>
     <Box style={{marginTop: '1em'}}>
-      <AddAttachmentButton ids={uploads.map(({ id }) => id)} onUploadsAdded={handleAddUploads} multiple={isArray} label={label} uploadCount={ownAttachmentStates.length}/>
+      <AddAttachmentButton ids={uploads.map(({ id }) => id)} onUploadsAdded={handleAddUploads} multiple={isArray} label={label} path={path} uploadCount={ownAttachmentStates.length}/>
       <AttachmentsList
         attachmentStates={ownAttachmentStates}
         descriptions={uploads}
