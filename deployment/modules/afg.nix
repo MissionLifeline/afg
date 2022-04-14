@@ -45,7 +45,7 @@
       PrivateTmp = true;
       ProtectClock = true;
       ProtectControlGroups = true;
-      ReadWritePaths = [ config.users.users.${User}.home ];
+      ReadWritePaths = [ WorkingDirectory ];
       ProtectKernelLogs = true;
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
