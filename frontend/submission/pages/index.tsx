@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
     return (<AppLayout>
         <>
-            <LoadingSpinner loading={!isReady}/>
+            {!isReady && <LoadingSpinner loading={!isReady}/>}
             <AlertBox
                 color={theme.palette.success.main}
                 title={t('first_visit_title')}
