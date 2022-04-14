@@ -9,6 +9,7 @@
   "delete": "delete",
   "invalid_token": "invalid token",
   "missing_token": "missing token",
+  "enter_valid_token": "please enter a valid token ",
   "success_submit": "Successfully submitted",
   "success_received": "We received your data and will process it soon",
   "almost_done": "Almost done...",
