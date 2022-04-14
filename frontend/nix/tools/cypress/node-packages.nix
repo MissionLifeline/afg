@@ -22,13 +22,13 @@ let
         sha512 = "skbBzPggOVYCbnGgV+0dmBdW/s77ZkAOXIC1knS8NagwDjBrNC1LuXtQJeiN6l+m7lzmHtaoUw/ctJKdqkG57Q==";
       };
     };
-    "@types/node-14.18.12" = {
+    "@types/node-14.18.13" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
-      version = "14.18.12";
+      version = "14.18.13";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/node/-/node-14.18.12.tgz";
-        sha512 = "q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==";
+        url = "https://registry.npmjs.org/@types/node/-/node-14.18.13.tgz";
+        sha512 = "Z6/KzgyWOga3pJNS42A+zayjhPbf2zM3hegRQaOPnLOzEi86VV++6FLDWgR1LGrVCRufP/ph2daa3tEa5br1zA==";
       };
     };
     "@types/sinonjs__fake-timers-8.1.1" = {
@@ -49,13 +49,13 @@ let
         sha512 = "JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==";
       };
     };
-    "@types/yauzl-2.9.2" = {
+    "@types/yauzl-2.10.0" = {
       name = "_at_types_slash_yauzl";
       packageName = "@types/yauzl";
-      version = "2.9.2";
+      version = "2.10.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/yauzl/-/yauzl-2.9.2.tgz";
-        sha512 = "8uALY5LTvSuHgloDVUvWP3pIauILm+8/0pDMokuDYIoNsOkSwd5AiHBTSEJjKTDcZr5z8UpgOWZkxBF4iJftoA==";
+        url = "https://registry.npmjs.org/@types/yauzl/-/yauzl-2.10.0.tgz";
+        sha512 = "Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==";
       };
     };
     "aggregate-error-3.1.0" = {
@@ -319,13 +319,13 @@ let
         sha512 = "I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==";
       };
     };
-    "cli-table3-0.6.1" = {
+    "cli-table3-0.6.2" = {
       name = "cli-table3";
       packageName = "cli-table3";
-      version = "0.6.1";
+      version = "0.6.2";
       src = fetchurl {
-        url = "https://registry.npmjs.org/cli-table3/-/cli-table3-0.6.1.tgz";
-        sha512 = "w0q/enDHhPLq44ovMGdQeeDLvwxwavsJX7oQGYt/LrBlYsyaxyDnp6z3QzFut/6kLLKnlcUVJLrpB7KBfgG/RA==";
+        url = "https://registry.npmjs.org/cli-table3/-/cli-table3-0.6.2.tgz";
+        sha512 = "QyavHCaIC80cMivimWu4aWHilIpiDpfm3hGmqAmXVL1UsnbLuBSMd21hTX6VY4ZSDSM73ESLeF8TOYId3rBTbw==";
       };
     };
     "cli-truncate-2.1.0" = {
@@ -362,15 +362,6 @@ let
       src = fetchurl {
         url = "https://registry.npmjs.org/colorette/-/colorette-2.0.16.tgz";
         sha512 = "hUewv7oMjCp+wkBv5Rm0v87eJhq4woh5rSR+42YSQJKecCqgIqNkZ6lAlQms/BwHPJA5NKMRlpxPRv0n8HQW6g==";
-      };
-    };
-    "colors-1.4.0" = {
-      name = "colors";
-      packageName = "colors";
-      version = "1.4.0";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/colors/-/colors-1.4.0.tgz";
-        sha512 = "a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==";
       };
     };
     "combined-stream-1.0.8" = {
@@ -670,13 +661,13 @@ let
         sha512 = "v8ho2DS5RiCjftj1nD9NmnfaOzTdud7RRnVd9kFNOjqZbISlx5DQ+OrTkywgd0dIt7oFCvKetZSHoHcP3sDdiA==";
       };
     };
-    "graceful-fs-4.2.9" = {
+    "graceful-fs-4.2.10" = {
       name = "graceful-fs";
       packageName = "graceful-fs";
-      version = "4.2.9";
+      version = "4.2.10";
       src = fetchurl {
-        url = "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.9.tgz";
-        sha512 = "NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==";
+        url = "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.10.tgz";
+        sha512 = "9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==";
       };
     };
     "has-flag-4.0.0" = {
@@ -1219,13 +1210,13 @@ let
         sha512 = "YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==";
       };
     };
-    "semver-7.3.5" = {
+    "semver-7.3.7" = {
       name = "semver";
       packageName = "semver";
-      version = "7.3.5";
+      version = "7.3.7";
       src = fetchurl {
-        url = "https://registry.npmjs.org/semver/-/semver-7.3.5.tgz";
-        sha512 = "PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==";
+        url = "https://registry.npmjs.org/semver/-/semver-7.3.7.tgz";
+        sha512 = "QlYTucUYOews+WeEujDoEGziz4K6c47V/Bd+LjSSYcA94p+DmINdf7ncaUinThfvZyu13lN9OY1XDxt8C0Tw0g==";
       };
     };
     "shebang-command-2.0.0" = {
@@ -1492,13 +1483,13 @@ let
   };
 in
 {
-  "cypress-9.5.1" = nodeEnv.buildNodePackage {
+  "cypress-9.5.3" = nodeEnv.buildNodePackage {
     name = "cypress";
     packageName = "cypress";
-    version = "9.5.1";
+    version = "9.5.3";
     src = fetchurl {
-      url = "https://registry.npmjs.org/cypress/-/cypress-9.5.1.tgz";
-      sha512 = "H7lUWB3Svr44gz1rNnj941xmdsCljXoJa2cDneAltjI9leKLMQLm30x6jLlpQ730tiVtIbW5HdUmBzPzwzfUQg==";
+      url = "https://registry.npmjs.org/cypress/-/cypress-9.5.3.tgz";
+      sha512 = "ItelIVmqMTnKYbo1JrErhsGgQGjWOxCpHT1TfMvwnIXKXN/OSlPjEK7rbCLYDZhejQL99PmUqul7XORI24Ik0A==";
     };
     dependencies = [
       sources."@cypress/request-2.88.10"
@@ -1507,10 +1498,10 @@ in
           sources."debug-3.2.7"
         ];
       })
-      sources."@types/node-14.18.12"
+      sources."@types/node-14.18.13"
       sources."@types/sinonjs__fake-timers-8.1.1"
       sources."@types/sizzle-2.3.3"
-      sources."@types/yauzl-2.9.2"
+      sources."@types/yauzl-2.10.0"
       sources."aggregate-error-3.1.0"
       sources."ansi-colors-4.1.1"
       sources."ansi-escapes-4.3.2"
@@ -1544,12 +1535,11 @@ in
       sources."ci-info-3.3.0"
       sources."clean-stack-2.2.0"
       sources."cli-cursor-3.1.0"
-      sources."cli-table3-0.6.1"
+      sources."cli-table3-0.6.2"
       sources."cli-truncate-2.1.0"
       sources."color-convert-2.0.1"
       sources."color-name-1.1.4"
       sources."colorette-2.0.16"
-      sources."colors-1.4.0"
       sources."combined-stream-1.0.8"
       sources."commander-5.1.0"
       sources."common-tags-1.8.2"
@@ -1586,7 +1576,7 @@ in
       sources."getpass-0.1.7"
       sources."glob-7.2.0"
       sources."global-dirs-3.0.0"
-      sources."graceful-fs-4.2.9"
+      sources."graceful-fs-4.2.10"
       sources."has-flag-4.0.0"
       sources."http-signature-1.3.6"
       sources."human-signals-1.1.1"
@@ -1651,7 +1641,7 @@ in
       sources."rxjs-7.5.5"
       sources."safe-buffer-5.2.1"
       sources."safer-buffer-2.1.2"
-      sources."semver-7.3.5"
+      sources."semver-7.3.7"
       sources."shebang-command-2.0.0"
       sources."shebang-regex-3.0.0"
       sources."signal-exit-3.0.7"
