@@ -1,12 +1,12 @@
 {
- :frontend-base-url "http://10.0.0.2:3000"
- :frontend-backend-base-url "http://10.0.0.2:3000"
+ :frontend-base-url "http://10.0.0.2:4000"
+ :frontend-backend-base-url "http://10.0.0.2:4000"
 
  :port 4000
 
  :jwt-secret nil
 
- :verbose false
+ :verbose true
 
  :graphql-validate-output true
 
