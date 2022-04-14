@@ -2,12 +2,13 @@ import {JsonFormsCore} from '@jsonforms/core'
 import {Box} from '@mui/system'
 import log from 'loglevel'
 import {useRouter} from 'next/router'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps, WizardOverride} from '../../schema'
 import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
+import {LoadingSpinner} from '../layout'
 import FinalControlStep from './FinalControlStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
 import WelcomeStep from './WelcomeStep'
@@ -19,6 +20,8 @@ export const FormWizard = ({}: FormWizardProps) => {
   const {currentStep} = useWizardQueryState()
   const {setSerializedPubKeys, formData, setFormData} = useArmoredDatastore()
   const { replace } = useRouter()
+  const [loading, setLoading] = useState(true)
+
 
   const {token, getSetUserId} = useTokenStore()
   const userId = getSetUserId()
@@ -35,18 +38,24 @@ export const FormWizard = ({}: FormWizardProps) => {
     if (!tokenValid) {
       log.error('token or userId is not valid')
       replace({pathname: '/token_invalid', query: {token}})
+      return
     }
     if (errors && tokenValid) throw Error(errors)
+    setLoading(false)
     setSerializedPubKeys(pubKeys)
-  }, [data, setSerializedPubKeys, token, replace])
+  }, [data, setSerializedPubKeys, token, replace, setLoading])
 
   const handleFormChange = useCallback(
     (name: string, state: Pick<JsonFormsCore, 'data' | 'errors'>) => {
       setFormData(name, state.data)
     }, [setFormData])
 
-  return <Box style={{marginTop: '1em', marginBottom: '1em'}}>{!data?.get_keys.tokenValid ?
-    <p>{t('invalid_token')}</p> : <>
+
+  return <Box style={{marginTop: '1em', marginBottom: '1em'}}>
+    {loading && <LoadingSpinner loading={loading}/>}
+    {!data?.get_keys.tokenValid
+      ? <p>{t('invalid_token')}</p>
+      : <>
       {[steps[currentStep]].map(({name, jsonschema, uiSchema, override}) => {
         switch (override) {
           case WizardOverride.WELCOME:
