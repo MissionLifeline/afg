@@ -1,40 +1,12 @@
-import { v4 as uuid } from 'uuid'
-import zustand from 'zustand'
+import {useToken} from './useToken'
+import {useUserIdStore} from './useUserIdStore'
 
-/** See doc/src/architecture/user-session **/
+export const useTokenStore = () => {
+  const token = useToken()
+  const userIdState = useUserIdStore()
+  return {
+    ...userIdState,
+    token
+  }
 
-// In future we may use the users keyId as userId.
-// For now it is only used to bind the token to an device.
-function loadOrGenerateUserId() {
-  // TODO: check if userId is stored in localstore && use it. If not, store the new generated userId.
-  return uuid()
 }
-
-// stub for server-side and clients w/o localStorage
-const localStorage = (typeof window != 'undefined' && window.localStorage) || {
-  getItem: _k => undefined,
-  setItem: (_k, _v) => {},
-}
-
-type TokenState = {
-  token: string|undefined
-  setToken: (token: string) => void
-  userId: string|undefined
-  getSetUserId: () => string|undefined
-}
-
-export const useTokenStore = zustand<TokenState>((set, get) => ({
-  token: undefined,
-  setToken: token => set({token}),
-  userId: undefined,
-  getSetUserId: () => {
-    if (!get().userId) {
-      // no current userId, revive from localStorage or generate a new one
-      const userId = localStorage.getItem('userId') || loadOrGenerateUserId()
-      localStorage.setItem('userId', userId)
-      set({ userId })
-    }
-    return get().userId
-  },
-}))
-
