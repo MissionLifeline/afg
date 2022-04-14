@@ -74,4 +74,8 @@
       Login with: ssh-keygen -R ${address}; ssh -o StrictHostKeyChecking=accept-new root@${address}
       Shutdown with: reboot
     '';
+  services.afg-frontend = {
+    enable = true;
+    configName = "staging.edn";
+  };
 }

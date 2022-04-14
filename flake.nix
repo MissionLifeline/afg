@@ -103,7 +103,13 @@
         };
       } // builtins.foldl' (result: hostName:
         let
-          inherit (self.nixosConfigurations.${hostName}) config;
+          host = self.nixosConfigurations.${hostName}
+            .extendModules {
+              modules = [ {
+                services.afg-frontend.configName = nixpkgs.lib.mkForce "staging-local.edn";
+              } ];
+            };
+          inherit (host) config;
           inherit (config.microvm) declaredRunner;
         in
         if config ? microvm

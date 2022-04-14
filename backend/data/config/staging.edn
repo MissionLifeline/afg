@@ -1,0 +1,23 @@
+{
+ :frontend-base-url "https://submission.afg.mission-lifeline.de"
+ :frontend-backend-base-url "https://backend.afg.mission-lifeline.de"
+
+ :port 4000
+
+ :jwt-secret nil
+
+ :verbose false
+
+ :graphql-validate-output true
+
+ :db-inmemory false
+ :db-dir "./data/xtdb/rocksdb"
+ :db-seed "./data/seed/test.edn"
+ :db-export-prefix "./data/export/"
+ :db-validate true
+
+ :admin-passphrase nil
+ :admin-gpg-id "9EA68B7F21204979645182E4287B083353C3241C"
+
+ :test-pubkey-file "./data/keys/test.pub.gpg"
+}
