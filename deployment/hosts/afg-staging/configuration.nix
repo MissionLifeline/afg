@@ -71,7 +71,7 @@
     let
       inherit (builtins.head config.networking.interfaces.eth0.ipv4.addresses) address;
     in ''
-      Login with: ssh-keygen -R ${address}; ssh root@${address}
+      Login with: ssh-keygen -R ${address}; ssh -o StrictHostKeyChecking=accept-new root@${address}
       Shutdown with: reboot
     '';
 }
