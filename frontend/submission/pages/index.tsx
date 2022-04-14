@@ -27,7 +27,6 @@ const Home: NextPage = () => {
 
     return (<AppLayout>
         <>
-            {!isReady && <LoadingSpinner loading={!isReady}/>}
             <AlertBox
                 color={theme.palette.success.main}
                 title={t('first_visit_title')}
@@ -35,6 +34,7 @@ const Home: NextPage = () => {
                 icon={Lock}>
                 <TokenForm/>
             </AlertBox>
+            {!isReady && <LoadingSpinner loading={!isReady}/>}
         </>
     </AppLayout>)
 }
