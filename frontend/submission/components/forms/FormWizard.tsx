@@ -29,16 +29,12 @@ export const FormWizard = ({}: FormWizardProps) => {
     })
 
   useEffect(() => {
-    if (!token) {
-      log.error('token is missing')
-      replace('/token_invalid')
-    }
-
-    if (!data) return
+    if (!token || !data)
+      return
     const {errors, tokenValid, pubKeys} = data.get_keys
     if (!tokenValid) {
       log.error('token or userId is not valid')
-      replace(`/token_invalid?token=${token}`)
+      replace({pathname: '/token_invalid', query: {token}})
     }
     if (errors && tokenValid) throw Error(errors)
     setSerializedPubKeys(pubKeys)

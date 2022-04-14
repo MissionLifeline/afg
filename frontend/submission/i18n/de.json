@@ -18,6 +18,8 @@
   "add_first": "füge ein(e/en) {{item}} hinzu",
   "choose_or_add": "entweder vorhandenen Eintrag auswählen oder hinzufügen",
   "no_entry_add": "noch kein Eintrag vorhanden, mit + einen hinzufügen",
+  "first_visit_title": "Möchten Sie Ihre Zugangschiffre jetzt verwenden?",
+  "want_to_use_token_question": "Die Chiffre kann nur auf einem Gerät eingelöst werden. Wenn Sie jetzt fortfahren ist sie mit diesem Browser verknüpft.",
   "error": {
     "format": "Falsches Format angegeben",
     "required": "Diese Angabe ist notwendig",

@@ -1,54 +1,42 @@
-import log from 'loglevel'
-import type { NextPage } from 'next'
-import Head from 'next/head'
+import {Lock} from '@mui/icons-material'
+import {useTheme} from '@mui/material'
+import type {NextPage} from 'next'
 import {useRouter} from 'next/router'
-import {useEffect} from 'react'
+import React, {useEffect} from 'react'
+import {useTranslation} from 'react-i18next'
 
-import {FormWizard} from '../components/forms/FormWizard'
-import {WizardStepper} from '../components/forms/WizardStepper'
-import { CustomAppBar } from '../components/layout'
-import PageFooter from '../components/layout/PageFooter'
-import { LanguageSelection } from '../components/user'
+import {LoadingSpinner} from '../components/layout'
+import AlertBox from '../components/layout/AlertBox'
+import AppLayout from '../components/layout/AppLayout'
+import {TokenForm} from '../components/user'
 import {useLanguageService, useTokenStore} from '../state'
-import {isDevelopment} from '../utils'
 
 const Home: NextPage = () => {
-  const {query, isReady} = useRouter()
-  const {token} = query
-  const {setToken} = useTokenStore()
+    const {t} = useTranslation()
+    const theme = useTheme()
+    const {replace, isReady} = useRouter()
+    const {userId, token} = useTokenStore()
 
-  useLanguageService()
+    useLanguageService()
 
-  useEffect(() => {
-    isReady && typeof(token) === 'string' && setToken(token)
-  }, [token, isReady, setToken])
-
-  useEffect(() => {
-    isDevelopment() && log.setLevel('debug')
-  }, [])
+    useEffect(() => {
+        if (!(userId && token)) return
+        replace({pathname: '/wizard', query: {token}})
+    }, [userId, token, replace])
 
 
-  return (
-    <div className={'wrapper'}>
-      <Head>
-        <title>Afg Escape</title>
-      </Head>
-
-      <CustomAppBar>
-        <LanguageSelection />
-      </CustomAppBar>
-
-      <main>
-        <WizardStepper />
-        <FormWizard />
-      </main>
-
-      <div className={'footer'}>
-        <PageFooter />
-      </div>
-
-    </div>
-  )
+    return (<AppLayout>
+        <>
+            <LoadingSpinner loading={!isReady}/>
+            <AlertBox
+                color={theme.palette.success.main}
+                title={t('first_visit_title')}
+                description={t('want_to_use_token_question')}
+                icon={Lock}>
+                <TokenForm/>
+            </AlertBox>
+        </>
+    </AppLayout>)
 }
 
 export default Home
