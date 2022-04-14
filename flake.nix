@@ -116,8 +116,8 @@
               if ! [ -e /sys/class/net/$IFACE ]; then
                 sudo ip tuntap add name $IFACE mode tap user $USER
                 sudo ip a a 10.0.0.1/24 dev $IFACE
-                sudo ip l s $IFACE up
               fi
+              sudo ip l s $IFACE up
             done
 
             # Make a working env
@@ -127,6 +127,10 @@
             ${declaredRunner}/bin/microvm-run || true
             popd
             rm -r "$TMPDIR"
+
+            for IFACE in $(cat ${declaredRunner}/share/microvm/tap-interfaces); do
+              sudo ip tuntap del name $IFACE mode tap
+            done
           '';
         }
         else result
