@@ -1,6 +1,12 @@
 {
   description = "Lifeline Server setup";
 
+  nixConfig = {
+    # builds microvm.nix kernels daily
+    extra-substituters = [ "https://nix-serve.hq.c3d2.de" ];
+    extra-trusted-public-keys = [ "nix-serve.hq.c3d2.de:KZRGGnwOYzys6pxgM8jlur36RmkJQ/y8y62e52fj1ps=" ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix = {
