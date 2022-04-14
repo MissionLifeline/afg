@@ -32,7 +32,12 @@ export const FormWizard = ({}: FormWizardProps) => {
     })
 
   useEffect(() => {
-    if (!token || !data)
+    if( token === '') {
+      log.error('token is missing')
+      replace({pathname: '/token_missing', query: {token}})
+      return
+    }
+    if (typeof token !== 'string' || !data)
       return
     const {errors, tokenValid, pubKeys} = data.get_keys
     if (!tokenValid) {

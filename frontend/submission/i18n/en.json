@@ -7,6 +7,8 @@
   "submit": "submit",
   "submitted": "submitted",
   "delete": "delete",
+  "invalid_token": "invalid token",
+  "missing_token": "missing token",
   "success_submit": "Successfully submitted",
   "success_received": "We received your data and will process it soon",
   "almost_done": "Almost done...",
