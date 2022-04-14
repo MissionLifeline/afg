@@ -61,11 +61,17 @@
         modules = commonModules ++ [
           microvm.nixosModules.microvm
           ./deployment/hosts/afg-staging/configuration.nix
+          { nixpkgs.overlays = [ self.overlay ]; }
+          ./deployment/modules/afg.nix
         ];
       });
     };
 
     legacyPackages.${system} = { inherit pkgs; };
+
+    overlay = final: prev: {
+      inherit (self.packages.${system}) afg-fullstack;
+    };
 
     packages.${system} =
       let
