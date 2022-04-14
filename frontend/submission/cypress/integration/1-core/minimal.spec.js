@@ -10,6 +10,8 @@ describe('Minimal test, to check the setup before testing details', () => {
     cy.visit('/?token=demoToken')
     cy.log('In case of a dev build it might take some time to jit compile…')
     cy.log('The next test might fail, when the id is taken by another property with the same name. This sometimes happens with the combination of jsonforms and next dev builds.')
+    cy.get('[data-testid="SendIcon"]').click()
+    gotoNextPage()
     /** TODO We need proper test selectors from jsonforms inputs.
      *  - selectors should be stable in next dev builds
      *  - selectors should be uniq when properties are reused at different places or we always need select the parent component (form) first
