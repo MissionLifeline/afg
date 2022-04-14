@@ -112,7 +112,7 @@
           inherit (host) config;
           inherit (config.microvm) declaredRunner;
         in
-        if config ? microvm
+        if config ? microvm && config.microvm ? declaredRunner
         then result // {
           "${hostName}" = pkgs.writeScriptBin hostName ''
             #! ${pkgs.runtimeShell} -e
