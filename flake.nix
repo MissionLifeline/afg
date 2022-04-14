@@ -89,7 +89,36 @@
         afg-fullstack = self.packages.${system}.afg-backend.override {
           patchPublic = self.packages.${system}.afg-submission-staticHTML;
         };
-      };
+      } // builtins.foldl' (result: hostName:
+        let
+          inherit (self.nixosConfigurations.${hostName}) config;
+          inherit (config.microvm) declaredRunner;
+        in
+        if config ? microvm
+        then result // {
+          "${hostName}" = pkgs.writeScriptBin hostName ''
+            #! ${pkgs.runtimeShell} -e
+
+            # Setup tuntap interfaces
+            for IFACE in $(cat ${declaredRunner}/share/microvm/tap-interfaces); do
+              if ! [ -e /sys/class/net/$IFACE ]; then
+                sudo ip tuntap add name $IFACE mode tap user $USER
+                sudo ip a a 10.0.0.1/24 dev $IFACE
+                sudo ip l s $IFACE up
+              fi
+            done
+
+            # Make a working env
+            TMPDIR=$(mktemp -d)
+            echo TMPDIR: $TMPDIR
+            pushd "$TMPDIR"
+            ${declaredRunner}/bin/microvm-run || true
+            popd
+            rm -r "$TMPDIR"
+          '';
+        }
+        else result
+      ) {} (builtins.attrNames self.nixosConfigurations);
 
     checks.${system}.submission-integration = with pkgs;
       let

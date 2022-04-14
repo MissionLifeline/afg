@@ -11,7 +11,7 @@
       mac = "00:02:00:01:02:03";
     } ];
     shares = [ {
-      proto = "virtiofs";
+      proto = "9p";
       tag = "ro-store";
       source = "/nix/store";
       mountPoint = "/nix/.ro-store";
