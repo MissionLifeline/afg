@@ -3,7 +3,6 @@ import React, { FunctionComponent } from 'react'
 
 import {LanguageSelection} from '../user'
 import {CustomAppBar} from './CustomAppBar'
-import PageFooter from './PageFooter'
 
 interface OwnProps {
     children: React.ReactChild | React.ReactChildren
@@ -26,10 +25,6 @@ const AppLayout: FunctionComponent<Props> = ({ children }) => {
           <main>
               {children}
           </main>
-
-          <div className={'footer'}>
-              <PageFooter />
-          </div>
 
       </div>
   )
