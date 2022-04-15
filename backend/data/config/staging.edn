@@ -1,6 +1,6 @@
 {
- :frontend-base-url "https://submission.afg.mission-lifeline.de"
- :frontend-backend-base-url "https://backend.afg.mission-lifeline.de"
+ :frontend-base-url "https://staging.afg.mission-lifeline.de"
+ :frontend-backend-base-url "https://staging.afg.mission-lifeline.de"
 
  :port 4000
 
