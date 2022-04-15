@@ -33,6 +33,7 @@ in {
       script = ''
         mkdir -p data
         for F in config keys seed ; do
+          [ -e data/$F ] && rm data/$F
           ln -sf ${../../backend/data}/$F data/$F
         done
         chmod -R u+w data
