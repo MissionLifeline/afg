@@ -427,13 +427,13 @@ let
         sha1 = "853cfa0f7cbe2fed5de20326b8dd581035f6e2f0";
       };
     };
-    "dayjs-1.11.1" = {
+    "dayjs-1.11.0" = {
       name = "dayjs";
       packageName = "dayjs";
-      version = "1.11.1";
+      version = "1.11.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/dayjs/-/dayjs-1.11.1.tgz";
-        sha512 = "ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA==";
+        url = "https://registry.npmjs.org/dayjs/-/dayjs-1.11.0.tgz";
+        sha512 = "JLC809s6Y948/FuCZPm5IX8rRhQwOiyMb2TfVVQEixG7P8Lm/gt5S7yoQZmC8x1UehI9Pb7sksEt4xx14m+7Ug==";
       };
     };
     "debug-3.2.7" = {
@@ -1547,7 +1547,7 @@ in
       sources."core-util-is-1.0.2"
       sources."cross-spawn-7.0.3"
       sources."dashdash-1.14.1"
-      sources."dayjs-1.11.1"
+      sources."dayjs-1.11.0"
       (sources."debug-4.3.4" // {
         dependencies = [
           sources."ms-2.1.2"
@@ -1673,24 +1673,6 @@ in
     meta = {
       description = "Cypress.io end to end testing tool";
       homepage = "https://github.com/cypress-io/cypress";
-      license = "MIT";
-    };
-    production = true;
-    bypassCache = true;
-    reconstructLock = true;
-  };
-  "cypress-file-upload-5.0.8" = nodeEnv.buildNodePackage {
-    name = "cypress-file-upload";
-    packageName = "cypress-file-upload";
-    version = "5.0.8";
-    src = fetchurl {
-      url = "https://registry.npmjs.org/cypress-file-upload/-/cypress-file-upload-5.0.8.tgz";
-      sha512 = "+8VzNabRk3zG6x8f8BWArF/xA/W0VK4IZNx3MV0jFWrJS/qKn8eHfa5nU73P9fOQAgwHFJx7zjg4lwOnljMO8g==";
-    };
-    buildInputs = globalBuildInputs;
-    meta = {
-      description = "A Cypress command for file upload";
-      homepage = "https://github.com/abramenal/cypress-file-upload#readme";
       license = "MIT";
     };
     production = true;

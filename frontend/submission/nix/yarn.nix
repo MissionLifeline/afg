@@ -1234,6 +1234,14 @@
       };
     }
     {
+      name = "cypress_file_upload___cypress_file_upload_5.0.8.tgz";
+      path = fetchurl {
+        name = "cypress_file_upload___cypress_file_upload_5.0.8.tgz";
+        url  = "https://registry.yarnpkg.com/cypress-file-upload/-/cypress-file-upload-5.0.8.tgz";
+        sha1 = "d8824cbeaab798e44be8009769f9a6c9daa1b4a1";
+      };
+    }
+    {
       name = "dayjs___dayjs_1.10.6.tgz";
       path = fetchurl {
         name = "dayjs___dayjs_1.10.6.tgz";
