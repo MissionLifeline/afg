@@ -18,7 +18,7 @@ type FormWizardProps = Record<string, never>
 export const FormWizard = ({}: FormWizardProps) => {
   const { t } = useTranslation()
   const {currentStep} = useWizardQueryState()
-  const {setSerializedPubKeys, formData, setFormData} = useArmoredDatastore()
+  const {setSerializedPubKeys, formData, formDataDirty, setFormData, sendFormData} = useArmoredDatastore()
   const { replace } = useRouter()
   const [loading, setLoading] = useState(true)
 
@@ -49,6 +49,13 @@ export const FormWizard = ({}: FormWizardProps) => {
     setLoading(false)
     setSerializedPubKeys(pubKeys)
   }, [data, setSerializedPubKeys, token, replace, setLoading])
+
+  // send formData on when wizard page changes
+  useEffect(() => {
+    if (formDataDirty && token && userId) {
+      sendFormData(token, userId)
+    }
+  }, [currentStep, sendFormData])
 
   const handleFormChange = useCallback(
     (name: string, state: Pick<JsonFormsCore, 'data' | 'errors'>) => {
