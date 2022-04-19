@@ -33,6 +33,7 @@ type ArmoredDatastoreState = {
   pubKeys: Key[]
 
   formData: any
+  formDataDirty: boolean
   setFormData: (name: string, formData: any) => void
 
   sendFormData: (token: string, userId: string) => Promise<void>
@@ -57,12 +58,14 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   pubKeys: [],
 
   formData: {},
+  formDataDirty: false,
   setFormData: (name: string, data: any) => {
     set(({formData}) => ({
       formData: {
         ...formData,
         [name]: data,
-      }
+      },
+      formDataDirty: true,
     }))
   },
 
@@ -98,6 +101,11 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     })
     if (!res.ok) {
       throw new Error(`upload-form: HTTP ${res.status}`)
+    }
+
+    if (get().formData == formData) {
+      // only mark clean if there has been no form change during the fetch
+      set({ formDataDirty: false })
     }
   },
 
