@@ -1,12 +1,15 @@
-import {CheckCircle, Info} from '@mui/icons-material'
-import {Box, Divider, Paper} from '@mui/material'
+import { EmojiPeople, Info} from '@mui/icons-material'
+import {Box, Divider, Paper, useTheme} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
 import React, {useState} from 'react'
 import {useTranslation} from 'react-i18next'
+import rehypeSanitize from 'rehype-sanitize'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
 import {resources} from '../../i18n'
 import {useSubmittedStore,useTokenStore} from '../../state'
+import AlertBox from '../layout/AlertBox'
+import {MDEditorMarkdown} from '../renderer/MDEditor'
 import FormTranslationHelper from './FormTranslationHelper'
 
 const WelcomeStep = () => {
@@ -22,6 +25,7 @@ const WelcomeStep = () => {
 
   const [commonTranslation, setCommonTranslation] = useState((resources as any)[language]?.common || resources.en.common)
 
+  const theme = useTheme()
   return <Box
       style={{minHeight: '50vh'}}
       display='flex'
@@ -30,13 +34,16 @@ const WelcomeStep = () => {
       justifyContent={'center'}
     >
 
-      <Paper elevation={3} sx={{backgroundColor: grey[100]}}>
-        <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
-          <Box textAlign='center' sx={{backgroundColor: !submitted ? blue[500] : green[500], width: '100%', padding: '1em'}}>
-            {t('welcome_step')}
-          </Box>
-        </Box>
-      </Paper>
+    <AlertBox title={t('welcome_step_title')}
+              description={t('welcome_step_description')}
+              color={theme.palette.info.light}
+              icon={EmojiPeople}>
+      <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
+        <MDEditorMarkdown
+        source={t('welcome_step_content')}
+            rehypePlugins={[[rehypeSanitize]]}/>
+      </Box>
+    </AlertBox>
     {enableTranslationHelper && <>
       <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
       <FormTranslationHelper
@@ -45,7 +52,8 @@ const WelcomeStep = () => {
         language={language}
         translationData={commonTranslation}
         onTranslationChange={({data}) => setCommonTranslation( data)}
-      /></>}
+      />
+    </>}
 
   </Box>
 }
