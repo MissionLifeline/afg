@@ -7,14 +7,13 @@ import rehypeSanitize from 'rehype-sanitize'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
 import {resources} from '../../i18n'
-import {useSubmittedStore,useTokenStore} from '../../state'
+import {useTokenStore} from '../../state'
 import AlertBox from '../layout/AlertBox'
 import {MDEditorMarkdown} from '../renderer/MDEditor'
 import FormTranslationHelper from './FormTranslationHelper'
 
 const WelcomeStep = () => {
   const {t, i18n: {language}} = useTranslation()
-  const {submitted} = useSubmittedStore()
   const {token, userId} = useTokenStore()
   const {data: data_is_translator} = useIs_TranslatorQuery({auth: {token, userId}},
     {

@@ -5,19 +5,14 @@ import React, {useEffect} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
-import {useArmoredDatastore, useSubmittedStore, useTokenStore} from '../../state'
+import {useArmoredDatastore, useTokenStore} from '../../state'
 
 type SubmitFormButtonProps = Record<string, never>
 
 const SubmitFormButton = ({}: SubmitFormButtonProps) => {
   const {t} = useTranslation()
   const {token, userId} = useTokenStore()
-  const {formData, sendFormData} = useArmoredDatastore()
-  const {submitted, setSubmitted} = useSubmittedStore()
-
-  useEffect(() => {
-    setSubmitted(false)
-  }, [formData, setSubmitted])
+  const {formDataDirty, sendFormData} = useArmoredDatastore()
 
   const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', async () => {
     if (token && userId) {
@@ -26,10 +21,6 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
       throw new Error('no token or userId')
     }
   })
-
-  useEffect(() => {
-    setSubmitted(!!isSuccess)
-  }, [isSuccess, setSubmitted])
 
   const endIcon = isLoading ? <Pending/> :
     isSuccess ? <Check/> :
@@ -43,7 +34,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
     onClick={() => {mutate()}}
     title='submit'
   >{
-    submitted ? t('submitted') : t('submit')
+    !formDataDirty ? t('submitted') : t('submit')
   }</Button>
 }
 

@@ -6,13 +6,13 @@ import {useTranslation} from 'react-i18next'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
 import {resources} from '../../i18n'
-import {useSubmittedStore,useTokenStore} from '../../state'
+import {useArmoredDatastore,useTokenStore} from '../../state'
 import FormTranslationHelper from './FormTranslationHelper'
 import SubmitFormButton from './SubmitFormButton'
 
 const FinalControlStep = () => {
   const {t, i18n: {language}} = useTranslation()
-  const {submitted} = useSubmittedStore()
+  const {formDataDirty} = useArmoredDatastore()
   const {token, userId} = useTokenStore()
   const {data: data_is_translator} = useIs_TranslatorQuery({auth: {token, userId}},
     {
@@ -33,13 +33,13 @@ const FinalControlStep = () => {
 
       <Paper elevation={3} sx={{backgroundColor: grey[100]}}>
         <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
-          <Box textAlign='center' sx={{backgroundColor: !submitted ? blue[500] : green[500], width: '100%', padding: '1em'}}>
-            {submitted ? <CheckCircle sx={{fontSize: '4rem', color: 'white'}}/> : <Info  sx={{fontSize: '4rem', color: 'white'}} />}
+          <Box textAlign='center' sx={{backgroundColor: formDataDirty ? blue[500] : green[500], width: '100%', padding: '1em'}}>
+            {!formDataDirty ? <CheckCircle sx={{fontSize: '4rem', color: 'white'}}/> : <Info  sx={{fontSize: '4rem', color: 'white'}} />}
           </Box>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
-          <Typography variant='h4'>{submitted ? t('success_submit') : t('almost_done')}</Typography>
-          <Typography variant='body1'>{submitted ? t('success_received') : t('check_uploads')}</Typography>
+          <Typography variant='h4'>{!formDataDirty ? t('success_submit') : t('almost_done')}</Typography>
+          <Typography variant='body1'>{!formDataDirty ? t('success_received') : t('check_uploads')}</Typography>
         </Box>
         <Box textAlign='center' sx={{padding: '1em'}}>
           <SubmitFormButton/>
