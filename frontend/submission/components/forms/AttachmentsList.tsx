@@ -66,6 +66,7 @@ const AttachmentEntry = ({ id, description, onChangeDescription, blob, status, o
     </ListItemAvatar>
     <ListItemText
       primary={<TextField
+        id={`attachment-description-${blob.name}`}
         variant='outlined'
         sx={{ width: '100%' }}
         label={t('attachment.description', { name: blob.name })}
