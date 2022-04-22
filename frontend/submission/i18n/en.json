@@ -1,5 +1,6 @@
 {
   "language": "English",
+  "date_format": "DD/MM/YYYY",
   "prevStep": "back",
   "prevStep_title": "back to previous step",
   "nextStep": "next",

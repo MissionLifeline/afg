@@ -1,5 +1,6 @@
 {
   "language": "Deutsch",
+  "date_format": "DD.MM.YYYY",
   "prevStep": "Zurück",
   "prevStep_title": "Zurück zum vorhergehenden Schritt",
   "nextStep": "Fortfahren",
