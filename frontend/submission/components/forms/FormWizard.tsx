@@ -64,9 +64,10 @@ export const FormWizard = ({}: FormWizardProps) => {
     }, [setFormData])
 
   console.log('dirty', formDataDirty)
-  useUnload(useCallback(e => {
+
+  const onUnload = useCallback(e => {
     console.log('useUnload', formDataDirty)
-    if (true || formDataDirty) {
+    if ( formDataDirty) {
       e.preventDefault()
       // No translation required, today's browser don't show the message anymore
       // @ts-ignore
@@ -77,7 +78,9 @@ export const FormWizard = ({}: FormWizardProps) => {
       // @ts-ignore
       delete e['returnValue']
     }
-  }, [formDataDirty]))
+  }, [formDataDirty])
+
+  useUnload(onUnload)
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>
     {loading && <LoadingSpinner loading={loading}/>}
