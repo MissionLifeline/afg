@@ -54,21 +54,10 @@ const overrides: (UISchemaElement & Scopable)[] = [{
           // show sex except for son+daughter
           scope('relation'), ['parent', 'sibling', 'uncleAunt', 'other'], scope('sex')
         ),
-        {
-          type: 'Control',
-          scope: scope('requiresCareExplanation'),
-          options: {
-            multi: true
-          },
-          rule: {
-            effect: RuleEffect.SHOW,
-            condition: {
-              //@ts-ignore
-              scope: scope('requiresCare'),
-              schema: {const: true}
-            }
-          }
-        }
+        // @ts-ignore
+        ...showOnTrue(
+          scope('requiresCare'), scope('requiresCareExplanation')
+        ),
       ], jsonSchema2UISchemaElements(schema.properties.fellowApplicantFamilyMembers.items))
     }
   }
