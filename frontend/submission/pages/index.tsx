@@ -9,7 +9,7 @@ import {LoadingSpinner} from '../components/layout'
 import AlertBox from '../components/layout/AlertBox'
 import AppLayout from '../components/layout/AppLayout'
 import {TokenForm} from '../components/user'
-import {useLanguageService, useTokenStore} from '../state'
+import { useTokenStore} from '../state'
 
 const Home: NextPage = () => {
     const {t} = useTranslation()
@@ -18,7 +18,6 @@ const Home: NextPage = () => {
     const {userId, token} = useTokenStore()
     const [loading, setLoading] = useState(true)
 
-    useLanguageService()
 
     useEffect(() => {
         setLoading(false)
