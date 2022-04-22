@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import {useGet_KeysQuery} from '../../api/generates'
 import {steps, WizardOverride} from '../../schema'
 import {useArmoredDatastore, useTokenStore, useWizardQueryState} from '../../state'
+import {useUnload} from '../../utils'
 import {LoadingSpinner} from '../layout'
 import FinalControlStep from './FinalControlStep'
 import LocalizedJsonForms from './LocalizedJsonForms'
@@ -62,6 +63,21 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(name, state.data)
     }, [setFormData])
 
+  console.log('dirty', formDataDirty)
+  useUnload(useCallback(e => {
+    console.log('useUnload', formDataDirty)
+    if (true || formDataDirty) {
+      e.preventDefault()
+      // No translation required, today's browser don't show the message anymore
+      // @ts-ignore
+      e.returnValue = 'Sure?'
+      return e.returnValue
+    } else {
+      // allow tab close
+      // @ts-ignore
+      delete e['returnValue']
+    }
+  }, [formDataDirty]))
 
   return <Box style={{marginTop: '1em', marginBottom: '1em'}}>
     {loading && <LoadingSpinner loading={loading}/>}
