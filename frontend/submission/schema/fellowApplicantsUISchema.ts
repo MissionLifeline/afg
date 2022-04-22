@@ -18,7 +18,7 @@ const overrides: (UISchemaElement & Scopable)[] = [{
           [scope('passportExisting'),
            scope('tazkiraExisting'),
            scope('visaOtherCountryExisting'),
-           scope('placeOfResidenceList'), scope('placeOfResidenceOther'),
+           scope('placeOfResidenceList'),
            scope('emailAddress'), scope('telephoneNumber'),
           ]
         ),
@@ -36,6 +36,10 @@ const overrides: (UISchemaElement & Scopable)[] = [{
         ...showOnTrue(
           [scope('visaOtherCountryExisting'), scope('eligible')],
           [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]
+        ),
+        // @ts-ignore
+        ...showOnEnum(
+          scope('placeOfResidenceList'), ['other'], scope('placeOfResidenceOther')
         ),
         // @ts-ignore
         ...showOnEnum(
