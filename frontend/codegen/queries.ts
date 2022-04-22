@@ -21,3 +21,9 @@ export const write_translation = gql`
     write_translations(auth: $auth, translationsInput: $translationInput)
   }
 `
+
+export const get_translation = gql`
+query get_translation {
+    get_translations
+}
+`

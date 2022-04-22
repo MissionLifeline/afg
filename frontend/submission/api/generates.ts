@@ -92,6 +92,11 @@ export type Write_TranslationMutationVariables = Exact<{
 
 export type Write_TranslationMutation = { __typename?: 'MutationType', write_translations: boolean };
 
+export type Get_TranslationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Get_TranslationQuery = { __typename?: 'QueryType', get_translations: any };
+
 
 export const Get_KeysDocument = `
     query get_keys($token: String!, $userId: String) {
@@ -143,5 +148,22 @@ export const useWrite_TranslationMutation = <
     useMutation<Write_TranslationMutation, TError, Write_TranslationMutationVariables, TContext>(
       ['write_translation'],
       (variables?: Write_TranslationMutationVariables) => fetcher<Write_TranslationMutation, Write_TranslationMutationVariables>(Write_TranslationDocument, variables)(),
+      options
+    )
+export const Get_TranslationDocument = `
+    query get_translation {
+  get_translations
+}
+    `
+export const useGet_TranslationQuery = <
+      TData = Get_TranslationQuery,
+      TError = unknown
+    >(
+      variables?: Get_TranslationQueryVariables,
+      options?: UseQueryOptions<Get_TranslationQuery, TError, TData>
+    ) =>
+    useQuery<Get_TranslationQuery, TError, TData>(
+      variables === undefined ? ['get_translation'] : ['get_translation', variables],
+      fetcher<Get_TranslationQuery, Get_TranslationQueryVariables>(Get_TranslationDocument, variables),
       options
     )
