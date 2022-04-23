@@ -1,24 +1,25 @@
-import {RuleEffect, Scopable, UISchemaElement, VerticalLayout} from '@jsonforms/core'
+import {VerticalLayout} from '@jsonforms/core'
 
 import schema from './general.json'
-import {jsonSchema2UISchemaElements, overrideScopes, showOnEnum, showOnTrue} from './utils'
+import {UISchemaOverrides} from './types'
+import {jsonSchema2UISchemaElements, overrideScopes, showOnEnum,showOnTrue} from './utils'
 
-const scope = (s: string) => `#/properties/${s}`
-
-const overrides: (UISchemaElement & Scopable)[] = [
-  ...showOnTrue(scope('passportExisting'),
-    [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]),
-  ...showOnTrue(scope('tazkiraExisting'),
-    [scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment')]),
-  ...showOnTrue(scope('visaOtherCountryExisting'),
-    [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]),
+export const generalUIOverride: UISchemaOverrides = scopeFn => [
+  ...showOnTrue(scopeFn('passportExisting'),
+    [scopeFn('passportNumber'), scopeFn('passportDateOfIssue'), scopeFn('passportDateOfExpiration'), scopeFn('passportAttachment')]),
+  ...showOnTrue(scopeFn('tazkiraExisting'),
+    [scopeFn('tazkiraNumber'), scopeFn('tazkiraType'), scopeFn('tazkiraAttachment')]),
+  ...showOnTrue(scopeFn('visaOtherCountryExisting'),
+    [scopeFn('visaOtherCountryWhich'), scopeFn('visaOtherAttachments')]),
   ...showOnEnum(
-    scope('placeOfResidenceList'), ['other'], scope('placeOfResidenceOther')
+      scopeFn('placeOfResidenceList'), ['other'], scopeFn('placeOfResidenceOther')
   ),
 ]
 
+const scope = (s: string) => `#/properties/${s}`
+
 export const generalUISchema: VerticalLayout = {
   type: 'VerticalLayout',
-  elements: overrideScopes(overrides,
+  elements: overrideScopes(generalUIOverride(scope),
     jsonSchema2UISchemaElements(schema))
 }

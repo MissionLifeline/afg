@@ -1,36 +1,40 @@
-import {RuleEffect, Scopable, UISchemaElement, VerticalLayout} from '@jsonforms/core'
+import {JsonSchema, UISchemaElement} from '@jsonforms/core'
 
-import schema from './spouse.json'
-import {jsonSchema2UISchemaElements, overrideScopes, showOnEnum, showOnTrue} from './utils'
+import application from './application.json'
+import {applicationUIOverrides} from './applicationUISchema'
+import general from './general.json'
+import {generalUIOverride} from './generalUISchema'
+import risks from './risks.json'
+import {risksUIOverride} from './risksUISchema'
+import {UISchemaOverrides} from './types'
+import {jsonSchema2UISchemaElements, overrideScopes} from './utils'
 
-const scope = (s: string) => `#/properties/${s}`
+const verticalGroup = (elements: UISchemaElement[], path: string, label?: string) => ({
+  type: 'Group',
+  label: label || path,
+  elements: [{
+    type: 'VerticalLayout',
+    elements
+  }]
+})
 
-const overrides: (UISchemaElement & Scopable)[] = [{
+const scopedVerticalGroupOverride = (path: string, overrideFn: UISchemaOverrides, schema: JsonSchema) =>
+    verticalGroup(
+        overrideScopes(overrideFn(s => `#/properties/${path}/properties/${s}`), jsonSchema2UISchemaElements(schema, `${path}/properties/`)),
+        path)
+
+export const spouseUISchema = {
   type: 'ListWithDetail',
   scope: '#/properties/spouse',
   options: {
-    elementLabelProp: ['firstName', 'lastName'],
+    elementLabelProp: ['general.firstName', 'general.lastName'],
     detail: {
       type: 'VerticalLayout',
-      elements: overrideScopes([
-        ...showOnTrue(scope('passportExisting'),
-          [scope('passportNumber'), scope('passportDateOfIssue'), scope('passportDateOfExpiration'), scope('passportAttachment')]),
-        ...showOnTrue(scope('tazkiraExisting'),
-          [scope('tazkiraNumber'), scope('tazkiraType'), scope('tazkiraAttachment')]),
-        ...showOnTrue(scope('visaOtherCountryExisting'),
-          [scope('visaOtherCountryWhich'), scope('visaOtherAttachments')]),
-        ...showOnEnum(
-          scope('placeOfResidenceList'), ['other'], scope('placeOfResidenceOther')
-        ),
-      ],
-      jsonSchema2UISchemaElements(schema.properties.spouse.items)
-      )
+      elements: [
+        scopedVerticalGroupOverride('general', generalUIOverride, general),
+        scopedVerticalGroupOverride('risks', risksUIOverride, risks),
+        scopedVerticalGroupOverride('application', applicationUIOverrides, application)
+      ]
     }
   }
-}]
-
-export const spouseUISchema: VerticalLayout = {
-  type: 'VerticalLayout',
-  elements: overrideScopes(overrides,
-    jsonSchema2UISchemaElements(schema))
 }

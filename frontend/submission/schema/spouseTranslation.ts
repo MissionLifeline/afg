@@ -1,4 +1,4 @@
-import schema from './spouse.json'
+import schema from './spouse'
 import {jsonSchema2Translation} from './utils'
 import {LocalizedFormsTranslation} from './utils/types'
 

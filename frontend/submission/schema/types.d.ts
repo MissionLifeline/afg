@@ -1,4 +1,4 @@
-import {JsonSchema, UISchemaElement} from '@jsonforms/core'
+import {JsonSchema, Scopable, UISchemaElement} from '@jsonforms/core'
 
 import {LocalizedFormTranslation} from './utils/types'
 
@@ -15,3 +15,8 @@ export type WizardStep = {
   translation?: LocalizedFormTranslation
   override?: WizardOverride
 }
+
+export type ScopeFn = (s: string) => string
+
+export type UISchemaOverrides = (scopeFn: ScopeFn) => (UISchemaElement & Scopable)[]
+

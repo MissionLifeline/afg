@@ -1,7 +1,7 @@
 import {JsonSchema, UISchemaElement} from '@jsonforms/core'
 
-export const jsonSchema2UISchemaElements: (jsonschema: JsonSchema) => UISchemaElement[] = (jsonschema: JsonSchema) => {
+export const jsonSchema2UISchemaElements: (jsonschema: JsonSchema, subpath?: string) => UISchemaElement[] = (jsonschema: JsonSchema, subpath) => {
   const uiSchemaElements: UISchemaElement[] = Object.keys(jsonschema.properties || {})
-    .map(k => ({ type: 'Control', scope: `#/properties/${k}`}))
+    .map(k => ({ type: 'Control', scope: `#/properties/${subpath  || ''}${k}`}))
   return uiSchemaElements
 }

@@ -1,26 +1,28 @@
-import {Scopable, UISchemaElement, VerticalLayout} from '@jsonforms/core'
+import {VerticalLayout} from '@jsonforms/core'
 
 import schema from './risks.json'
+import {UISchemaOverrides} from './types'
 import {jsonSchema2UISchemaElements, overrideScopes} from './utils'
 
-const overrides: (UISchemaElement & Scopable)[] = [{
+export const risksUIOverride: UISchemaOverrides = scopeFn => [{
   type: 'Control',
-  scope: '#/properties/risksCV',
+  scope: scopeFn('risksCV'),
   options: {
     multi: true
   }
 },{
   type: 'Control',
-  scope: '#/properties/threatReport',
+  scope: scopeFn('threatReport'),
   options: {
     multi: true
   }
-},
-]
+}]
+
+const scope = (s: string) => `#/properties/${s}`
 
 export const risksUISchema: VerticalLayout = {
   type: 'VerticalLayout',
-  elements: overrideScopes(overrides,
+  elements: overrideScopes(risksUIOverride(scope),
     jsonSchema2UISchemaElements(schema))
 
 }

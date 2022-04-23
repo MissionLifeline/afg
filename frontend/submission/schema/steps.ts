@@ -1,22 +1,17 @@
-import {WizardOverride, WizardStep} from './types.d'
-
+import applicationSchema from './application.json'
+import {applicationUISchema} from './applicationUISchema'
+import fellowApplicants from './fellowApplicants.json'
+import {fellowApplicantsUISchema} from './fellowApplicantsUISchema'
 import generalSchema from './general.json'
 import {generalTranslation} from './generalTranslation'
 import {generalUISchema} from './generalUISchema'
-
 import risksSchema from './risks.json'
 import {risksTranslation} from './risksTranslation'
 import {risksUISchema} from './risksUISchema'
-
-import applicationSchema from './application.json'
-import {applicationUISchema} from './applicationUISchema'
-
-import spouseSchema from './spouse.json'
+import spouseSchema from './spouse'
 import {spouseTranslation} from './spouseTranslation'
 import {spouseUISchema} from './spouseUISchema'
-
-import fellowApplicants from './fellowApplicants.json'
-import {fellowApplicantsUISchema} from './fellowApplicantsUISchema'
+import {WizardOverride, WizardStep} from './types.d'
 
 
 export const steps: WizardStep[] = [
