@@ -34,6 +34,8 @@ type ArmoredDatastoreState = {
 
   formData: any
   formDataDirty: boolean
+  formDataSending: boolean
+  formDataDirtiedDuringSend: boolean
   setFormData: (name: string, formData: any) => void
 
   sendFormData: (token: string, userId: string) => Promise<void>
@@ -59,14 +61,24 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
 
   formData: {},
   formDataDirty: false,
+  formDataSending: false,
+  formDataDirtiedDuringSend: false,
   setFormData: (name: string, data: any) => {
-    set(({formData}) => ({
-      formData: {
-        ...formData,
-        [name]: data,
-      },
-      formDataDirty: true,
-    }))
+    const formData = {
+      ...get().formData,
+      [name]: data,
+    }
+    if (!get().formDataSending) {
+      set({
+        formData,
+        formDataDirty: true,
+      })
+    } else {
+      set({
+        formData,
+        formDataDirtiedDuringSend: true,
+      })
+    }
   },
 
   sendFormData: async (token: string, userId: string) => {
@@ -95,6 +107,11 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     body.append('userId', userId)
     body.append('formData', new Blob([encryptedFormData]))
 
+    set({
+      formDataSending: true,
+      formDataDirty: false,
+      formDataDirtiedDuringSend: false,
+    })
     const res = await fetch(`${config.backend_base_url}/api/upload-form`, {
       method: 'POST',
       body,
@@ -103,9 +120,8 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
       throw new Error(`upload-form: HTTP ${res.status}`)
     }
 
-    if (get().formData == formData) {
-      // only mark clean if there has been no form change during the fetch
-      set({ formDataDirty: false })
+    if (get().formDataDirtiedDuringSend) {
+      set({ formDataDirty: true })
     }
   },
 
