@@ -63,11 +63,8 @@ export const FormWizard = ({}: FormWizardProps) => {
       setFormData(name, state.data)
     }, [setFormData])
 
-  console.log('dirty', formDataDirty)
-
   const onUnload = useCallback(e => {
-    console.log('useUnload', formDataDirty)
-    if ( formDataDirty) {
+    if (formDataDirty) {
       e.preventDefault()
       // No translation required, today's browser don't show the message anymore
       // @ts-ignore
