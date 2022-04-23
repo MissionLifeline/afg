@@ -1,8 +1,9 @@
 import { EmojiPeople, Info} from '@mui/icons-material'
 import {Box, Divider, Paper, useTheme} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {useTranslation} from 'react-i18next'
+import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
@@ -24,6 +25,7 @@ const WelcomeStep = () => {
   const enableTranslationHelper = data_is_translator?.is_translator
 
   const [commonTranslation, setCommonTranslation] = useState((resources as any)[language]?.common || resources.en.common)
+  const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
 
   const theme = useTheme()
   return <Box
@@ -41,7 +43,7 @@ const WelcomeStep = () => {
       <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
         <MDEditorMarkdown
         source={t('welcome_step_content')}
-            rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
+            rehypePlugins={rehypePlugins}/>
       </Box>
     </AlertBox>
     {enableTranslationHelper && <>

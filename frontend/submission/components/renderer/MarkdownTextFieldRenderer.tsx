@@ -3,7 +3,8 @@ import {withJsonFormsControlProps} from '@jsonforms/react'
 import {Edit, EditOff} from '@mui/icons-material'
 import {FormControl, FormLabel, Grid, Hidden, IconButton} from '@mui/material'
 import merge from 'lodash/merge'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
+import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
@@ -35,6 +36,7 @@ const MarkdownTextFieldRenderer = (props: ControlProps) => {
     },
     [path, handleChange],
   )
+  const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
 
 
   return (
@@ -67,11 +69,11 @@ const MarkdownTextFieldRenderer = (props: ControlProps) => {
             value={data as string}
             onChange={handleChange_}
             previewOptions={{
-              rehypePlugins: [[rehypeSanitize, rehypeExternalLinks({ target: '_blank' })]],
+              rehypePlugins: rehypePlugins,
             }}
             commandsFilter={(cmd) => cmd?.name && /(divider|code|image|checked)/.test(cmd.name) ? false : cmd}
           />
-          : <MDEditorMarkdown source={data as string} rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
+          : <MDEditorMarkdown source={data as string} rehypePlugins={rehypePlugins}/>
         }
       </FormControl>
     </Hidden>

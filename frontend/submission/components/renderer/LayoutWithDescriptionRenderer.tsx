@@ -13,7 +13,8 @@ import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
 import {FormHelperText, Grid, Hidden} from '@mui/material'
 import Ajv from 'ajv'
 import isEmpty from 'lodash/isEmpty'
-import React, {ComponentType} from 'react'
+import React, {ComponentType, useMemo} from 'react'
+import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
@@ -44,6 +45,7 @@ export const renderLayoutElements = (
     const i18nKey = getI18nKey(resolvedSchema, child, childPath, 'description')
     // @ts-ignore
     const i18nDescription = translator(i18nKey, description)
+    const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
     const visible: boolean = hasShowRule(child)
       ? isVisible(child, rootData, '', getAjv(state)) : true
     return (
@@ -54,7 +56,7 @@ export const renderLayoutElements = (
               <FormHelperText>
                 <MDEditorMarkdown
                   source={i18nDescription}
-                  rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
+                  rehypePlugins={rehypePlugins}/>
               </FormHelperText>
             </Grid>}
           </Hidden>
