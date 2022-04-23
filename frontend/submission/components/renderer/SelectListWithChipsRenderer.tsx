@@ -47,7 +47,7 @@ const SelectListWithChipsRenderer = ({removeItems, addItem, visible, schema, arr
 
   const classes = useStyles()
 
-  const options = schema.enum?.map((key) => ({
+  const options = schema?.enum?.map((key) => ({
     key: key as string,
     value: key,
     label: key

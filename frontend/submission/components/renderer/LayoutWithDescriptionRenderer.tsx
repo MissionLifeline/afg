@@ -33,33 +33,37 @@ export const renderLayoutElements = (
   const rootSchema = getSchema(state)
   const rootData = getData(state)
   return elements.map((child, index) => {
-    const controlElement = child as ControlElement
-    const resolvedSchema = Resolve.schema(
-      schema || rootSchema,
-      controlElement.scope,
-      rootSchema
-    )
-    const childPath = composeWithUi(controlElement, path)
-    const description =
-      resolvedSchema !== undefined ? resolvedSchema.description : ''
-    const i18nKey = getI18nKey(resolvedSchema, child, childPath, 'description')
-    // @ts-ignore
-    const i18nDescription = translator(i18nKey, description)
+    let i18nDescription
+    if(child.type === 'Control') {
+
+      const controlElement = child as ControlElement
+      const resolvedSchema = Resolve.schema(
+          schema || rootSchema,
+          controlElement.scope,
+          rootSchema
+      )
+      const childPath = composeWithUi(controlElement, path)
+      const description =
+          resolvedSchema !== undefined ? resolvedSchema.description : ''
+      const i18nKey = getI18nKey(resolvedSchema, child, childPath, 'description')
+      // @ts-ignore
+      i18nDescription = translator(i18nKey, description)
+    }
     const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
     const visible: boolean = hasShowRule(child)
       ? isVisible(child, rootData, '', getAjv(state)) : true
     return (
       <Grid item key={`${path}-${index}`} xs>
         <Grid container direction={'column'}>
-          <Hidden xsUp={!visible}>
-            {i18nDescription && i18nDescription.length > 0 && <Grid item xs>
+          {i18nDescription && i18nDescription.length > 0 && <Hidden xsUp={!visible}>
+            <Grid item xs>
               <FormHelperText>
                 <MDEditorMarkdown
                   source={i18nDescription}
                   rehypePlugins={rehypePlugins}/>
               </FormHelperText>
-            </Grid>}
-          </Hidden>
+            </Grid>
+          </Hidden>}
           <Grid item xs>
             <JsonFormsDispatch
               uischema={child}
