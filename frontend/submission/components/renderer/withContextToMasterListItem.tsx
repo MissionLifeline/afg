@@ -7,7 +7,7 @@ import {JsonFormsStateContext} from '@jsonforms/react'
 import find from 'lodash/find'
 import React, {ComponentType} from 'react'
 
-import {filterUndefOrNull} from '../../utils'
+import {filterUndefOrNull, resolveObj} from '../../utils'
 import {OwnPropsOfMasterListItem, StatePropsOfMasterItem} from './ListWithDetailMasterItem'
 
 export const mapStateToMasterListItemProps = (
@@ -40,7 +40,7 @@ export const mapStateToMasterListItemProps = (
   let childLabel
   if (Array.isArray(labelProp)) {
     childLabel = filterUndefOrNull(
-      labelProp.map(prop => typeof prop === 'string' && childData[prop] || undefined))
+      labelProp.map(prop => typeof prop === 'string' && resolveObj( childData, prop, undefined )))
       .join(labelJoint)
   } else {
     childLabel = labelProp ? childData[labelProp] : ''
