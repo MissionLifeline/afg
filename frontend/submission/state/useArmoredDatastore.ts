@@ -104,7 +104,6 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     }
 
     if (get().formData == formData) {
-      console.log('clean!')
       // only mark clean if there has been no form change during the fetch
       set({ formDataDirty: false })
     }
