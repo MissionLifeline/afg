@@ -3,6 +3,7 @@ import {Box, Divider, Paper, useTheme} from '@mui/material'
 import {blue, green, grey} from '@mui/material/colors'
 import React, {useState} from 'react'
 import {useTranslation} from 'react-i18next'
+import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
@@ -40,7 +41,7 @@ const WelcomeStep = () => {
       <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
         <MDEditorMarkdown
         source={t('welcome_step_content')}
-            rehypePlugins={[[rehypeSanitize]]}/>
+            rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
       </Box>
     </AlertBox>
     {enableTranslationHelper && <>

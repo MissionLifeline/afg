@@ -4,6 +4,7 @@ import {Edit, EditOff} from '@mui/icons-material'
 import {FormControl, FormLabel, Grid, Hidden, IconButton} from '@mui/material'
 import merge from 'lodash/merge'
 import React, {useCallback, useState} from 'react'
+import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
 import MDEditor, { MDEditorMarkdown } from './MDEditor'
@@ -66,11 +67,11 @@ const MarkdownTextFieldRenderer = (props: ControlProps) => {
             value={data as string}
             onChange={handleChange_}
             previewOptions={{
-              rehypePlugins: [[rehypeSanitize]],
+              rehypePlugins: [[rehypeSanitize, rehypeExternalLinks({ target: '_blank' })]],
             }}
             commandsFilter={(cmd) => cmd?.name && /(divider|code|image|checked)/.test(cmd.name) ? false : cmd}
           />
-          : <MDEditorMarkdown source={data as string} rehypePlugins={[[rehypeSanitize]]}/>
+          : <MDEditorMarkdown source={data as string} rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
         }
       </FormControl>
     </Hidden>

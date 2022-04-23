@@ -14,6 +14,7 @@ import {FormHelperText, Grid, Hidden} from '@mui/material'
 import Ajv from 'ajv'
 import isEmpty from 'lodash/isEmpty'
 import React, {ComponentType} from 'react'
+import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
 import {MDEditorMarkdown} from './MDEditor'
@@ -53,7 +54,7 @@ export const renderLayoutElements = (
               <FormHelperText>
                 <MDEditorMarkdown
                   source={i18nDescription}
-                  rehypePlugins={[[rehypeSanitize]]}/>
+                  rehypePlugins={[[rehypeSanitize,rehypeExternalLinks({ target: '_blank' })]]}/>
               </FormHelperText>
             </Grid>}
           </Hidden>
