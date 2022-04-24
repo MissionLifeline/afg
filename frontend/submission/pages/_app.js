@@ -15,8 +15,9 @@ const MyApp = ({ Component, pageProps }) => {
   }, [])
   return <ThemeProvider theme={afgTheme}>
     <AppQueryClientProvider>
-      <TranslationLoader />
-      <Component {...pageProps} />
+      <TranslationLoader>
+        <Component {...pageProps} />
+      </TranslationLoader>
     </AppQueryClientProvider>
   </ThemeProvider>
 }

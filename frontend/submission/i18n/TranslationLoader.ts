@@ -1,7 +1,7 @@
 import {useLanguageService} from '../state'
 
-export const TranslationLoader = () => {
-    useLanguageService()
+export const TranslationLoader = ({ children }: {children: React.ReactChild | React.ReactChildren}) => {
+    const { isReady } = useLanguageService()
 
-    return null
+    return isReady ? children : null
 }

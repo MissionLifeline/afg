@@ -1,21 +1,19 @@
-import { EmojiPeople, Info} from '@mui/icons-material'
-import {Box, Divider, Paper, useTheme} from '@mui/material'
-import {blue, green, grey} from '@mui/material/colors'
-import React, {useMemo, useState} from 'react'
+import { EmojiPeople} from '@mui/icons-material'
+import {Box, Divider, useTheme} from '@mui/material'
+import React, {useMemo} from 'react'
 import {useTranslation} from 'react-i18next'
 import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
 import {useIs_TranslatorQuery} from '../../api/generates'
-import {resources} from '../../i18n'
 import {useTokenStore} from '../../state'
 import AlertBox from '../layout/AlertBox'
 import {MDEditorMarkdown} from '../renderer/MDEditor'
-import FormTranslationHelper from './FormTranslationHelper'
+import CommonFormTranslationHelper from './CommonFormTranslationHelper'
 
 const WelcomeStep = () => {
-  const {t, i18n: {language}} = useTranslation()
+  const {t} = useTranslation()
   const {token, userId} = useTokenStore()
   const {data: data_is_translator} = useIs_TranslatorQuery({auth: {token, userId}},
     {
@@ -24,9 +22,7 @@ const WelcomeStep = () => {
     })
   const enableTranslationHelper = data_is_translator?.is_translator
 
-  const [commonTranslation, setCommonTranslation] = useState((resources as any)[language]?.common || resources.en.common)
   const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
-
   const theme = useTheme()
   return <Box
       style={{minHeight: '50vh'}}
@@ -42,19 +38,13 @@ const WelcomeStep = () => {
               icon={EmojiPeople}>
       <Box display={'flex'} flexDirection={'row'} justifyContent='center'>
         <MDEditorMarkdown
-        source={t('welcome_step_content')}
+        source={t('welcome_step_content_markdown')}
             rehypePlugins={rehypePlugins}/>
       </Box>
     </AlertBox>
     {enableTranslationHelper && <>
       <Divider style={{marginTop: '2em', marginBottom: '2em'}}/>
-      <FormTranslationHelper
-        injectToCurrentLang
-        name='common'
-        language={language}
-        translationData={commonTranslation}
-        onTranslationChange={({data}) => setCommonTranslation( data)}
-      />
+      <CommonFormTranslationHelper />
     </>}
 
   </Box>

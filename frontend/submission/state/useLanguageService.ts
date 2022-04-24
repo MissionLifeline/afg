@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useQuery} from 'react-query'
 
@@ -8,6 +8,7 @@ import {useTranslationState} from './useTranslationState'
 
 
 export const useLanguageService = () => {
+  const [isReady, setIsReady] = useState(false)
   const {data} = useQuery(
       'get_translations',
       fetcher<{ get_translations: { str: string } }, void>('{get_translations {str}}'),
@@ -15,7 +16,7 @@ export const useLanguageService = () => {
   const {
     i18n: {addResourceBundle, removeResourceBundle, reloadResources}
   } = useTranslation()
-  const {setFormTranslationForLang} = useTranslationState()
+  const {setFormTranslationForLang, setCommon} = useTranslationState()
   useEffect(() => {
     if (!data) return
     let trans
@@ -37,6 +38,7 @@ export const useLanguageService = () => {
             const formName = stripFormPrefix(ns)
             setFormTranslationForLang(formName, language, translation)
           }
+          if(ns === 'common') setCommon(language, translation)
         }
       })
       const nsData_ = nsData as any
@@ -57,7 +59,10 @@ export const useLanguageService = () => {
           }
         })
     })
+    setIsReady(true)
 
-  }, [data, setFormTranslationForLang, addResourceBundle, removeResourceBundle, reloadResources])
+  }, [data, setFormTranslationForLang, addResourceBundle, removeResourceBundle, reloadResources, setIsReady, setCommon])
+
+  return { isReady }
 
 }
