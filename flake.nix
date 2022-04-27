@@ -39,9 +39,9 @@
     };
     commonModules = [
       ./deployment/modules/nix.nix
+      ./deployment/modules/default.nix
       #sops-nix.nixosModules.sops
       #./deployment/modules/sops.nix
-      ./deployment/modules/default.nix
       #./deployment/modules/monitoring/client.nix
       #nix-deploy-git.nixosModule
       #./deployment/modules/nix-deploy-git.nix
@@ -67,6 +67,16 @@
         modules = commonModules ++ [
           microvm.nixosModules.microvm
           ./deployment/hosts/afg-staging/configuration.nix
+          { nixpkgs.overlays = [ self.overlay ]; }
+          ./deployment/modules/afg.nix
+        ];
+      });
+
+      mqtt = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
+        modules = commonModules ++ [
+          microvm.nixosModules.microvm
+          ./deployment/hosts/mqtt/configuration.nix
+          ## TODO this modules should not be required!
           { nixpkgs.overlays = [ self.overlay ]; }
           ./deployment/modules/afg.nix
         ];

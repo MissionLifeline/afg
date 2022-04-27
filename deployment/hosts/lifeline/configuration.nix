@@ -47,7 +47,9 @@
       enableIPv6 = true;
       externalInterface = "eth0";
       internalInterfaces = [ "uvm" ];
-      forwardPorts = [ { destination = "10.0.0.2:22"; proto = "tcp"; sourcePort = 2222; } ];
+      forwardPorts = [ { destination = "10.0.0.2:22"; proto = "tcp"; sourcePort = 2222; }
+                       { destination = "10.0.0.3:22"; proto = "tcp"; sourcePort = 2322; }
+                       { destination = "10.0.0.3:1883"; proto = "tcp"; sourcePort = 1883; } ];
     };
   };
   systemd.network = {
