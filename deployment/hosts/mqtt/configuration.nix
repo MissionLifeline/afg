@@ -75,19 +75,26 @@
 
   services.mosquitto = {
     enable = true;
-    #host = "0.0.0.0";
-    #checkPasswords = true;
-    listeners = [{
-      #port = 8080;
-      #settings = {
-      #  protocol = "websockets";  ## TODO
-      #};
-      users = {
-        "owntracks" = {
-          acl = [ "readwrite owntracks/#" ];
-          password = "owntracksPassword";  ## TODO sops
+    # host = "0.0.0.0";
+    # checkPasswords = true;
+    listeners =
+      let
+        users = {
+          "owntracks" = {
+            acl = [ "readwrite owntracks/#" ];
+            password = "owntracksPassword";  ## TODO sops
+          };
         };
-      };
-    }];
+      in [ {
+        # MQTT listener
+        inherit users;
+      } {
+        # WebSocket listener
+        inherit users;
+        port = 8080;
+        settings = {
+          protocol = "websockets";
+        };
+      } ];
   }; 
 }

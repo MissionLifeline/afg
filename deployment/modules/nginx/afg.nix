@@ -17,5 +17,13 @@
         extraConfig = "proxy_pass_header Authorization;";
       };
     };
+
+    "mqtt.${config.networking.domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://10.0.0.3:8080";
+      };
+    };
   };
 }
