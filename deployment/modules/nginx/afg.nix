@@ -23,6 +23,7 @@
       enableACME = true;
       locations."/" = {
         proxyPass = "http://10.0.0.3:8080";
+        proxyWebsockets = true;
       };
     };
   };
