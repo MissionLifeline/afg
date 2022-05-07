@@ -3,7 +3,7 @@ import {
   composeWithUi,
   ControlElement,
   getAjv, getData,
-  getI18nKey, getSchema,
+  getSchema,
   getTranslator, hasShowRule, isVisible,
   JsonFormsCellRendererRegistryEntry, JsonFormsRendererRegistryEntry,
   JsonSchema,
@@ -18,6 +18,7 @@ import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
+import {getI18nDescription} from './getI18nDescription'
 import {MDEditorMarkdown} from './MDEditor'
 
 export const renderLayoutElements = (
@@ -35,19 +36,14 @@ export const renderLayoutElements = (
   return elements.map((child, index) => {
     let i18nDescription
     if(child.type === 'Control') {
-
       const controlElement = child as ControlElement
       const resolvedSchema = Resolve.schema(
-          schema || rootSchema,
-          controlElement.scope,
-          rootSchema
+        schema || rootSchema,
+        controlElement.scope,
+        rootSchema
       )
       const childPath = composeWithUi(controlElement, path)
-      const description =
-          resolvedSchema !== undefined ? resolvedSchema.description : ''
-      const i18nKey = getI18nKey(resolvedSchema, child, childPath, 'description')
-      // @ts-ignore
-      i18nDescription = translator(i18nKey, description)
+      i18nDescription = getI18nDescription(translator, child, childPath, resolvedSchema)
     }
     const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
     const visible: boolean = hasShowRule(child)

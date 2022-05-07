@@ -54,10 +54,14 @@ import merge from 'lodash/merge'
 import range from 'lodash/range'
 import React, {useCallback, useMemo, useState} from 'react'
 import {useTranslation} from 'react-i18next'
+import {PluggableList} from 'react-markdown/lib/react-markdown'
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeSanitize from 'rehype-sanitize'
 
 import {ArrayLayoutToolbar} from './ArrayToolbar'
 import {DeleteDialog} from './DeleteDialog'
 import ListWithDetailMasterItem from './ListWithDetailMasterItem'
+import {MDEditorMarkdown} from './MDEditor'
 import SelectListWithDetailMasterItem from './SelectListWithDetailMasterItem'
 import {CustomArrayLayoutProps, withJsonFormsArrayLayoutProps} from './withJsonFormsArrayLayoutProps'
 
@@ -70,6 +74,7 @@ export const MaterialListWithDetailRenderer =
      errors,
      visible,
      label,
+     description,
      required,
      removeItems,
      addItem,
@@ -153,6 +158,7 @@ export const MaterialListWithDetailRenderer =
       },
       [path, aboutToRemove, setAboutToRemove, setDeleteDialogOpen, handleRemoveItem],
     )
+    const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
 
 
     return (
@@ -174,6 +180,15 @@ export const MaterialListWithDetailRenderer =
           addItem={makeAddItemCallback}
           createDefault={handleCreateDefaultValue}
         />
+        {description && description.length > 0 && <Hidden xsUp={!visible}>
+          <Grid item xs>
+            <FormHelperText>
+              <MDEditorMarkdown
+                source={description}
+                rehypePlugins={rehypePlugins}/>
+            </FormHelperText>
+          </Grid>
+        </Hidden>}
         <Grid container direction={matches ? 'row' : 'column'} spacing={2}>
           <Grid item xs={4}>
             {matches
