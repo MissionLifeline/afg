@@ -9,8 +9,8 @@ import {
   JsonSchema,
   OwnPropsOfRenderer, Resolve
 } from '@jsonforms/core'
-import { JsonFormsDispatch, useJsonForms } from '@jsonforms/react'
-import {FormHelperText, Grid, Hidden} from '@mui/material'
+import {JsonFormsDispatch, useJsonForms} from '@jsonforms/react'
+import {Box, FormHelperText, Grid} from '@mui/material'
 import Ajv from 'ajv'
 import isEmpty from 'lodash/isEmpty'
 import React, {ComponentType, useMemo} from 'react'
@@ -21,59 +21,68 @@ import rehypeSanitize from 'rehype-sanitize'
 import {getI18nDescription} from './i18nHelper'
 import {MDEditorMarkdown} from './MDEditor'
 
-export const renderLayoutElements = (
+type LayoutElementProps = {
+  index: number,
   state: JsonFormsState,
-  elements: UISchemaElement[],
   schema: JsonSchema,
+  visible: boolean,
   path: string,
   enabled: boolean,
+  element: UISchemaElement,
   renderers?: JsonFormsRendererRegistryEntry[],
   cells?: JsonFormsCellRendererRegistryEntry[],
-) => {
+}
+const LayoutElement = ({
+                         index,
+                         state,
+                         schema,
+                         path,
+                         enabled,
+                         element: child,
+                         cells,
+                         renderers
+                       }: LayoutElementProps) => {
+  let i18nDescription
   const translator = getTranslator()(state)
   const rootSchema = getSchema(state)
   const rootData = getData(state)
-  return elements.map((child, index) => {
-    let i18nDescription
-    if(child.type === 'Control') {
-      const controlElement = child as ControlElement
-      const resolvedSchema = Resolve.schema(
-        schema || rootSchema,
-        controlElement.scope,
-        rootSchema
-      )
-      const childPath = composeWithUi(controlElement, path)
-      i18nDescription = getI18nDescription(null, translator, child, childPath, resolvedSchema)
-    }
-    const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
-    const visible: boolean = hasShowRule(child)
-      ? isVisible(child, rootData, '', getAjv(state)) : true
-    return (
-      <Grid item key={`${path}-${index}`} xs>
-        <Grid container direction={'column'}>
-          {i18nDescription && i18nDescription.length > 0 && <Hidden xsUp={!visible}>
-            <Grid item xs>
-              <FormHelperText>
-                <MDEditorMarkdown
-                  source={i18nDescription}
-                  rehypePlugins={rehypePlugins}/>
-              </FormHelperText>
-            </Grid>
-          </Hidden>}
-          <Grid item xs>
-            <JsonFormsDispatch
-              uischema={child}
-              schema={schema}
-              path={path}
-              enabled={enabled}
-              renderers={renderers}
-              cells={cells}
-            />
-          </Grid>
+  if (child.type === 'Control') {
+    const controlElement = child as ControlElement
+    const resolvedSchema = Resolve.schema(
+      schema || rootSchema,
+      controlElement.scope,
+      rootSchema
+    )
+    const childPath = composeWithUi(controlElement, path)
+    i18nDescription = getI18nDescription(null, translator, child, childPath, resolvedSchema)
+  }
+  const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize], [rehypeExternalLinks, {target: '_blank'}]], [])
+  const visible: boolean = hasShowRule(child)
+    ? isVisible(child, rootData, path, getAjv(state)) : true
+  return (
+    <Grid item key={`${path}-${index}`} xs>
+      <Grid container direction={'column'}>
+        {i18nDescription && i18nDescription.length > 0 && visible && <Grid item xs>
+          <FormHelperText>
+            <MDEditorMarkdown
+              source={i18nDescription}
+              rehypePlugins={rehypePlugins}/>
+          </FormHelperText>
+        </Grid>
+        }
+        <Grid item xs>
+          <JsonFormsDispatch
+            uischema={child}
+            schema={schema}
+            path={path}
+            enabled={enabled}
+            renderers={renderers}
+            cells={cells}
+          />
         </Grid>
       </Grid>
-    )
-  })
+    </Grid>
+  )
 }
 
 export interface MaterialLayoutRendererProps extends OwnPropsOfRenderer {
@@ -99,25 +108,30 @@ const MaterialLayoutRendererComponent =
       return null
     } else {
       return (
-        <Hidden xsUp={!visible}>
+        <Box sx={{display: visible ? 'block' : 'none'}}>
           <Grid
             container
             direction={direction}
             spacing={direction === 'row' ? 2 : 0}
-          >
-            {
-              renderLayoutElements(
-                state,
-                elements,
-                //@ts-ignore
-                schema,
-                path,
-                enabled,
-                renderers,
-                cells,
-              )}
+          >{
+              elements.map((element, index) =>
+                <LayoutElement
+                  key={(path || '') + index}
+                  index={index}
+                  state={state}
+                  // @ts-ignore
+                  schema={schema}
+                  // @ts-ignore
+                  visible={visible}
+                  // @ts-ignore
+                  path={path}
+                  // @ts-ignore
+                  enabled={enabled}
+                  element={element}
+                  cells={cells}
+                  renderers={renderers}/>)}
           </Grid>
-        </Hidden>
+        </Box>
       )
     }
   }
