@@ -34,3 +34,19 @@ export const showOnEnum: (conditionalScope: string, conditionalValues: string[],
         }
       }
     } as (UISchemaElement & Scopable)))
+
+export const hideOnEnum: <K extends (UISchemaElement & Scopable)>(conditionalScope: string, conditionalValues: string[], hiddenScopes: (string | string[]), other?: Partial<K>) => (UISchemaElement & Scopable)[] =
+  (conditionalScope, conditionalValue, hiddenScopes, other) =>
+    (Array.isArray(hiddenScopes) ? hiddenScopes : [hiddenScopes]).map(hiddenScope => ({
+      type: 'Control',
+      scope: hiddenScope,
+      rule: {
+        effect: RuleEffect.HIDE,
+        condition: {
+          //@ts-ignore
+          scope: conditionalScope,
+          schema: {enum: conditionalValue}
+        }
+      },
+      ...other
+    } as (UISchemaElement & Scopable)))
