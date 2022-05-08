@@ -19,6 +19,7 @@ import {useTokenStore, useTranslationState} from '../../state'
 import EnumRenderer from '../renderer/EnumRenderer'
 import FellowApplicantEligibleRenderer from '../renderer/FellowApplicantEligibleRenderer'
 import MaterialDateRenderer, {materialDateControlTester} from '../renderer/MaterialDateRenderer'
+import MaterialGroupLayout, {materialGroupTester} from '../renderer/MaterialGroupLayout'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
 import SelectListWithChipsRenderer from '../renderer/SelectListWithChipsRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
@@ -61,7 +62,10 @@ const defaultRenderers = [
     }, {
         tester: materialDateControlTester,
         renderer: MaterialDateRenderer
-    }
+    }, {
+        tester: materialGroupTester,
+        renderer: MaterialGroupLayout
+  }
 ]
 
 const ajv = createAjv({
