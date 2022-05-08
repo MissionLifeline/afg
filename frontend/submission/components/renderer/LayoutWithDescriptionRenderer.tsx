@@ -18,7 +18,7 @@ import {PluggableList} from 'react-markdown/lib/react-markdown'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize from 'rehype-sanitize'
 
-import {getI18nDescription} from './getI18nDescription'
+import {getI18nDescription} from './i18nHelper'
 import {MDEditorMarkdown} from './MDEditor'
 
 export const renderLayoutElements = (
@@ -43,7 +43,7 @@ export const renderLayoutElements = (
         rootSchema
       )
       const childPath = composeWithUi(controlElement, path)
-      i18nDescription = getI18nDescription(translator, child, childPath, resolvedSchema)
+      i18nDescription = getI18nDescription(null, translator, child, childPath, resolvedSchema)
     }
     const rehypePlugins = useMemo<PluggableList>(() => [[rehypeSanitize],[rehypeExternalLinks, { target: '_blank' }]], [])
     const visible: boolean = hasShowRule(child)
