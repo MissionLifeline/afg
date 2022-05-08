@@ -2,7 +2,7 @@ import {VerticalLayout} from '@jsonforms/core'
 
 import schema from './general.json'
 import {UISchemaOverrides} from './types'
-import {jsonSchema2UISchemaElements, overrideScopes, showOnEnum,showOnTrue} from './utils'
+import {hideOnEnum, jsonSchema2UISchemaElements, overrideScopes, showOnEnum, showOnTrue} from './utils'
 
 export const generalUIOverride: UISchemaOverrides = scopeFn => [
   ...showOnTrue(scopeFn('passportExisting'),
@@ -13,6 +13,13 @@ export const generalUIOverride: UISchemaOverrides = scopeFn => [
     [scopeFn('visaOtherCountryWhich'), scopeFn('visaOtherAttachments')]),
   ...showOnEnum(
       scopeFn('placeOfResidenceList'), ['other'], scopeFn('placeOfResidenceOther')
+  ),
+  ...hideOnEnum(
+    scopeFn('placeOfResidenceList'), ['afgh'], scopeFn('reasonForResidenceNotInAfghanistan'), {
+      options: {
+        multi: true
+      }
+    }
   ),
 ]
 

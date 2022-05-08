@@ -39,6 +39,9 @@
     "placeOfResidenceOther": {
       "type": "string"
     },
+    "reasonForResidenceNotInAfghanistan": {
+      "type": "string"
+    },
     "passportExisting": {
       "type": "boolean"
     },
