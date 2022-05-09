@@ -1,6 +1,6 @@
 import {
   ArrayLayoutProps,
-  composeWithUi,
+  composeWithUi, ControlElement,
   getData,
   getTranslator,
   OwnPropsOfControl,
@@ -15,9 +15,10 @@ import {
 } from '@jsonforms/react'
 import React, {ComponentType} from 'react'
 
-type ArrayDataProp = {
-  translator?: Translator,
+export type ArrayDataProp = {
+  translator: Translator
   arrayData: any[]
+  uischema?: ControlElement
 }
 export type CustomArrayLayoutProps = ArrayLayoutProps & ArrayDataProp
 
@@ -25,8 +26,9 @@ const withContextToArrayLayoutProps =
   (Component: ComponentType<CustomArrayLayoutProps>): ComponentType<CustomArrayLayoutProps> =>
     ({ctx, props}: JsonFormsStateContext & ArrayLayoutProps) => {
       const arrayLayoutProps = ctxToArrayLayoutProps(ctx, props)
-      const rootData = getData({jsonforms: ctx})
-      const translator = getTranslator()(ctx)
+      const state = {jsonforms: ctx}
+      const rootData = getData(state)
+      const translator = getTranslator()(state)
       const path = composeWithUi(props.uischema, props.path)
       const data = Resolve.data(rootData, path)
       const dispatchProps = ctxDispatchToArrayControlProps(ctx.dispatch)
