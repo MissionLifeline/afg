@@ -3,8 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import log from 'loglevel'
 import {initReactI18next} from 'react-i18next'
 
-import {steps} from '../schema'
-import {WizardStep} from '../schema/types'
+import {steps, WizardStep} from '../schema'
 import {jsonSchema2Translation} from '../schema/utils'
 import {LocalizedFormTranslation} from '../schema/utils/types'
 import {foldInner2Outer, isDevelopment} from '../utils'
@@ -77,7 +76,7 @@ i18next
     ns,
     defaultNS: 'common',
 
-    missingKeyHandler: (lngs, ns1, key) => log.debug('missing translation', {key, lngs, ns}),
+    missingKeyHandler: (lngs, ns1, key) => log.debug('missing translation', {key, lngs, ns1}),
     saveMissing: isDevelopment(),
 
     interpolation: {
