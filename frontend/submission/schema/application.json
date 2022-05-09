@@ -114,6 +114,9 @@
           }
         }
       }
+    },
+    "relationsAndConnectionsToGermany": {
+      "type": "string"
     }
   },
   "required": [

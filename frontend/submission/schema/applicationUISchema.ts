@@ -17,6 +17,12 @@ export const applicationUIOverrides: UISchemaOverrides = scopeFn => [
         elements: overrideScopes([], jsonSchema2UISchemaElements(schema.properties.familyMembersInGermany.items))
       }
     }
+  },{
+    type: 'Control',
+    scope: scopeFn('relationsAndConnectionsToGermany'),
+    options: {
+      multi: true
+    }
   }
 ]
 const scope = (s: string) => `#/properties/${s}`
