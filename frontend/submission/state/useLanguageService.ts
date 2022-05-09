@@ -1,9 +1,10 @@
+import _ from 'lodash'
 import {useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useQuery} from 'react-query'
 
 import {fetcher} from '../api/fetcher'
-import {formNamespace, isFormNamespace, stripFormPrefix} from '../i18n'
+import {formNamespace, isFormNamespace, resources, stripFormPrefix} from '../i18n'
 import {useTranslationState} from './useTranslationState'
 
 
@@ -29,7 +30,8 @@ export const useLanguageService = () => {
     Object.entries(trans.allTranslations).forEach(([language, nsData]) => {
       if (typeof nsData !== 'object' || !nsData) return
 
-      Object.entries(nsData).forEach(([ns, translation]) => {
+      Object.entries(nsData).forEach(([ns, translation_]) => {
+        const translation = ns === 'common' ? _.merge((resources as any)[language]?.common || {}, translation_) : translation_
         if (typeof translation === 'object' && translation) {
           removeResourceBundle(language, ns)
           addResourceBundle(language, ns, translation, undefined, true)
