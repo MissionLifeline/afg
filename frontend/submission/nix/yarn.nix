@@ -1914,6 +1914,14 @@
       };
     }
     {
+      name = "is_absolute_url___is_absolute_url_4.0.1.tgz";
+      path = fetchurl {
+        name = "is_absolute_url___is_absolute_url_4.0.1.tgz";
+        url  = "https://registry.yarnpkg.com/is-absolute-url/-/is-absolute-url-4.0.1.tgz";
+        sha1 = "16e4d487d4fded05cfe0685e53ec86804a5e94dc";
+      };
+    }
+    {
       name = "is_alphabetical___is_alphabetical_2.0.1.tgz";
       path = fetchurl {
         name = "is_alphabetical___is_alphabetical_2.0.1.tgz";
@@ -3063,6 +3071,14 @@
         name = "rehype_autolink_headings___rehype_autolink_headings_6.1.1.tgz";
         url  = "https://registry.yarnpkg.com/rehype-autolink-headings/-/rehype-autolink-headings-6.1.1.tgz";
         sha1 = "0cb874a56f3de6ead1c2268d7f0fc5006f244db5";
+      };
+    }
+    {
+      name = "rehype_external_links___rehype_external_links_1.0.1.tgz";
+      path = fetchurl {
+        name = "rehype_external_links___rehype_external_links_1.0.1.tgz";
+        url  = "https://registry.yarnpkg.com/rehype-external-links/-/rehype-external-links-1.0.1.tgz";
+        sha1 = "9e5d21c606b04d8098012e2d3c811919762d0ba2";
       };
     }
     {
