@@ -1,2 +1,2 @@
-export * from './getI18nDescription'
+export * from './i18nHelper'
 export * from './MaterialListWithDetailRenderer'
