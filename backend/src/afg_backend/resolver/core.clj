@@ -6,12 +6,14 @@
             [afg-backend.resolver.translator.is-translator :refer [is_translator]]
             [afg-backend.resolver.translator.get-translations :refer [get_translations]]
             [afg-backend.resolver.translator.write-translations :refer [write_translations]]
+            [afg-backend.resolver.admin.add-token :refer [add_token]]
             [afg-backend.db.state :refer [->db_ctx db_ctx]]))
 
 (def graphql* (executor {:query {:get_keys #'get_keys
                                  :is_translator #'is_translator
                                  :get_translations #'get_translations}
-                         :mutation {:write_translations #'write_translations}}))
+                         :mutation {:write_translations #'write_translations
+                                    :add_token #'add_token}}))
 
 (defn ->graphql
   "Create a wrapped graphql-executor, that merges context into the request.

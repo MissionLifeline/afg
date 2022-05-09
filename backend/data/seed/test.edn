@@ -14,4 +14,10 @@
   :token "demoTranslatorToken"
   :ignoreUserId true
   :assignedEditor :exampleEditor}
+ {:xt/id :adminToken
+  :xt/spec :spec-rbac.model.roles.token/record
+  :spec-rbac.model.roles.token/roles [:spec-rbac.model.roles.token/admin]
+  :token "demoAdminToken"
+  :ignoreUserId true
+  :assignedEditor :exampleEditor}
 ]
