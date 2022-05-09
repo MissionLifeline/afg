@@ -67,5 +67,7 @@
                config-errors (s/explain-data ::env env)]
               (when (:verbose env)
                     (println (strip-secrets env)))
-              (assert (not config-errors) (with-out-str (s/explain-out config-errors)))
+              (assert (not config-errors)
+                      (str "Please set the env-variable CONFIG to the path of a valid configuration!\n\n"
+                           (with-out-str (s/explain-out config-errors))))
               env))
