@@ -55,9 +55,9 @@ export const useLanguageService = () => {
           ...spouseTranslation,
           spouse: {
             ...(spouseTranslation.spouse || {}),
-            general: generalTranslation,
-            risks: risksTranslation,
-            application: applicationTranslation
+            general: {...generalTranslation, ...(spouseTranslation.spouse?.general || {}) },
+            risks: {...risksTranslation, ...(spouseTranslation.spouse?.risks || {}) },
+            application: {...applicationTranslation, ...(spouseTranslation.spouse?.application || {}) },
           }
         })
     })
