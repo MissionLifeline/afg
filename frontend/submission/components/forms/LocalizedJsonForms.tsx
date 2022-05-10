@@ -16,11 +16,13 @@ import {formNamespace} from '../../i18n'
 import {jsonSchema2TranslationJsonSchema, jsonSchema2TranslationUISchema} from '../../schema/utils'
 import {LocalizedFormTranslation} from '../../schema/utils/types'
 import {useTokenStore, useTranslationState} from '../../state'
+import {MaterialEnumCell, materialEnumCellTester} from '../renderer/cells/MaterialEnumCell'
 import EnumRenderer from '../renderer/EnumRenderer'
 import FellowApplicantEligibleRenderer from '../renderer/FellowApplicantEligibleRenderer'
 import MaterialDateRenderer, {materialDateControlTester} from '../renderer/MaterialDateRenderer'
 import MaterialGroupLayout, {materialGroupTester} from '../renderer/MaterialGroupLayout'
 import MaterialListWithDetailRenderer from '../renderer/MaterialListWithDetailRenderer'
+import {MaterialRadioGroupControl, materialRadioGroupControlTester} from '../renderer/MaterialRadioGroupControl'
 import SelectListWithChipsRenderer from '../renderer/SelectListWithChipsRenderer'
 import UploadRenderer from '../renderer/UploadRenderer'
 import VerticalLayoutWithDescriptionRenderer from '../renderer/VerticalLayoutWithDescriptionRenderer'
@@ -33,6 +35,14 @@ type LocalizedJsonFormsProps = {
 } & Omit<JsonFormsInitStateProps & JsonFormsReactProps, 'renderers'>
 
 const scopesEndIs = (scopes: string[]) => or(...scopes.map(s => scopeEndIs(s)))
+
+const defaultCells = [
+    ...materialCells,
+  {
+    tester: materialEnumCellTester,
+    cell: MaterialEnumCell
+  }
+]
 
 const defaultRenderers = [
     ...materialRenderers,
@@ -65,6 +75,9 @@ const defaultRenderers = [
     }, {
         tester: materialGroupTester,
         renderer: MaterialGroupLayout
+  }, {
+        tester: materialRadioGroupControlTester,
+        renderer: MaterialRadioGroupControl
   }
 ]
 
@@ -158,7 +171,7 @@ const LocalizedJsonForms =
                     data={data}
                     i18n={jsonFormsI18nState}
                     renderers={renderers}
-                    cells={materialCells}
+                    cells={defaultCells}
                     onChange={({data}) => setData(data)}
                     ajv={ajv}
                     {...props}
