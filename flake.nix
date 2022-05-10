@@ -50,6 +50,8 @@
   rec {
 
     nixosConfigurations = {
+      ## HOST
+
       lifeline = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [
           microvm.nixosModules.host
@@ -57,11 +59,14 @@
           ./deployment/modules/afg.nix
           ./deployment/modules/nginx/afg.nix
           ./deployment/modules/dns.nix
+          ./deployment/modules/restic/server.nix
           #./deployment/modules/binarycache/server.nix
           #./deployment/modules/monitoring/server.nix
           #./deployment/modules/jenkins.nix
         ];
       });
+
+      ## VMs
 
       afg-staging = nixpkgs.lib.nixosSystem (lib.mergeAttrs commonAttrs {
         modules = commonModules ++ [

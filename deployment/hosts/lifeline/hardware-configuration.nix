@@ -38,6 +38,11 @@
       fsType = "ext4";
     };
 
+  fileSystems."/var/lib/restic" =
+    { device = "tank/restic";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
