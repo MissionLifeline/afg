@@ -45,21 +45,21 @@ export const useLanguageService = () => {
       })
       const nsData_ = nsData as any
 
-      // we need special treatment for spouse
-      const generalTranslation = nsData_[formNamespace('general')]  || {}
-      const risksTranslation = nsData_[formNamespace('risks')] || {}
-      const applicationTranslation = nsData_[formNamespace('application')] || {}
-      const spouseTranslation = nsData_[formNamespace('spouse')] || {}
+      const generalTranslation = nsData_[formNamespace('general')]  || {},
+        risksTranslation = nsData_[formNamespace('risks')] || {},
+        applicationTranslation = nsData_[formNamespace('application')] || {},
+        spouseTranslation = nsData_[formNamespace('spouse')] || {}
 
-        setFormTranslationForLang('spouse', language, {
-          ...spouseTranslation,
-          spouse: {
-            ...(spouseTranslation.spouse || {}),
-            general: {...generalTranslation, ...(spouseTranslation.spouse?.general || {}) },
-            risks: {...risksTranslation, ...(spouseTranslation.spouse?.risks || {}) },
-            application: {...applicationTranslation, ...(spouseTranslation.spouse?.application || {}) },
-          }
-        })
+      const spouseTranslationExtended = {
+        ...spouseTranslation,
+        spouse: {
+          ...(spouseTranslation.spouse || {}),
+          general: {...(spouseTranslation.spouse?.general || {}), ...generalTranslation,  },
+          risks: {...(spouseTranslation.spouse?.risks || {}), ...risksTranslation  },
+          application: {...(spouseTranslation.spouse?.application || {}), ...applicationTranslation },
+        }
+      }
+      setFormTranslationForLang('spouse', language, spouseTranslationExtended)
     })
     setIsReady(true)
 
