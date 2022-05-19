@@ -35,10 +35,11 @@ type ArmoredDatastoreState = {
   formData: any
   formDataDirty: boolean
   formDataSending: boolean
+  formDataSent: boolean
   formDataDirtiedDuringSend: boolean
   setFormData: (name: string, formData: any) => void
 
-  sendFormData: (token: string, userId: string) => Promise<void>
+  sendFormData: (token: string, userId: string, final?: boolean) => Promise<void>
 
   attachments: AttachmentState[]
   addAttachment: (token: string, userId: string, blob: File) => ID
@@ -62,6 +63,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
   formData: {},
   formDataDirty: false,
   formDataSending: false,
+  formDataSent: false,
   formDataDirtiedDuringSend: false,
   setFormData: (name: string, data: any) => {
     const formData = {
@@ -81,7 +83,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     }
   },
 
-  sendFormData: async (token: string, userId: string) => {
+  sendFormData: async (token: string, userId: string, final) => {
     const { pubKeys, attachments } = get()
     let { formData } = get()
     // synchronize attachment upload HTTP status into formData
@@ -119,7 +121,7 @@ export const useArmoredDatastore = zustand<ArmoredDatastoreState>((set, get) => 
     if (!res.ok) {
       throw new Error(`upload-form: HTTP ${res.status}`)
     }
-
+    final && set({ formDataSent: true})
     if (get().formDataDirtiedDuringSend) {
       set({ formDataDirty: true })
     }

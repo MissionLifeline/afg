@@ -1,7 +1,7 @@
 import {Check,Pending,Send} from '@mui/icons-material'
 import * as Icons from '@mui/icons-material'
 import {Button} from '@mui/material'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useTranslation} from 'react-i18next'
 import {useMutation } from 'react-query'
 
@@ -16,7 +16,7 @@ const SubmitFormButton = ({}: SubmitFormButtonProps) => {
 
   const { mutate, isIdle, isLoading, isSuccess, isError } = useMutation('upload-form', async () => {
     if (token && userId) {
-      return await sendFormData(token, userId)
+      return await sendFormData(token, userId, true)
     } else {
       throw new Error('no token or userId')
     }
