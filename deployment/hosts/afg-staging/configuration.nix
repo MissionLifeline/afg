@@ -78,4 +78,12 @@
     enable = true;
     configName = "staging.edn";
   };
+
+  services.restic.backups.hdd = {
+    initialize = true;
+    passwordFile = "/var/lib/afg-frontend/.restic-password";
+    repository = "";  ## set by RESTIC_REPOSITORY in environmentFile to protect http-basic-auth-password
+    environmentFile = "/var/lib/afg-frontend/.restic-env";
+    paths = [ "/var/lib/afg-frontend" ];
+  };
 }
